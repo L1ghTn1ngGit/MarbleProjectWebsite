@@ -282,6 +282,22 @@ body {
     color: var(--gray-700);
 }
 
+.night-mode-btn .sun-icon {
+    display: none;
+}
+
+.night-mode-btn .moon-icon {
+    display: block;
+}
+
+body.dark-mode .night-mode-btn .sun-icon {
+    display: block;
+}
+
+body.dark-mode .night-mode-btn .moon-icon {
+    display: none;
+}
+
 .night-mode-btn:hover {
     background: var(--gray-100);
     border-color: var(--black);
