@@ -1006,7 +1006,9 @@ body.dark-mode .chart-toggle {
     position: relative !important;
     height: auto !important;
     max-height: 450px !important;
-    min-width: 520px; /* keep readability and enable scroll on narrow screens */
+    width: 760px; /* keep desktop sizing and allow scroll instead of squeezing */
+    min-width: 760px;
+    max-width: none;
 }
 
 .chart-card:hover {
@@ -1441,7 +1443,7 @@ body.dark-mode .data-table td {
     .budget-slideshow { padding: 3rem 1.5rem; }
     .slide-content { gap: 2rem; }
     .chart-card { height: 480px; overflow-x: auto; }
-    .chart-card canvas { max-height: 360px !important; min-width: 520px; }
+    .chart-card canvas { max-height: 360px !important; width: 760px; min-width: 760px; }
     .main-container { padding: 3rem 1.5rem; }
 }
 
@@ -1495,7 +1497,7 @@ body.dark-mode .data-table td {
     .slide-stat { font-size: 3rem; }
     .slideshow-container { min-height: 420px; }
     .chart-card { height: 420px; overflow-x: auto; }
-    .chart-card canvas { max-height: 320px !important; min-width: 480px; }
+    .chart-card canvas { max-height: 320px !important; width: 760px; min-width: 760px; }
     .table-controls { gap: 0.75rem; }
     .table-controls > * { width: calc(50% - 0.4rem); }
     .table-search { min-width: auto; width: 100%; }
@@ -1515,7 +1517,7 @@ body.dark-mode .data-table td {
     .slide-title { font-size: 1.8rem; }
     .slide-stat { font-size: 2.6rem; }
     .chart-card { padding: 1.25rem; height: 380px; overflow-x: auto; }
-    .chart-card canvas { max-height: 280px !important; min-width: 440px; }
+    .chart-card canvas { max-height: 280px !important; width: 760px; min-width: 760px; }
     .metrics-grid { grid-template-columns: 1fr; }
     .filter-controls { flex-direction: column; }
     .filter-controls > * { width: 100%; }
