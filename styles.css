@@ -138,11 +138,9 @@ body.dark-mode .insight-card.success { border-left-color: #10b981; }
 body.dark-mode .footer-bottom { border-top: 1px solid #333333; }
 
 body.dark-mode .night-mode-btn {
-    color: var(--gray-300);
-    border-color: var(--gray-600);
-}
-
-body.dark-mode .night-mode-btn:hover {
+  color: #ffffff;
+  border: none;
+}body.dark-mode .night-mode-btn:hover {
     background: rgba(255, 255, 255, 0.1);
     border-color: var(--white);
     color: var(--white);
@@ -158,14 +156,12 @@ body.dark-mode .nav-container {
 
 body.dark-mode .pillar-icon,
 body.dark-mode .logo-text {
-    color: var(--white);
+  color: var(--white);
 }
 
 body.dark-mode .nav-link {
-    color: var(--gray-400);
-}
-
-body.dark-mode .nav-link:hover,
+  color: #ffffff;
+}body.dark-mode .nav-link:hover,
 body.dark-mode .nav-link.active {
     color: var(--white);
 }
