@@ -130,6 +130,10 @@ body.dark-mode .hero-stat .stat-value { color: #ffffff; }
 body.dark-mode .hero-stat .stat-label { color: #cfcfcf; }
 body.dark-mode .metric-value { color: #ffffff; }
 body.dark-mode .metric-label { color: #cfcfcf; }
+body.dark-mode .metric-card.alert .metric-label { 
+  color: #ff6b6b; 
+  text-shadow: 0 0 8px rgba(255, 107, 107, 0.6), 0 0 16px rgba(255, 107, 107, 0.3); 
+}
 body.dark-mode .amount { color: #ffffff; }
 body.dark-mode .offender-card-inner h3 { color: #ffffff; }
 body.dark-mode .insight-card { border-left-color: #777777; }
