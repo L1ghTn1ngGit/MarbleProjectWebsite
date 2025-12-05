@@ -1022,7 +1022,29 @@ document.addEventListener('DOMContentLoaded', () => {
     loadData();
     setupDarkMode();
     setupBudgetSlideshow();
+    setupNavToggle();
     initTableScrollSync();
     window.addEventListener('scroll', updateActiveNav);
     updateActiveNav();
 });
+
+function setupNavToggle() {
+    const toggle = document.getElementById('navToggle');
+    const nav = document.getElementById('primaryNav');
+    if (!toggle || !nav) return;
+    toggle.addEventListener('click', () => {
+        const isOpen = nav.classList.toggle('open');
+        toggle.classList.toggle('open', isOpen);
+        toggle.setAttribute('aria-expanded', isOpen);
+    });
+    // Close menu on link click (mobile)
+    nav.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            if (nav.classList.contains('open')) {
+                nav.classList.remove('open');
+                toggle.classList.remove('open');
+                toggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+    });
+}
