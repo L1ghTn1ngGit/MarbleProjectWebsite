@@ -4,6 +4,13 @@ let filteredData = [];
 let currentPage = 1;
 const recordsPerPage = 50;
 let charts = {};
+let tableScrollTop;
+let tableScrollSpacer;
+let tableContainer;
+let exportModal;
+let exportPageBtn;
+let exportAllBtn;
+let exportCancelBtn;
 
 // Format currency
 function formatCurrency(num) {
@@ -84,7 +91,13 @@ async function loadData() {
                 allData.push(row);
             }
         }
-        
+        // Remove records with negative budgets or expenses
+        allData = allData.filter(row => {
+            const modified = parseFloat(row['Modified']) || 0;
+            const cash = parseFloat(row['Cash Expense']) || 0;
+            return modified >= 0 && cash >= 0;
+        });
+
         filteredData = [...allData];
         
         console.log(`Loaded ${allData.length} records`);
@@ -289,6 +302,78 @@ function displayTable() {
     document.getElementById('pageInfo').textContent = `Page ${currentPage} of ${totalPages}`;
     document.getElementById('prevPage').disabled = currentPage === 1;
     document.getElementById('nextPage').disabled = currentPage === totalPages;
+
+    updateTableScrollSync();
+}
+
+function updateTableScrollSync() {
+    if (!tableScrollSpacer || !tableContainer) return;
+    const table = tableContainer.querySelector('.data-table');
+    if (!table) return;
+    tableScrollSpacer.style.width = `${table.scrollWidth}px`;
+    tableScrollSpacer.style.height = '1px';
+    if (tableScrollTop) {
+        tableScrollTop.scrollLeft = tableContainer.scrollLeft;
+    }
+}
+
+function initTableScrollSync() {
+    tableScrollTop = document.querySelector('.table-scroll-top');
+    tableScrollSpacer = document.querySelector('.table-scroll-spacer');
+    tableContainer = document.querySelector('.table-container');
+    if (!tableScrollTop || !tableScrollSpacer || !tableContainer) return;
+
+    const sync = (source, target) => {
+        if (target.scrollLeft !== source.scrollLeft) {
+            target.scrollLeft = source.scrollLeft;
+        }
+    };
+
+    tableScrollTop.addEventListener('scroll', () => sync(tableScrollTop, tableContainer));
+    tableContainer.addEventListener('scroll', () => sync(tableContainer, tableScrollTop));
+    window.addEventListener('resize', updateTableScrollSync);
+
+    updateTableScrollSync();
+}
+
+function setupExportModal() {
+    exportModal = document.getElementById('exportModal');
+    exportPageBtn = document.getElementById('exportPageBtn');
+    exportAllBtn = document.getElementById('exportAllBtn');
+    exportCancelBtn = document.getElementById('exportCancelBtn');
+    const exportTrigger = document.getElementById('exportData');
+    if (!exportModal || !exportPageBtn || !exportAllBtn || !exportCancelBtn || !exportTrigger) return;
+
+    const closeModal = () => exportModal.classList.add('hidden');
+    const openModal = () => exportModal.classList.remove('hidden');
+
+    const performExport = (usePageOnly) => {
+        const start = (currentPage - 1) * recordsPerPage;
+        const end = Math.min(start + recordsPerPage, filteredData.length);
+        const dataset = usePageOnly ? filteredData.slice(start, end) : filteredData;
+        const csv = Papa.unparse(dataset);
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = usePageOnly ? 'education-budget-page.csv' : 'education-budget-all.csv';
+        a.click();
+    };
+
+    exportTrigger.addEventListener('click', () => openModal());
+    exportPageBtn.addEventListener('click', () => { performExport(true); closeModal(); });
+    exportAllBtn.addEventListener('click', () => { performExport(false); closeModal(); });
+    exportCancelBtn.addEventListener('click', closeModal);
+    exportModal.addEventListener('click', (e) => {
+        if (e.target === exportModal || e.target.classList.contains('export-modal__backdrop')) {
+            closeModal();
+        }
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !exportModal.classList.contains('hidden')) {
+            closeModal();
+        }
+    });
 }
 
 // Generate insights
@@ -694,18 +779,12 @@ function setupEventListeners() {
         }
         
         document.getElementById('recordCount').textContent = `Showing ${displayData.length} of ${searchResults.length} results`;
+
+        updateTableScrollSync();
     });
     
     // Export
-    document.getElementById('exportData').addEventListener('click', () => {
-        const csv = Papa.unparse(filteredData);
-        const blob = new Blob([csv], { type: 'text/csv' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'education-budget-export.csv';
-        a.click();
-    });
+    setupExportModal();
     
     // Pagination
     document.getElementById('prevPage').addEventListener('click', () => {
@@ -943,6 +1022,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadData();
     setupDarkMode();
     setupBudgetSlideshow();
+    initTableScrollSync();
     window.addEventListener('scroll', updateActiveNav);
     updateActiveNav();
 });

@@ -244,8 +244,9 @@ body {
 .nav-container {
     background: var(--white);
     border-bottom: 3px solid var(--black);
-    max-width: 1400px;
-    margin: 0 auto;
+    width: 100%;
+    max-width: none;
+    margin: 0;
     padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
@@ -392,6 +393,7 @@ body.dark-mode .budget-slideshow {
     grid-template-columns: 1fr 1fr;
     gap: 3rem;
     align-items: center;
+    padding: 0 3rem; /* keep arrows clear of text */
 }
 
 .slide-visual {
@@ -687,11 +689,11 @@ body.dark-mode .slide-nav svg {
 }
 
 .slide-nav.prev {
-    left: -25px;
+    left: -50px;
 }
 
 .slide-nav.next {
-    right: -25px;
+    right: -50px;
 }
 
 @media (max-width: 768px) {
@@ -714,11 +716,11 @@ body.dark-mode .slide-nav svg {
     }
     
     .slide-nav.prev {
-        left: 10px;
+        left: 6px;
     }
     
     .slide-nav.next {
-        right: 10px;
+        right: 6px;
     }
 }
 
@@ -1035,7 +1037,8 @@ body.dark-mode .chart-toggle {
 .table-container {
     background: var(--white);
     box-shadow: var(--shadow-md);
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
     border: 1px solid var(--gray-200);
     transition: var(--transition);
 }
@@ -1043,6 +1046,78 @@ body.dark-mode .chart-toggle {
 .table-container:hover {
     box-shadow: var(--shadow-lg);
     transform: translateY(-3px);
+}
+
+.table-scroll-top {
+    overflow-x: auto;
+    overflow-y: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.table-scroll-top::-webkit-scrollbar,
+.table-container::-webkit-scrollbar {
+    height: 10px;
+}
+
+.table-scroll-top::-webkit-scrollbar-thumb,
+.table-container::-webkit-scrollbar-thumb {
+    background: var(--gray-400);
+    border-radius: 6px;
+}
+
+.table-scroll-top::-webkit-scrollbar-track,
+.table-container::-webkit-scrollbar-track {
+    background: var(--gray-200);
+}
+
+.table-scroll-spacer {
+    height: 1px;
+}
+
+.export-modal.hidden {
+    display: none;
+}
+
+.export-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+}
+
+.export-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+}
+
+.export-modal__content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--white);
+    padding: 2rem;
+    box-shadow: var(--shadow-xl);
+    border: 1px solid var(--gray-200);
+    max-width: 420px;
+    width: 90%;
+}
+
+.export-modal__content h3 {
+    margin-bottom: 0.5rem;
+}
+
+.export-modal__content p {
+    margin-bottom: 1rem;
+    color: var(--gray-700);
+}
+
+.export-modal__actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
 }
 
 .data-table {

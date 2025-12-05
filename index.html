@@ -334,6 +334,22 @@
                 </div>
             </div>
 
+            <div id="exportModal" class="export-modal hidden" role="dialog" aria-modal="true" aria-labelledby="exportModalTitle">
+                <div class="export-modal__backdrop"></div>
+                <div class="export-modal__content">
+                    <h3 id="exportModalTitle">Export CSV</h3>
+                    <p>Select which rows to export.</p>
+                    <div class="export-modal__actions">
+                        <button class="btn-secondary" id="exportPageBtn">Current page only</button>
+                        <button class="btn-secondary" id="exportAllBtn">All filtered rows</button>
+                        <button class="btn-alert" id="exportCancelBtn">Cancel</button>
+                    </div>
+                </div>
+            </div>
+            <div class="table-scroll-top" aria-hidden="true">
+                <div class="table-scroll-spacer"></div>
+            </div>
+
             <div class="table-container">
                 <table class="data-table">
                     <thead>
