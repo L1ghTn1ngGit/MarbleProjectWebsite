@@ -570,20 +570,20 @@ body.dark-mode .chart-toggle {
     box-shadow: var(--shadow-md);
     border: 1px solid var(--gray-200);
     position: relative;
-    height: 500px;
+    height: 550px;
     display: flex;
     flex-direction: column;
     transition: var(--transition);
 }
 
 .chart-card.large {
-    height: 500px;
+    height: 550px;
 }
 
 .chart-card canvas {
     position: relative !important;
     height: auto !important;
-    max-height: 400px !important;
+    max-height: 450px !important;
 }
 
 .chart-card:hover {
