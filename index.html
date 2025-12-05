@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Marble Project - NYC Education Accountability</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <!-- Work in Progress Notice -->
+        <div class="wip-notice">
+            <a href="#authors" class="wip-link">Site Work in Progress [CLICK HERE, JOIN THE PROJECT]</a>
+        </div>
+        <div class="nav-container">
+            <div class="nav-logo">
+                <svg width="40" height="40" viewBox="0 0 100 100" class="pillar-icon">
+                    <rect x="10" y="5" width="80" height="8" fill="currentColor"/>
+                    <rect x="20" y="13" width="15" height="70" fill="currentColor"/>
+                    <rect x="42.5" y="13" width="15" height="70" fill="currentColor"/>
+                    <rect x="65" y="13" width="15" height="70" fill="currentColor"/>
+                    <rect x="10" y="87" width="80" height="8" fill="currentColor"/>
+                </svg>
+                <span class="logo-text">THE MARBLE PROJECT</span>
+            </div>
+            <div class="nav-links">
+                <a href="#overview" class="nav-link active">Overview</a>
+                <a href="#spending" class="nav-link">Spending Analysis</a>
+                <a href="#data-table" class="nav-link">Data</a>
+                <a href="#insights" class="nav-link">Insights</a>
+                <button id="darkModeToggle" class="night-mode-btn" title="Toggle dark mode">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title fade-in">NYC Education Budget Accountability</h1>
+            <p class="hero-subtitle fade-in delay-1">Forensic analysis of Department of Education spending across 43,249 budget records from 2023-2025</p>
+            <div class="hero-stats fade-in delay-2">
+                <div class="hero-stat">
+                    <div class="stat-value" id="heroTotal">$0</div>
+                    <div class="stat-label">Total Spending</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="stat-value" id="heroPrograms">0</div>
+                    <div class="stat-label">Programs Tracked</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="stat-value" id="heroAlerts">0</div>
+                    <div class="stat-label">Budget Alerts</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Overview Section -->
+        <section id="overview" class="section">
+            <div class="section-header">
+                <h2>Spending Overview</h2>
+                <p>Comprehensive analysis of education budget allocations and expenditures</p>
+            </div>
+            
+            <div class="metrics-grid">
+                <div class="metric-card slide-up">
+                    <div class="metric-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="20" x2="18" y2="10"></line>
+                            <line x1="12" y1="20" x2="12" y2="4"></line>
+                            <line x1="6" y1="20" x2="6" y2="14"></line>
+                        </svg>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-value" id="totalSpent">Loading...</div>
+                        <div class="metric-label">Total Spent</div>
+                    </div>
+                </div>
+                <div class="metric-card slide-up delay-1">
+                    <div class="metric-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="7" width="20" height="14" rx="0"></rect>
+                            <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path>
+                        </svg>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-value" id="totalBudget">$0</div>
+                        <div class="metric-label">Working Budget</div>
+
+                    </div>
+                </div>
+                <div class="metric-card alert slide-up delay-3">
+                    <div class="metric-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                            <line x1="12" y1="9" x2="12" y2="13"></line>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                    </div>
+                    <div class="metric-content">
+                        <div class="metric-value" id="overBudget">0</div>
+                        <div class="metric-label">Over Budget</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Visualization Section -->
+        <section id="spending" class="section">
+            <div class="section-header">
+                <h2>Spending Analysis</h2>
+                <div class="filter-controls">
+                    <select id="yearFilter" class="filter-select" title="Filter by year">
+                        <option value="all">All Years</option>
+                        <option value="2023">2023</option>
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                    </select>
+                    <input type="text" id="searchBox" class="search-input" placeholder="Search departments, programs...">
+                </div>
+            </div>
+
+            <div class="charts-container">
+                <div class="chart-card large">
+                    <div class="chart-header">
+                        <h3>Spending by Department</h3>
+                        <select id="chartView" class="chart-toggle" title="Toggle chart view">
+                            <option value="bar">Bar Chart</option>
+                            <option value="pie">Pie Chart</option>
+                        </select>
+                    </div>
+                    <canvas id="departmentChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Worst Offenders Section -->
+        <section id="offenders" class="section">
+            <div class="section-header">
+                <h2>Top 5 Worst Offenders</h2>
+                <p>Programs with the most significant budget overruns</p>
+            </div>
+            <div class="offenders-slider-container">
+                <div class="offenders-slider" id="offendersSlider">
+                    <!-- Offender cards will be injected here by app.js -->
+                </div>
+                <button class="slider-btn prev" id="sliderPrev">‹</button>
+                <button class="slider-btn next" id="sliderNext">›</button>
+            </div>
+        </section>
+
+        <!-- Data Table Section -->
+        <section id="data-table" class="section">
+            <div class="section-header">
+                <h2>Budget Details</h2>
+                <div class="table-controls">
+                    <input type="text" id="tableSearch" class="search-input table-search" placeholder="Search in table...">
+                    <select id="programFilter" class="filter-select" title="Filter by program">
+                        <option value="all">All Programs</option>
+                    </select>
+                    <select id="tableYearFilter" class="filter-select" title="Filter by year">
+                        <option value="all">All Years</option>
+                        <option value="2023">2023</option>
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                    </select>
+                    <select id="departmentFilter" class="filter-select" title="Filter by department">
+                        <option value="all">All Departments</option>
+                    </select>
+                    <button class="btn-secondary" id="exportData">Export CSV</button>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th data-sort="Year" class="sortable">Year ↕</th>
+                            <th data-sort="Department" class="sortable">Department ↕</th>
+                            <th data-sort="Budget Name" class="sortable">Program ↕</th>
+                            <th data-sort="Modified" class="sortable">Budget ↕</th>
+                            <th data-sort="Cash Expense" class="sortable">Spent ↕</th>
+                            <th data-sort="Difference" class="sortable">Difference ↕</th>
+                            <th data-sort="Status" class="sortable">Status ↕</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <tr><td colspan="7" class="loading-cell">Loading data...</td></tr>
+                    </tbody>
+                </table>
+                <div class="table-footer">
+                    <span id="recordCount">Showing 0 records</span>
+                    <div class="pagination">
+                        <button id="prevPage" class="page-btn">Previous</button>
+                        <span id="pageInfo">Page 1</span>
+                        <button id="nextPage" class="page-btn">Next</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Insights Section -->
+        <section id="insights" class="section">
+            <div class="section-header">
+                <h2>Key Findings</h2>
+                <p>Automated analysis of spending patterns and anomalies</p>
+            </div>
+
+            <div class="insights-grid" id="insightsContainer">
+                <div class="loading-cell">Analyzing data...</div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>The Marble Project</h4>
+                <p>Making Accountability Real Before it Leaves the Executive</p>
+            </div>
+            <div class="footer-section">
+                <h4>Data Source</h4>
+                <p>NYC Open Data - Department of Education</p>
+                <p class="data-note">43,249 records spanning 2023-2025</p>
+            </div>
+            <div class="footer-section" id="authors">
+                <h4>About</h4>
+                <p>Independent budget analysis tool</p>
+                <p class="authors">Presented by <strong>Ambrose Sukraj</strong> & <strong>Aftid Rahman</strong></p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 The Marble Project. Data accuracy subject to NYC reporting standards.</p>
+            <p class="footnote">*Working Budget includes in-year adjustments and transfers</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
