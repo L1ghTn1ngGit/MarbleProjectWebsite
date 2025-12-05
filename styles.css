@@ -62,10 +62,7 @@ body.dark-mode .chart-card,
 body.dark-mode .metric-card,
 body.dark-mode .insight-card,
 body.dark-mode .offender-card-inner,
-body.dark-mode .table-container,
-body.dark-mode .footer,
-body.dark-mode .footer-content,
-body.dark-mode .footer-bottom {
+body.dark-mode .table-container {
     background: #111111;
     color: #f5f5f5;
     border-color: #222222;
@@ -993,7 +990,7 @@ body.dark-mode .footer-section p {
 }
 
 body.dark-mode .footer-section .authors {
-    color: var(--gray-300);
+    color: #d0d0d0;
 }
 
 .footer-section .authors strong {
@@ -1002,7 +999,7 @@ body.dark-mode .footer-section .authors {
 }
 
 body.dark-mode .footer-section .authors strong {
-    color: var(--white);
+    color: #ffffff;
 }
 
 .footer-section .data-note {
