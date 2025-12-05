@@ -923,17 +923,19 @@ body.dark-mode .data-table td {
    FOOTER
    =========================== */
 .footer {
-    background: var(--gray-100);
+    background: var(--marble-light);
     color: var(--gray-900);
     padding: 4rem 2rem 2rem;
     margin-top: 6rem;
     border-top: 3px solid var(--gray-300);
+    box-shadow: inset 0 8px 16px rgba(0, 0, 0, 0.08);
 }
 
 body.dark-mode .footer {
-    background: var(--gray-900);
+    background: var(--marble-dark);
     color: var(--white);
     border-top: 3px solid var(--gray-700);
+    box-shadow: inset 0 8px 16px rgba(255, 255, 255, 0.05), 0 -4px 24px rgba(255, 255, 255, 0.08);
 }
 
 .footer-content {
@@ -966,7 +968,7 @@ body.dark-mode .footer-section h4 {
 }
 
 body.dark-mode .footer-section p {
-    color: var(--gray-400);
+    color: #b0b0b0;
 }
 
 .footer-section .authors {
@@ -1008,7 +1010,7 @@ body.dark-mode .footer-section .authors strong {
 
 body.dark-mode .footer-bottom {
     border-top: 1px solid var(--gray-700);
-    color: var(--gray-500);
+    color: #999999;
 }
 
 .footer-bottom p {
