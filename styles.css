@@ -138,12 +138,14 @@ body.dark-mode .insight-card.success { border-left-color: #10b981; }
 body.dark-mode .footer-bottom { border-top: 1px solid #333333; }
 
 body.dark-mode .night-mode-btn {
-  color: #ffffff;
+  color: #cccccc;
   border: none;
-}body.dark-mode .night-mode-btn:hover {
+}
+
+body.dark-mode .night-mode-btn:hover {
     background: rgba(255, 255, 255, 0.1);
-    border-color: var(--white);
-    color: var(--white);
+    color: #ffffff;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
 }
 
 body.dark-mode .main-nav {
@@ -162,14 +164,18 @@ body.dark-mode .logo-text {
 }
 
 body.dark-mode .nav-link {
-  color: #ffffff;
-}body.dark-mode .nav-link:hover,
+  color: #cccccc;
+}
+
+body.dark-mode .nav-link:hover,
 body.dark-mode .nav-link.active {
-    color: var(--white);
+    color: #ffffff;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.6), 0 0 16px rgba(255, 255, 255, 0.3);
 }
 
 body.dark-mode .nav-link::after {
-    background: var(--white);
+    background: #ffffff;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.6), 0 0 12px rgba(255, 255, 255, 0.4);
 }
 
 body.dark-mode .wip-notice {
