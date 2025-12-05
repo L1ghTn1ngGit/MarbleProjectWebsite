@@ -54,6 +54,146 @@
         </div>
     </nav>
 
+    <!-- Budget Slideshow Section -->
+    <section class="budget-slideshow">
+        <div class="slideshow-container">
+            <!-- Slide 1: USA Map with NYC Budget -->
+            <div class="slide active" data-slide="1">
+                <div class="slide-content">
+                    <div class="slide-visual">
+                        <svg class="usa-map" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Simple USA outline inspired by provided reference -->
+                            <path d="M70 280 L110 240 L170 220 L220 210 L270 195 L320 198 L360 210 L410 225 L470 228 L520 220 L560 220 L610 235 L660 260 L700 300 L690 340 L650 360 L600 368 L550 362 L500 356 L455 350 L410 344 L360 350 L305 352 L250 340 L200 320 L150 300 L110 290 Z" fill="#e5e7eb" stroke="#9ca3af" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+                            <!-- NYC Highlight -->
+                            <circle class="nyc-marker pulse" cx="642" cy="242" r="12" fill="#ef4444"/>
+                            <text x="662" y="238" font-size="14" font-weight="bold" fill="currentColor">NYC</text>
+                        </svg>
+                    </div>
+                    <div class="slide-text">
+                        <h2 class="slide-title">New York City: The Nation's Largest City Budget</h2>
+                        <p class="slide-stat">$<span class="stat-number">112.4</span> Billion</p>
+                        <p class="slide-description">NYC's annual budget is the largest of any city in the United States</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 2: NYC Zoom with DOE Budget -->
+            <div class="slide" data-slide="2">
+                <div class="slide-content">
+                    <div class="slide-visual">
+                        <svg class="nyc-map" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+                            <g class="boroughs">
+                                <path class="borough staten" d="M210 340 L250 325 L270 330 L265 355 L230 365 Z" />
+                                <path class="borough brooklyn" d="M280 310 L330 300 L360 310 L380 350 L340 365 L290 350 Z" />
+                                <path class="borough queens" d="M360 250 L410 230 L460 240 L500 270 L470 320 L410 315 L380 285 Z" />
+                                <path class="borough manhattan" d="M320 210 L350 190 L370 200 L360 250 L330 260 Z" />
+                                <path class="borough bronx" d="M370 170 L410 150 L450 170 L430 210 L390 210 Z" />
+                            </g>
+                            <!-- School Pinpoints across all boroughs -->
+                            <circle class="school-pin" cx="335" cy="245" r="7" />
+                            <circle class="school-pin" cx="365" cy="285" r="7" />
+                            <circle class="school-pin" cx="305" cy="325" r="7" />
+                            <circle class="school-pin" cx="430" cy="260" r="7" />
+                            <circle class="school-pin" cx="455" cy="295" r="7" />
+                            <circle class="school-pin" cx="390" cy="200" r="7" />
+                        </svg>
+                    </div>
+                    <div class="slide-text">
+                        <h2 class="slide-title">Department of Education's Share</h2>
+                        <p class="slide-stat">$<span class="stat-number">38.3</span> Billion</p>
+                        <p class="slide-description">The DOE receives approximately <strong>1/3</strong> of NYC's entire annual budget</p>
+                        <p class="slide-note">Operating 1,600+ schools across all five boroughs</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3: Per-Student Spending -->
+            <div class="slide" data-slide="3">
+                <div class="slide-content">
+                    <div class="slide-visual">
+                        <svg class="students-visual" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Student Icons -->
+                            <g class="student-group">
+                                <g class="student pos-1">
+                                    <circle cx="0" cy="0" r="25" fill="var(--c)"/>
+                                    <path d="M -15,30 Q 0,35 15,30 L 20,80 L -20,80 Z" fill="var(--c)"/>
+                                </g>
+                                <g class="student pos-2">
+                                    <circle cx="0" cy="0" r="25" fill="var(--c)"/>
+                                    <path d="M -15,30 Q 0,35 15,30 L 20,80 L -20,80 Z" fill="var(--c)"/>
+                                </g>
+                                <g class="student pos-3">
+                                    <circle cx="0" cy="0" r="25" fill="var(--c)"/>
+                                    <path d="M -15,30 Q 0,35 15,30 L 20,80 L -20,80 Z" fill="var(--c)"/>
+                                </g>
+                                <g class="student pos-4">
+                                    <circle cx="0" cy="0" r="25" fill="var(--c)"/>
+                                    <path d="M -15,30 Q 0,35 15,30 L 20,80 L -20,80 Z" fill="var(--c)"/>
+                                </g>
+                                <g class="student pos-5">
+                                    <circle cx="0" cy="0" r="25" fill="var(--c)"/>
+                                    <path d="M -15,30 Q 0,35 15,30 L 20,80 L -20,80 Z" fill="var(--c)"/>
+                                </g>
+                            </g>
+                            <!-- Price Tag -->
+                            <g class="price-tag" transform="translate(400, 350)">
+                                <path d="M -80,0 L 60,0 L 80,20 L 60,40 L -80,40 Z" fill="#ef4444" stroke="#991b1b" stroke-width="2"/>
+                                <circle cx="-60" cy="20" r="5" fill="#fff"/>
+                                <text x="-40" y="28" font-size="24" font-weight="bold" fill="#fff">$38,000</text>
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="slide-text">
+                        <h2 class="slide-title">Highest Per-Student Spending in America</h2>
+                        <p class="slide-stat">$<span class="stat-number">38,000</span></p>
+                        <p class="slide-description">NYC spends more per student than any other major city in the nation</p>
+                        <p class="slide-note">Serving approximately 1 million students</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 4: CTA -->
+            <div class="slide" data-slide="4">
+                <div class="slide-content">
+                    <div class="slide-visual">
+                        <svg class="cta-visual" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="180" y="120" width="440" height="260" rx="18" fill="#0ea5e9" opacity="0.12" stroke="#0284c7" stroke-width="3" />
+                            <path d="M260 200 L400 320 L540 200" fill="none" stroke="#0284c7" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="400" cy="320" r="12" fill="#f43f5e"/>
+                            <text x="400" y="360" text-anchor="middle" font-size="20" font-weight="700" fill="#0284c7">Scroll Down</text>
+                        </svg>
+                    </div>
+                    <div class="slide-text">
+                        <h2 class="slide-title">Now scroll down</h2>
+                        <p class="slide-stat">Explore the details</p>
+                        <p class="slide-description">See what the DOE has been doing with <strong>your</strong> money over the last three fiscal years.</p>
+                        <p class="slide-note">Dive into the data, trends, and biggest overruns below.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide Indicators -->
+            <div class="slide-indicators">
+                <button class="indicator active" data-slide="1" title="Slide 1: NYC budget" aria-label="Slide 1: NYC budget"></button>
+                <button class="indicator" data-slide="2" title="Slide 2: DOE share" aria-label="Slide 2: DOE share"></button>
+                <button class="indicator" data-slide="3" title="Slide 3: Per-student spending" aria-label="Slide 3: Per-student spending"></button>
+                <button class="indicator" data-slide="4" title="Slide 4: Scroll to data" aria-label="Slide 4: Scroll to data"></button>
+            </div>
+
+            <!-- Navigation Arrows -->
+            <button class="slide-nav prev" aria-label="Previous slide">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </button>
+            <button class="slide-nav next" aria-label="Next slide">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </button>
+        </div>
+    </section>
+
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">

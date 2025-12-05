@@ -20,6 +20,22 @@ function formatNumber(num) {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+// Simple inline icons (SVG) to replace emojis for accessibility and consistency
+function getIcon(type) {
+    const commonProps = 'width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-icon" aria-hidden="true"';
+    if (type === 'alert') return `<svg ${commonProps}><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="13"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>`;
+    if (type === 'trend') return `<svg ${commonProps}><polyline points="4 14 9 9 13 13 20 6"></polyline><polyline points="20 10 20 6 16 6"></polyline></svg>`;
+    if (type === 'info') return `<svg ${commonProps}><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>`;
+    return '';
+}
+
+function getStatusInfo(diff, modified) {
+    if (diff > modified * 0.5 && modified > 0) return { type: 'critical', label: 'Critical Overrun' };
+    if (diff > 0) return { type: 'over', label: 'Over Budget' };
+    if (diff < 0) return { type: 'under', label: 'Under Budget' };
+    return { type: 'normal', label: 'On Track' };
+}
+
 // Animate number counting
 function animateNumber(element, target, duration = 1000, prefix = '', suffix = '') {
     const start = 0;
@@ -131,8 +147,8 @@ function updateMetrics() {
     animateNumber(document.getElementById('totalBudget'), totalModified, 1200, '$');
     animateNumber(document.getElementById('overBudget'), overBudgetCount, 1000);
     
-    // Status indicators
-    const effStatus = efficiency < 95 ? '✓ Under budget' : efficiency > 105 ? '⚠ Over budget' : '≈ On track';
+    // Status indicators (reserved for future UI badges)
+    const effStatus = efficiency < 95 ? 'Under budget' : efficiency > 105 ? 'Over budget' : 'On track';
 }
 
 // Create charts
@@ -249,18 +265,7 @@ function displayTable() {
         const cash = parseFloat(row['Cash Expense']) || 0;
         const diff = cash - modified;
         
-        let status = '✓ Normal';
-        let statusClass = '';
-        if (diff > modified * 0.5 && modified > 0) {
-            status = '🚨 Critical';
-            statusClass = 'style="color: #EF4444; font-weight: 600;"';
-        } else if (diff > 0) {
-            status = '⚠ Over';
-            statusClass = 'style="color: #F59E0B; font-weight: 600;"';
-        } else if (diff < 0) {
-            status = '✓ Under';
-            statusClass = 'style="color: #10B981; font-weight: 600;"';
-        }
+        const statusMeta = getStatusInfo(diff, modified);
         
         tr.innerHTML = `
             <td>${row.Year}</td>
@@ -269,7 +274,10 @@ function displayTable() {
             <td>${formatCurrency(modified)}</td>
             <td>${formatCurrency(cash)}</td>
             <td style="color: ${diff > 0 ? '#EF4444' : '#10B981'}">${formatCurrency(diff)}</td>
-            <td ${statusClass}>${status}</td>
+            <td class="status-cell">
+                <span class="status-dot status-${statusMeta.type}" aria-hidden="true"></span>
+                <span class="status-label">${statusMeta.label}</span>
+            </td>
         `;
         
         tbody.appendChild(tr);
@@ -308,7 +316,7 @@ function generateInsights() {
         const card = document.createElement('div');
         card.className = 'insight-card alert slide-up';
         card.innerHTML = `
-            <h3>🚨 Largest Overrun</h3>
+            <h3>${getIcon('alert')} Largest Overrun</h3>
             <p><strong>${maxOverspend.Department}</strong></p>
             <p>${maxOverspend['Budget Name']}</p>
             <div class="amount">${formatCurrency(maxAmount)}</div>
@@ -332,7 +340,7 @@ function generateInsights() {
     const growthCard = document.createElement('div');
     growthCard.className = 'insight-card slide-up delay-1';
     growthCard.innerHTML = `
-        <h3>📈 Spending Trends</h3>
+        <h3>${getIcon('trend')} Spending Trends</h3>
         <p>2024 vs 2023: <strong>${growth2024 > 0 ? '+' : ''}${growth2024}%</strong></p>
         <p>2025 vs 2024: <strong>${growth2025 > 0 ? '+' : ''}${growth2025}%</strong></p>
         <div class="amount">${formatCurrency(yearTotals[2025])}</div>
@@ -667,18 +675,7 @@ function setupEventListeners() {
             const cash = parseFloat(row['Cash Expense']) || 0;
             const diff = cash - modified;
             
-            let status = '✓ Normal';
-            let statusClass = '';
-            if (diff > modified * 0.5 && modified > 0) {
-                status = '🚨 Critical';
-                statusClass = 'style="color: #EF4444; font-weight: 600;"';
-            } else if (diff > 0) {
-                status = '⚠ Over';
-                statusClass = 'style="color: #F59E0B; font-weight: 600;"';
-            } else if (diff < 0) {
-                status = '✓ Under';
-                statusClass = 'style="color: #10B981; font-weight: 600;"';
-            }
+            const statusMeta = getStatusInfo(diff, modified);
             
             tr.innerHTML = `
                 <td>${row.Year}</td>
@@ -687,7 +684,10 @@ function setupEventListeners() {
                 <td>${formatCurrency(modified)}</td>
                 <td>${formatCurrency(cash)}</td>
                 <td style="color: ${diff > 0 ? '#EF4444' : '#10B981'}">${formatCurrency(diff)}</td>
-                <td ${statusClass}>${status}</td>
+                <td class="status-cell">
+                    <span class="status-dot status-${statusMeta.type}" aria-hidden="true"></span>
+                    <span class="status-label">${statusMeta.label}</span>
+                </td>
             `;
             
             tbody.appendChild(tr);
@@ -803,7 +803,8 @@ function setupEventListeners() {
 
 // Scroll-based navigation highlighting
 function updateActiveNav() {
-    const sections = ['overview', 'spending', 'trends', 'insights'];
+    // Include every visible section so nav highlights match scroll position
+    const sections = ['overview', 'spending', 'offenders', 'data-table', 'insights'];
     const navLinks = document.querySelectorAll('.nav-link');
     
     let currentSection = '';
@@ -852,10 +853,96 @@ function setupDarkMode() {
     });
 }
 
+// Budget Slideshow functionality
+function setupBudgetSlideshow() {
+    let currentSlide = 1;
+    const slides = document.querySelectorAll('.slide');
+    const indicators = document.querySelectorAll('.indicator');
+    const totalSlides = slides.length;
+    if (totalSlides === 0) return;
+    let autoPlayInterval;
+    let userInteracted = false;
+    const prevBtn = document.querySelector('.slide-nav.prev');
+    const nextBtn = document.querySelector('.slide-nav.next');
+    
+    function showSlide(slideNumber) {
+        // Remove active class from all slides and indicators
+        slides.forEach(slide => slide.classList.remove('active'));
+        indicators.forEach(indicator => indicator.classList.remove('active'));
+        
+        // Add active class to current slide and indicator
+        const targetSlide = document.querySelector(`.slide[data-slide="${slideNumber}"]`);
+        const targetIndicator = document.querySelector(`.indicator[data-slide="${slideNumber}"]`);
+        
+        if (targetSlide) targetSlide.classList.add('active');
+        if (targetIndicator) targetIndicator.classList.add('active');
+        
+        currentSlide = slideNumber;
+    }
+    
+    function nextSlide() {
+        const next = currentSlide >= totalSlides ? 1 : currentSlide + 1;
+        showSlide(next);
+    }
+    
+    function prevSlide() {
+        const prev = currentSlide <= 1 ? totalSlides : currentSlide - 1;
+        showSlide(prev);
+    }
+    
+    function startAutoPlay() {
+        if (userInteracted) return;
+        autoPlayInterval = setInterval(nextSlide, 12000); // Slower: change every 12 seconds
+    }
+    
+    function stopAutoPlay() {
+        clearInterval(autoPlayInterval);
+    }
+    
+    // Event listeners
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            nextSlide();
+            userInteracted = true;
+            stopAutoPlay();
+        });
+    }
+    
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            prevSlide();
+            userInteracted = true;
+            stopAutoPlay();
+        });
+    }
+    
+    indicators.forEach(indicator => {
+        indicator.addEventListener('click', () => {
+            const slideNum = parseInt(indicator.getAttribute('data-slide'));
+            showSlide(slideNum);
+            userInteracted = true;
+            stopAutoPlay();
+        });
+    });
+    
+    // Pause autoplay on hover
+    const slideshowContainer = document.querySelector('.slideshow-container');
+    if (slideshowContainer) {
+        slideshowContainer.addEventListener('mouseenter', stopAutoPlay);
+        slideshowContainer.addEventListener('mouseleave', () => {
+            if (!userInteracted) startAutoPlay();
+        });
+    }
+    
+    // Start autoplay
+    startAutoPlay();
+}
+
 // Initialize on load
 document.addEventListener('DOMContentLoaded', () => {
     loadData();
     setupDarkMode();
+    setupBudgetSlideshow();
     window.addEventListener('scroll', updateActiveNav);
     updateActiveNav();
 });

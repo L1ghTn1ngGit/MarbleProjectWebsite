@@ -203,6 +203,11 @@ body {
     overflow-x: hidden;
 }
 
+.inline-icon {
+    vertical-align: middle;
+    margin-right: 0.4rem;
+}
+
 /* ===========================
    NAVIGATION
    =========================== */
@@ -341,10 +346,386 @@ body.dark-mode .night-mode-btn .moon-icon {
 }
 
 /* ===========================
+   BUDGET SLIDESHOW SECTION
+   =========================== */
+.budget-slideshow {
+    margin-top: 108px;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    padding: 4rem 2rem;
+    border-bottom: 3px solid var(--gray-300);
+}
+
+body.dark-mode .budget-slideshow {
+    background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+    border-bottom-color: #333;
+}
+
+.slideshow-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    min-height: 500px;
+}
+
+.slide {
+    display: none;
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+.slide.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.slide-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+}
+
+.slide-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.usa-map,
+.nyc-map,
+.students-visual {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
+}
+
+body.dark-mode .usa-map path,
+body.dark-mode .nyc-map .boroughs path {
+    fill: #2a2a2a;
+    stroke: #555;
+}
+
+body.dark-mode .usa-map text,
+body.dark-mode .nyc-map text {
+    fill: #ffffff;
+}
+
+.nyc-map .boroughs .borough {
+    fill: #e5e7eb;
+    stroke: #52525b;
+    stroke-width: 3;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    transition: var(--transition);
+}
+
+.nyc-map .boroughs .borough:hover {
+    fill: #cbd5e1;
+}
+
+.nyc-map .boroughs .staten { fill: #e2e8f0; }
+.nyc-map .boroughs .brooklyn { fill: #dbeafe; }
+.nyc-map .boroughs .queens { fill: #e0f2fe; }
+.nyc-map .boroughs .manhattan { fill: #fef3c7; }
+.nyc-map .boroughs .bronx { fill: #ffe4e6; }
+
+.cta-visual {
+    width: 100%;
+    max-width: 520px;
+    height: auto;
+    filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.18));
+}
+
+.nyc-marker {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.2);
+    }
+}
+
+.school-pin {
+    fill: #3b82f6;
+    stroke: #1d4ed8;
+    stroke-width: 2;
+    animation: popIn 0.5s ease-out;
+    animation-fill-mode: both;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.school-pin:hover {
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.5));
+}
+
+@keyframes popIn {
+    0% {
+        opacity: 0;
+        transform: scale(0);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.student {
+    --x: 0px;
+    --y: 0px;
+    --c: #6366f1;
+    transform: translate(var(--x), var(--y)) scale(1);
+    animation: studentPop 0.9s ease-out;
+    animation-fill-mode: both;
+    transform-origin: center;
+    transform-box: fill-box;
+    will-change: transform, opacity;
+}
+
+.student.pos-1 { --x: 150px; --y: 180px; --c: #6366f1; animation-delay: 0s; }
+.student.pos-2 { --x: 280px; --y: 180px; --c: #8b5cf6; animation-delay: 0.08s; }
+.student.pos-3 { --x: 410px; --y: 180px; --c: #ec4899; animation-delay: 0.16s; }
+.student.pos-4 { --x: 540px; --y: 180px; --c: #f59e0b; animation-delay: 0.24s; }
+.student.pos-5 { --x: 670px; --y: 180px; --c: #10b981; animation-delay: 0.32s; }
+
+@keyframes studentPop {
+    from {
+        opacity: 0;
+        transform: translate(var(--x), var(--y)) scale(0.6);
+    }
+    to {
+        opacity: 1;
+        transform: translate(var(--x), var(--y)) scale(1);
+    }
+}
+
+.price-tag {
+    animation: swing 1s ease-in-out;
+}
+
+@keyframes swing {
+    0%, 100% {
+        transform: translate(400px, 350px) rotate(0deg);
+    }
+    25% {
+        transform: translate(400px, 350px) rotate(-5deg);
+    }
+    75% {
+        transform: translate(400px, 350px) rotate(5deg);
+    }
+}
+
+.slide-text {
+    text-align: left;
+}
+
+.slide-title {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    margin-bottom: 1.5rem;
+    color: var(--black);
+    letter-spacing: -0.5px;
+}
+
+body.dark-mode .slide-title {
+    color: #ffffff;
+}
+
+.slide-stat {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 4rem;
+    font-weight: 900;
+    color: #3b82f6;
+    margin-bottom: 1rem;
+    line-height: 1;
+}
+
+body.dark-mode .slide-stat {
+    color: #60a5fa;
+    text-shadow: 0 0 20px rgba(96, 165, 250, 0.3);
+}
+
+.stat-number {
+    display: inline-block;
+    animation: countUp 1s ease-out;
+}
+
+@keyframes countUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.slide-description {
+    font-size: 1.25rem;
+    color: var(--gray-700);
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+body.dark-mode .slide-description {
+    color: #d0d0d0;
+}
+
+.slide-description strong {
+    color: #3b82f6;
+    font-weight: 700;
+}
+
+body.dark-mode .slide-description strong {
+    color: #60a5fa;
+}
+
+.slide-note {
+    font-size: 1rem;
+    color: var(--gray-500);
+    font-style: italic;
+}
+
+body.dark-mode .slide-note {
+    color: #999;
+}
+
+.slide-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 3rem;
+}
+
+.indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--gray-300);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    padding: 0;
+}
+
+.indicator:hover {
+    background: var(--gray-500);
+    transform: scale(1.2);
+}
+
+.indicator.active {
+    background: #3b82f6;
+    width: 32px;
+    border-radius: 6px;
+}
+
+body.dark-mode .indicator {
+    background: #444;
+}
+
+body.dark-mode .indicator:hover {
+    background: #666;
+}
+
+body.dark-mode .indicator.active {
+    background: #60a5fa;
+}
+
+.slide-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid var(--gray-300);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    z-index: 10;
+}
+
+.slide-nav:hover {
+    background: #fff;
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+body.dark-mode .slide-nav {
+    background: rgba(17, 17, 17, 0.9);
+    border-color: #555;
+}
+
+body.dark-mode .slide-nav:hover {
+    background: #1a1a1a;
+}
+
+body.dark-mode .slide-nav svg {
+    stroke: #ffffff;
+}
+
+.slide-nav.prev {
+    left: -25px;
+}
+
+.slide-nav.next {
+    right: -25px;
+}
+
+@media (max-width: 768px) {
+    .slide-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .slide-title {
+        font-size: 2rem;
+    }
+    
+    .slide-stat {
+        font-size: 3rem;
+    }
+    
+    .slide-nav {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .slide-nav.prev {
+        left: 10px;
+    }
+    
+    .slide-nav.next {
+        right: 10px;
+    }
+}
+
+/* ===========================
    HERO SECTION
    =========================== */
 .hero {
-    margin-top: 108px;
     background: var(--white);
     color: var(--black);
     padding: 6rem 2rem;
@@ -713,6 +1094,30 @@ body.dark-mode .chart-toggle {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.status-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 8px rgba(0,0,0,0.18);
+}
+
+.status-dot.status-critical { background: #ef4444; box-shadow: 0 0 10px rgba(239, 68, 68, 0.5); }
+.status-dot.status-over { background: #f59e0b; box-shadow: 0 0 10px rgba(245, 158, 11, 0.45); }
+.status-dot.status-under { background: #10b981; box-shadow: 0 0 10px rgba(16, 185, 129, 0.45); }
+.status-dot.status-normal { background: #6b7280; }
+
+.status-label {
+    font-weight: 600;
+    color: var(--gray-800);
 }
 
 body.dark-mode .data-table thead {
