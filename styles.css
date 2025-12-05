@@ -971,10 +971,8 @@ body.dark-mode .footer {
 }
 
 body.dark-mode .footer-section h4 {
-    color: var(--white);
-}
-
-.footer-section p {
+  color: #ffffff;
+}.footer-section p {
     color: var(--gray-600);
     margin-bottom: 0.5rem;
     line-height: 1.7;
