@@ -156,7 +156,9 @@ body.dark-mode .nav-container {
 
 body.dark-mode .pillar-icon,
 body.dark-mode .logo-text {
-  color: var(--white);
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.3);
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.4));
 }
 
 body.dark-mode .nav-link {
