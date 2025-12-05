@@ -127,7 +127,12 @@ body.dark-mode .btn-alert:hover {
 
 body.dark-mode .main-container { background: #0f0f0f; }
 body.dark-mode .section-header p { color: #cfcfcf; }
+body.dark-mode .section-header h2 { color: #ffffff; }
+body.dark-mode .hero-title { color: #ffffff; }
+body.dark-mode .metric-value { color: #ffffff; }
 body.dark-mode .metric-label { color: #cfcfcf; }
+body.dark-mode .amount { color: #ffffff; }
+body.dark-mode .offender-card-inner h3 { color: #ffffff; }
 body.dark-mode .insight-card { border-left-color: #777777; }
 body.dark-mode .insight-card.alert { border-left-color: #ef4444; }
 body.dark-mode .insight-card.success { border-left-color: #10b981; }
