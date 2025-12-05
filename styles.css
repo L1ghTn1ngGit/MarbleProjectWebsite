@@ -129,6 +129,8 @@ body.dark-mode .main-container { background: #0f0f0f; }
 body.dark-mode .section-header p { color: #cfcfcf; }
 body.dark-mode .section-header h2 { color: #ffffff; }
 body.dark-mode .hero-title { color: #ffffff; }
+body.dark-mode .hero-stat .stat-value { color: #ffffff; }
+body.dark-mode .hero-stat .stat-label { color: #cfcfcf; }
 body.dark-mode .metric-value { color: #ffffff; }
 body.dark-mode .metric-label { color: #cfcfcf; }
 body.dark-mode .amount { color: #ffffff; }
@@ -371,6 +373,7 @@ h1, h2, h3, h4 {
     padding: 2rem;
     border: 1px solid var(--gray-200);
     transition: var(--transition);
+    text-align: center;
 }
 
 .hero-stat:hover {
