@@ -1,6 +1,4 @@
-/* ===========================
-   RESET & BASE STYLES
-   =========================== */
+/* Base reset */
 * {
     margin: 0;
     padding: 0;
@@ -36,7 +34,7 @@
     --chart-desktop-width: 960px;
 }
 
-/* Dark Mode */
+/* Dark mode palette */
 body.dark-mode {
     background: #0f0f0f;
     color: #f5f5f5;
@@ -58,7 +56,7 @@ body.dark-mode {
     --shadow-xl: 0 12px 32px rgba(0,0,0,0.65);
 }
 
-/* Dark mode component overrides for contrast */
+/* Dark-mode component tweaks */
 body.dark-mode .hero,
 body.dark-mode .section,
 body.dark-mode .chart-card,
@@ -211,9 +209,7 @@ body {
     margin-right: 0.4rem;
 }
 
-/* ===========================
-   NAVIGATION
-   =========================== */
+/* Nav */
 .main-nav {
     position: fixed;
     top: 0;
@@ -387,9 +383,7 @@ body.dark-mode .night-mode-btn .moon-icon {
     width: 100%;
 }
 
-/* ===========================
-   BUDGET SLIDESHOW SECTION
-   =========================== */
+/* Slideshow */
 .budget-slideshow {
     margin-top: 108px;
     background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
@@ -833,9 +827,7 @@ body.dark-mode .slide-nav svg {
     }
 }
 
-/* ===========================
-   HERO SECTION
-   =========================== */
+/* Hero */
 .hero {
     background: var(--white);
     color: var(--black);
@@ -909,9 +901,7 @@ h1, h2, h3, h4 {
     letter-spacing: 1px;
 }
 
-/* ===========================
-   MAIN CONTAINER
-   =========================== */
+/* Layout */
 .main-container {
     max-width: 1400px;
     margin: 0 auto;
@@ -943,9 +933,7 @@ h1, h2, h3, h4 {
     margin-top: 0.5rem;
 }
 
-/* ===========================
-   METRICS GRID
-   =========================== */
+/* Metrics */
 .metrics-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -1011,9 +999,7 @@ h1, h2, h3, h4 {
 .metric-change.positive { color: #10B981; }
 .metric-change.negative { color: #EF4444; }
 
-/* ===========================
-   FILTER CONTROLS
-   =========================== */
+/* Filters */
 .filter-controls {
     display: flex;
     gap: 1rem;
@@ -1047,9 +1033,7 @@ body.dark-mode .chart-toggle {
     min-width: 300px;
 }
 
-/* ===========================
-   CHARTS
-   =========================== */
+/* Charts */
 .charts-container {
     display: grid;
     grid-template-columns: 1fr;
@@ -1118,9 +1102,7 @@ body.dark-mode .chart-toggle {
     border-color: var(--black);
 }
 
-/* ===========================
-   DATA TABLE
-   =========================== */
+/* Table */
 .table-controls {
     display: flex;
     gap: 1rem;
@@ -1366,9 +1348,7 @@ body.dark-mode .data-table td {
     cursor: not-allowed;
 }
 
-/* ===========================
-   INSIGHTS
-   =========================== */
+/* Insights */
 .insights-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -1407,9 +1387,7 @@ body.dark-mode .data-table td {
     margin: 1rem 0;
 }
 
-/* ===========================
-   OFFENDERS SLIDER
-   =========================== */
+/* Offender slider */
 .offenders-slider-container {
     position: relative;
     overflow: hidden;
@@ -1612,9 +1590,7 @@ body.dark-mode .data-table td {
     }
 }
 
-/* ===========================
-   FOOTER
-   =========================== */
+/* Footer */
 .footer {
     background: var(--marble-light);
     color: var(--gray-900);

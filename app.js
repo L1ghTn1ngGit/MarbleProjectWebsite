@@ -1,4 +1,4 @@
-// Global state
+// app state bucket
 let allData = [];
 let filteredData = [];
 let currentPage = 1;
@@ -12,7 +12,7 @@ let exportPageBtn;
 let exportAllBtn;
 let exportCancelBtn;
 
-// Format currency
+// quick currency formatter
 function formatCurrency(num) {
     if (!num) return '$0';
     const absNum = Math.abs(num);
@@ -22,12 +22,12 @@ function formatCurrency(num) {
     return (num >= 0 ? '$' : '-$') + absNum.toFixed(0);
 }
 
-// Format number with commas
+// comma helper
 function formatNumber(num) {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-// Simple inline icons (SVG) to replace emojis for accessibility and consistency
+// tiny inline icons instead of emoji
 function getIcon(type) {
     const commonProps = 'width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-icon" aria-hidden="true"';
     if (type === 'alert') return `<svg ${commonProps}><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="13"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>`;
@@ -43,7 +43,7 @@ function getStatusInfo(diff, modified) {
     return { type: 'normal', label: 'On Track' };
 }
 
-// Animate number counting
+// quick count-up
 function animateNumber(element, target, duration = 1000, prefix = '', suffix = '') {
     const start = 0;
     const increment = target / (duration / 16);
@@ -64,7 +64,7 @@ function animateNumber(element, target, duration = 1000, prefix = '', suffix = '
     }, 16);
 }
 
-// Load data
+// pull CSV then kick everything off
 async function loadData() {
     try {
         console.log('Loading education data...');
@@ -117,7 +117,7 @@ async function loadData() {
     }
 }
 
-// Update hero stats with animations
+// hero stats + counts
 function updateHeroStats() {
     let totalSpent = 0;
     const programs = new Set();
@@ -138,7 +138,7 @@ function updateHeroStats() {
     animateNumber(document.getElementById('heroAlerts'), alerts, 1000);
 }
 
-// Update metrics section
+// metrics rollups
 function updateMetrics() {
     let totalSpent = 0;
     let totalModified = 0;
@@ -160,16 +160,16 @@ function updateMetrics() {
     animateNumber(document.getElementById('totalBudget'), totalModified, 1200, '$');
     animateNumber(document.getElementById('overBudget'), overBudgetCount, 1000);
     
-    // Status indicators (reserved for future UI badges)
+    // keep badge hook if we ever need it
     const effStatus = efficiency < 95 ? 'Under budget' : efficiency > 105 ? 'Over budget' : 'On track';
 }
 
-// Create charts
+// charts
 function createCharts() {
     createDepartmentChart();
 }
 
-// Department spending chart
+// department spending chart
 function createDepartmentChart() {
     const isDark = document.body.classList.contains('dark-mode');
     const palette = isDark ? {
@@ -251,12 +251,12 @@ function createDepartmentChart() {
     });
 }
 
-// Year-over-year trend chart
+// placeholder for trend chart
 function createTrendChart() {
     
 }
 
-// Display table with pagination
+// table render with paging
 function displayTable() {
     const tbody = document.getElementById('tableBody');
     tbody.innerHTML = '';
@@ -296,7 +296,7 @@ function displayTable() {
         tbody.appendChild(tr);
     }
     
-    // Update pagination
+    // pager labels
     const totalPages = Math.ceil(filteredData.length / recordsPerPage);
     document.getElementById('recordCount').textContent = `Showing ${start + 1}-${Math.min(end, filteredData.length)} of ${filteredData.length}`;
     document.getElementById('pageInfo').textContent = `Page ${currentPage} of ${totalPages}`;
@@ -376,7 +376,7 @@ function setupExportModal() {
     });
 }
 
-// Generate insights
+// insights
 function generateInsights() {
     const container = document.getElementById('insightsContainer');
     container.innerHTML = '';
@@ -469,7 +469,7 @@ function generateInsights() {
     }
 }
 
-// Generate and display worst offenders
+// worst offenders
 function generateWorstOffenders() {
     const offenders = [];
     for (let i = 0; i < allData.length; i++) {
@@ -565,7 +565,7 @@ function setupSlider() {
     updateSlider(); // Initial call
 }
 
-// Setup event listeners
+// wire up UI
 function setupEventListeners() {
     // Year filter
     document.getElementById('yearFilter').addEventListener('change', (e) => {
@@ -601,7 +601,7 @@ function setupEventListeners() {
         displayTable();
     });
     
-    // Populate filter dropdowns
+    // fill filter dropdowns
     function populateFilters() {
         const programs = new Set();
         const departments = new Set();
@@ -629,7 +629,7 @@ function setupEventListeners() {
         });
     }
     
-    // Filter dropdowns
+    // apply filters
     function applyFilters() {
         const tableYear = document.getElementById('tableYearFilter').value;
         const program = document.getElementById('programFilter').value;
@@ -654,7 +654,7 @@ function setupEventListeners() {
     document.getElementById('programFilter').addEventListener('change', applyFilters);
     document.getElementById('departmentFilter').addEventListener('change', applyFilters);
     
-    // Sortable table headers
+    // sortable headers
     let currentSortColumn = null;
     let currentSortOrder = 'asc';
     
@@ -719,10 +719,10 @@ function setupEventListeners() {
         });
     });
     
-    // Populate filters on load
+    // hydrate filters on load
     populateFilters();
     
-    // Table search
+    // table search
     document.getElementById('tableSearch').addEventListener('input', (e) => {
         const search = e.target.value.toLowerCase();
         
@@ -783,10 +783,10 @@ function setupEventListeners() {
         updateTableScrollSync();
     });
     
-    // Export
+    // CSV export
     setupExportModal();
     
-    // Pagination
+    // pager clicks
     document.getElementById('prevPage').addEventListener('click', () => {
         if (currentPage > 1) {
             currentPage--;
@@ -802,7 +802,7 @@ function setupEventListeners() {
         }
     });
     
-    // Smooth scroll for nav links
+    // smooth nav scroll
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
@@ -814,7 +814,7 @@ function setupEventListeners() {
         });
     });
     
-    // Chart view toggle
+    // swap bar/pie
     document.getElementById('chartView').addEventListener('change', (e) => {
         const type = e.target.value;
         if (charts.department) {
@@ -880,7 +880,7 @@ function setupEventListeners() {
     });
 }
 
-// Scroll-based navigation highlighting
+// keep nav highlight in sync
 function updateActiveNav() {
     // Include every visible section so nav highlights match scroll position
     const sections = ['overview', 'spending', 'offenders', 'data-table', 'insights'];
@@ -908,7 +908,7 @@ function updateActiveNav() {
     });
 }
 
-// Dark mode toggle
+// dark mode switch
 function setupDarkMode() {
     const darkModeToggle = document.getElementById('darkModeToggle');
     const isDarkMode = localStorage.getItem('darkMode') === 'true';
@@ -932,7 +932,7 @@ function setupDarkMode() {
     });
 }
 
-// Budget Slideshow functionality
+// slideshow controls
 function setupBudgetSlideshow() {
     let currentSlide = 1;
     const slides = document.querySelectorAll('.slide');
@@ -946,11 +946,10 @@ function setupBudgetSlideshow() {
     const videoSlideEl = document.getElementById('codeNextVideo');
     
     function showSlide(slideNumber) {
-        // Remove active class from all slides and indicators
+        // toggle slide and video
         slides.forEach(slide => slide.classList.remove('active'));
         indicators.forEach(indicator => indicator.classList.remove('active'));
         
-        // Add active class to current slide and indicator
         const targetSlide = document.querySelector(`.slide[data-slide="${slideNumber}"]`);
         const targetIndicator = document.querySelector(`.indicator[data-slide="${slideNumber}"]`);
         
@@ -959,7 +958,6 @@ function setupBudgetSlideshow() {
         
         currentSlide = slideNumber;
 
-        // Manage video playback only when its slide is active
         if (videoSlideEl) {
             if (slideNumber === 5) {
                 videoSlideEl.play().catch(() => {});
@@ -988,7 +986,6 @@ function setupBudgetSlideshow() {
         clearInterval(autoPlayInterval);
     }
     
-    // Event listeners
     if (nextBtn) {
         nextBtn.addEventListener('click', () => {
             nextSlide();
@@ -1014,7 +1011,7 @@ function setupBudgetSlideshow() {
         });
     });
     
-    // Start autoplay
+    // autoplay unless user interacts
     startAutoPlay();
 }
 
@@ -1076,7 +1073,7 @@ function setupVideoControls() {
     playVideo();
 }
 
-// Initialize on load
+// boot the page
 document.addEventListener('DOMContentLoaded', () => {
     loadData();
     setupDarkMode();
@@ -1097,7 +1094,7 @@ function setupNavToggle() {
         toggle.classList.toggle('open', isOpen);
         toggle.setAttribute('aria-expanded', isOpen);
     });
-    // Close menu on link click (mobile)
+    // close menu after tap
     nav.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => {
             if (nav.classList.contains('open')) {
