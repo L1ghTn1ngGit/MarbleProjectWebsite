@@ -434,13 +434,66 @@ body.dark-mode .budget-slideshow {
     grid-template-columns: 1fr 1fr;
     gap: 3rem;
     align-items: center;
-    padding: 0 3rem; /* keep arrows clear of text */
+    padding: 0 4.5rem; /* extra gutter so arrows don’t touch text */
 }
 
 .slide-visual {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.video-frame {
+    position: relative;
+    width: 100%;
+}
+
+.slide-video {
+    width: 100%;
+    max-width: 720px;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border-radius: 0;
+    box-shadow: var(--shadow-md);
+}
+
+.video-toggle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    background: rgba(0, 0, 0, 0.65);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    opacity: 0;
+    pointer-events: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.video-toggle .icon-play,
+.video-toggle .icon-pause {
+    display: none;
+}
+
+.video-toggle[data-state="play"] .icon-play {
+    display: block;
+}
+
+.video-toggle[data-state="pause"] .icon-pause {
+    display: block;
+}
+
+.video-toggle.show {
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .usa-map,
@@ -629,6 +682,19 @@ body.dark-mode .slide-stat {
     line-height: 1.6;
 }
 
+.google-word {
+    display: inline-flex;
+    gap: 1px;
+    font-weight: 800;
+}
+
+.google-word span:nth-child(1) { color: #4285F4; }
+.google-word span:nth-child(2) { color: #EA4335; }
+.google-word span:nth-child(3) { color: #FBBC05; }
+.google-word span:nth-child(4) { color: #4285F4; }
+.google-word span:nth-child(5) { color: #34A853; }
+.google-word span:nth-child(6) { color: #EA4335; }
+
 body.dark-mode .slide-description {
     color: #d0d0d0;
 }
@@ -730,17 +796,18 @@ body.dark-mode .slide-nav svg {
 }
 
 .slide-nav.prev {
-    left: -50px;
+    left: 12px;
 }
 
 .slide-nav.next {
-    right: -50px;
+    right: 12px;
 }
 
 @media (max-width: 768px) {
     .slide-content {
         grid-template-columns: 1fr;
         gap: 2rem;
+        padding: 0 1.5rem; /* tighter on small screens but still a gutter */
     }
     
     .slide-title {
@@ -754,6 +821,7 @@ body.dark-mode .slide-nav svg {
     .slide-nav {
         width: 40px;
         height: 40px;
+        top: 40%; /* bias arrows toward visual on stacked layout to avoid text */
     }
     
     .slide-nav.prev {

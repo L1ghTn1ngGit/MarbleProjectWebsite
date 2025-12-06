@@ -943,6 +943,7 @@ function setupBudgetSlideshow() {
     let userInteracted = false;
     const prevBtn = document.querySelector('.slide-nav.prev');
     const nextBtn = document.querySelector('.slide-nav.next');
+    const videoSlideEl = document.getElementById('codeNextVideo');
     
     function showSlide(slideNumber) {
         // Remove active class from all slides and indicators
@@ -957,6 +958,15 @@ function setupBudgetSlideshow() {
         if (targetIndicator) targetIndicator.classList.add('active');
         
         currentSlide = slideNumber;
+
+        // Manage video playback only when its slide is active
+        if (videoSlideEl) {
+            if (slideNumber === 5) {
+                videoSlideEl.play().catch(() => {});
+            } else {
+                videoSlideEl.pause();
+            }
+        }
     }
     
     function nextSlide() {
@@ -1004,17 +1014,66 @@ function setupBudgetSlideshow() {
         });
     });
     
-    // Pause autoplay on hover
-    const slideshowContainer = document.querySelector('.slideshow-container');
-    if (slideshowContainer) {
-        slideshowContainer.addEventListener('mouseenter', stopAutoPlay);
-        slideshowContainer.addEventListener('mouseleave', () => {
-            if (!userInteracted) startAutoPlay();
-        });
-    }
-    
     // Start autoplay
     startAutoPlay();
+}
+
+function setupVideoControls() {
+    const video = document.getElementById('codeNextVideo');
+    const toggle = document.getElementById('codeNextVideoToggle');
+    if (!video || !toggle) return;
+
+    let hideTimer;
+
+    const setState = (state) => {
+        toggle.dataset.state = state;
+    };
+
+    const showControl = () => {
+        toggle.classList.add('show');
+        clearTimeout(hideTimer);
+        if (!video.paused) {
+            hideTimer = setTimeout(() => toggle.classList.remove('show'), 900);
+        }
+    };
+
+    const playVideo = () => {
+        video.muted = true;
+        video.loop = true;
+        video.play()
+            .then(() => setState('pause'))
+            .catch(() => setState('play'));
+    };
+
+    const pauseVideo = () => {
+        video.pause();
+        setState('play');
+    };
+
+    const togglePlayback = () => {
+        if (video.paused) {
+            playVideo();
+        } else {
+            pauseVideo();
+        }
+        showControl();
+    };
+
+    toggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        togglePlayback();
+    });
+
+    video.addEventListener('click', () => {
+        togglePlayback();
+    });
+
+    video.addEventListener('play', () => setState('pause'));
+    video.addEventListener('pause', () => setState('play'));
+
+    setState(video.paused ? 'play' : 'pause');
+    // Attempt silent autoplay; keep control hidden until user taps
+    playVideo();
 }
 
 // Initialize on load
@@ -1022,6 +1081,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadData();
     setupDarkMode();
     setupBudgetSlideshow();
+    setupVideoControls();
     setupNavToggle();
     initTableScrollSync();
     window.addEventListener('scroll', updateActiveNav);
