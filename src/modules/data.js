@@ -2,7 +2,7 @@ import Papa from 'papaparse';
 import { state } from '../state.js';
 import { animateNumber } from '../utils.js';
 import { createCharts } from './charts.js';
-import { displayTable, setupExportModal } from './table.js';
+import { displayTable, setupExportModal, sortTableData } from './table.js';
 import { generateInsights, generateWorstOffenders } from './insights.js';
 import { setupFilters } from './filters.js';
 
@@ -28,6 +28,7 @@ export async function loadData() {
     });
 
     state.filteredData = [...state.allData];
+    sortTableData();
 
     updateHeroStats();
     updateMetrics();

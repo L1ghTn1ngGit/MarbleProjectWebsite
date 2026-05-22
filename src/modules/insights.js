@@ -38,6 +38,17 @@ export function generateInsights() {
     <div class="amount">${formatCurrency(yTotals[2025])}</div>
     <p style="color:#6B7280;">Total 2025 spending</p>
   `, 'delay-1'));
+
+  const forecast = buildYearlyForecast();
+  if (forecast) {
+    container.appendChild(card('alert', `
+      <h3>${getIcon('trend')} Forecast</h3>
+      <p><strong>Simple linear regression</strong> on yearly cash spending.</p>
+      <div class="amount">${formatCurrency(forecast.nextValue)}</div>
+      <p style="color:#6B7280;">Projected ${forecast.nextYear} spending</p>
+      <p style="color:#6B7280; font-size:0.92rem; margin-top:0.35rem;">Based on the ${forecast.startYear}–${forecast.endYear} trend. Experimental, easy to remove.</p>
+    `, 'delay-2'));
+  }
 }
 
 export function generateWorstOffenders() {
@@ -105,6 +116,40 @@ function setupSlider() {
 
 function growthPct(a, b) {
   return b > 0 ? +((a - b) / b * 100).toFixed(1) : 0;
+}
+
+function buildYearlyForecast() {
+  const yearTotals = new Map();
+
+  for (const row of state.allData) {
+    const year = Number(row.Year);
+    if (!Number.isFinite(year)) continue;
+    yearTotals.set(year, (yearTotals.get(year) || 0) + (parseFloat(row['Cash Expense']) || 0));
+  }
+
+  const points = [...yearTotals.entries()].sort((a, b) => a[0] - b[0]);
+  if (points.length < 2) return null;
+
+  const n = points.length;
+  const sumX = points.reduce((sum, [year]) => sum + year, 0);
+  const sumY = points.reduce((sum, [, value]) => sum + value, 0);
+  const sumXY = points.reduce((sum, [year, value]) => sum + year * value, 0);
+  const sumXX = points.reduce((sum, [year]) => sum + year * year, 0);
+
+  const denominator = (n * sumXX) - (sumX * sumX);
+  if (denominator === 0) return null;
+
+  const slope = ((n * sumXY) - (sumX * sumY)) / denominator;
+  const intercept = (sumY - (slope * sumX)) / n;
+  const nextYear = points[points.length - 1][0] + 1;
+  const nextValue = Math.max(0, (slope * nextYear) + intercept);
+
+  return {
+    nextYear,
+    nextValue,
+    startYear: points[0][0],
+    endYear: points[points.length - 1][0],
+  };
 }
 
 function card(extraClass, html, delayClass = '') {

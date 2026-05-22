@@ -8,13 +8,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
-    <!-- Vite injects CSS from src/style.css via main.js -->
     <script type="module" src="/src/main.js"></script>
 </head>
 <body>
-    <!-- Navigation -->
     <nav class="main-nav">
-        <!-- WIP notice removed from top navigation to reduce clutter; moved to footer -->
         <div class="nav-container">
             <div class="nav-logo">
                 <img src="/The_Marble_Foundation%20Text.svg" alt="The Marble Foundation" class="pillar-icon">
@@ -34,18 +31,19 @@
         </div>
     </nav>
 
-    <!-- Budget Slideshow -->
     <section class="budget-slideshow">
         <div class="slideshow-container">
-            <!-- Slide 1: USA Map -->
             <div class="slide active" data-slide="1">
                 <div class="slide-content">
                     <div class="slide-visual">
-                        <svg class="usa-map" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M70 280 L110 240 L170 220 L220 210 L270 195 L320 198 L360 210 L410 225 L470 228 L520 220 L560 220 L610 235 L660 260 L700 300 L690 340 L650 360 L600 368 L550 362 L500 356 L455 350 L410 344 L360 350 L305 352 L250 340 L200 320 L150 300 L110 290 Z" fill="#e5e7eb" stroke="#9ca3af" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
-                            <circle class="nyc-marker pulse" cx="642" cy="242" r="12" fill="#ef4444"/>
-                            <text x="662" y="238" font-size="14" font-weight="bold" fill="currentColor">NYC</text>
-                        </svg>
+                        <div class="usa-map-frame" aria-label="Map of the United States with New York City highlighted" role="img">
+                            <img class="usa-map" src="/us.svg" alt="Map of the United States" />
+                            <div class="nyc-pin pulse" aria-hidden="true">
+                                <span class="nyc-pin__halo"></span>
+                                <span class="nyc-pin__core"></span>
+                                <span class="nyc-pin__label">NYC</span>
+                            </div>
+                        </div>
                     </div>
                     <div class="slide-text">
                         <h2 class="slide-title">New York City: The Nation's Largest City Budget</h2>
@@ -55,24 +53,26 @@
                 </div>
             </div>
 
-            <!-- Slide 2: DOE Share -->
             <div class="slide" data-slide="2">
                 <div class="slide-content">
                     <div class="slide-visual">
-                        <svg class="nyc-map" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="nyc-map" viewBox="90 85 430 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="New York City boroughs map">
                             <g class="boroughs">
-                                <path class="borough staten" d="M210 340 L250 325 L270 330 L265 355 L230 365 Z"/>
-                                <path class="borough brooklyn" d="M280 310 L330 300 L360 310 L380 350 L340 365 L290 350 Z"/>
-                                <path class="borough queens" d="M360 250 L410 230 L460 240 L500 270 L470 320 L410 315 L380 285 Z"/>
-                                <path class="borough manhattan" d="M320 210 L350 190 L370 200 L360 250 L330 260 Z"/>
-                                <path class="borough bronx" d="M370 170 L410 150 L450 170 L430 210 L390 210 Z"/>
+                                <path class="borough staten" d="M122 334 L170 320 L205 330 L198 360 L153 371 L112 355 Z"/>
+                                <path class="borough brooklyn" d="M198 285 L270 274 L329 290 L350 338 L300 362 L219 345 L186 312 Z"/>
+                                <path class="borough queens" d="M280 210 L368 192 L447 206 L506 252 L472 324 L380 320 L334 275 L286 252 Z"/>
+                                <path class="borough manhattan" d="M248 154 L281 146 L298 170 L287 245 L257 254 L236 219 L240 176 Z"/>
+                                <path class="borough bronx" d="M302 106 L357 92 L414 114 L392 166 L333 169 L303 143 Z"/>
                             </g>
-                            <circle class="school-pin" cx="335" cy="245" r="7"/>
-                            <circle class="school-pin" cx="365" cy="285" r="7"/>
-                            <circle class="school-pin" cx="305" cy="325" r="7"/>
-                            <circle class="school-pin" cx="430" cy="260" r="7"/>
-                            <circle class="school-pin" cx="455" cy="295" r="7"/>
-                            <circle class="school-pin" cx="390" cy="200" r="7"/>
+                            <circle class="school-pin" cx="274" cy="192" r="7"/>
+                            <circle class="school-pin" cx="307" cy="232" r="7"/>
+                            <circle class="school-pin" cx="247" cy="304" r="7"/>
+                            <circle class="school-pin" cx="410" cy="240" r="7"/>
+                            <circle class="school-pin" cx="441" cy="284" r="7"/>
+                            <circle class="school-pin nyc-callout" cx="272" cy="196" r="11"/>
+                            <circle class="school-pin nyc-callout-ring" cx="272" cy="196" r="23"/>
+                            <text class="nyc-map-label" x="296" y="202" font-size="16" font-weight="700" fill="currentColor">NYC</text>
+                            <circle class="school-pin" cx="360" cy="140" r="7"/>
                         </svg>
                     </div>
                     <div class="slide-text">
@@ -84,7 +84,6 @@
                 </div>
             </div>
 
-            <!-- Slide 3: Per-Student -->
             <div class="slide" data-slide="3">
                 <div class="slide-content">
                     <div class="slide-visual">
@@ -112,7 +111,6 @@
                 </div>
             </div>
 
-            <!-- Slide 4: CTA -->
             <div class="slide" data-slide="4">
                 <div class="slide-content">
                     <div class="slide-visual">
@@ -132,7 +130,6 @@
                 </div>
             </div>
 
-            <!-- Slide 5: Video -->
             <div class="slide" data-slide="5">
                 <div class="slide-content">
                     <div class="slide-visual video-frame">
@@ -158,7 +155,6 @@
                 </div>
             </div>
 
-            <!-- Indicators -->
             <div class="slide-indicators">
                 <button class="indicator active" data-slide="1" aria-label="Slide 1"></button>
                 <button class="indicator" data-slide="2" aria-label="Slide 2"></button>
@@ -175,7 +171,6 @@
         </div>
     </section>
 
-    <!-- Hero -->
     <section class="hero">
         <div class="hero-content">
             <h1 class="hero-title fade-in">NYC Education Budget Accountability</h1>
@@ -197,10 +192,8 @@
         </div>
     </section>
 
-    <!-- Main Content -->
     <div class="main-container">
 
-        <!-- Overview -->
         <section id="overview" class="section">
             <div class="section-header">
                 <h2>Spending Overview</h2>
@@ -249,7 +242,6 @@
             </div>
         </section>
 
-        <!-- Spending Chart -->
         <section id="spending" class="section">
             <div class="section-header">
                 <h2>Spending Analysis</h2>
@@ -284,7 +276,6 @@
             </div>
         </section>
 
-        <!-- Worst Offenders -->
         <section id="offenders" class="section">
             <div class="section-header">
                 <h2>Top 5 Worst Offenders</h2>
@@ -297,7 +288,6 @@
             </div>
         </section>
 
-        <!-- Data Table -->
         <section id="data-table" class="section">
             <div class="section-header">
                 <h2>Budget Details</h2>
@@ -316,6 +306,7 @@
                         <option value="all">All Departments</option>
                     </select>
                     <select id="rowsPerPage" class="filter-select" title="Rows per page">
+                        <option value="5">5</option>
                         <option value="10">10</option>
                         <option value="50" selected>50</option>
                         <option value="100">100</option>
@@ -389,7 +380,6 @@
             </div>
         </section>
 
-        <!-- Insights -->
         <section id="insights" class="section">
             <div class="section-header">
                 <h2>Key Findings</h2>
@@ -401,7 +391,6 @@
         </section>
     </div>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-section">

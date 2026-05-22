@@ -2,6 +2,8 @@ import Papa from 'papaparse';
 import { state } from '../state.js';
 import { formatCurrency, getStatusInfo } from '../utils.js';
 
+let rowsPerPageResizeListener = null;
+
 export function displayTable() {
   const tbody = document.getElementById('tableBody');
   tbody.innerHTML = '';
@@ -75,28 +77,33 @@ function applyColumnVisibility() {
 }
 
 export function setupSorting() {
-  let col   = null;
-  let order = 'asc';
-
   document.querySelectorAll('.sortable').forEach(th => {
     th.addEventListener('click', () => {
       const key = th.dataset.sort;
-      order = col === key ? (order === 'asc' ? 'desc' : 'asc') : 'asc';
-      col   = key;
-
-      document.querySelectorAll('.sortable').forEach(h => h.dataset.sort !== key && h.removeAttribute('data-order'));
-      th.setAttribute('data-order', order);
-
-      state.filteredData.sort((a, b) => {
-        const va = sortVal(a, key);
-        const vb = sortVal(b, key);
-        if (typeof va === 'string') return order === 'asc' ? va.localeCompare(vb) : vb.localeCompare(va);
-        return order === 'asc' ? va - vb : vb - va;
-      });
-
+      const order = state.tableSort?.key === key && state.tableSort?.order === 'asc' ? 'desc' : 'asc';
+      sortTableData(key, order);
       state.currentPage = 1;
       displayTable();
     });
+  });
+}
+
+export function sortTableData(key = state.tableSort?.key || 'Difference', order = state.tableSort?.order || 'desc') {
+  state.tableSort = { key, order };
+
+  document.querySelectorAll('.sortable').forEach(header => {
+    if (header.dataset.sort === key) {
+      header.setAttribute('data-order', order);
+    } else {
+      header.removeAttribute('data-order');
+    }
+  });
+
+  state.filteredData.sort((a, b) => {
+    const va = sortVal(a, key);
+    const vb = sortVal(b, key);
+    if (typeof va === 'string') return order === 'asc' ? va.localeCompare(vb) : vb.localeCompare(va);
+    return order === 'asc' ? va - vb : vb - va;
   });
 }
 
@@ -108,14 +115,36 @@ export function setupTableControls() {
   const applyBtn = document.getElementById('columnsApplyBtn');
   const cancelBtn = document.getElementById('columnsCancelBtn');
 
+  const defaultRows = window.innerWidth < 768 ? 5 : 50;
+
   if (rowsSel) {
-    rowsSel.value = state.recordsPerPage;
+    if (rowsSel.dataset.userSelected !== 'true') {
+      state.recordsPerPage = defaultRows;
+      rowsSel.value = String(defaultRows);
+    } else {
+      rowsSel.value = String(state.recordsPerPage);
+    }
+
     rowsSel.addEventListener('change', () => {
+      rowsSel.dataset.userSelected = 'true';
       const v = rowsSel.value === 'all' ? 'all' : parseInt(rowsSel.value, 10);
       state.recordsPerPage = v;
       state.currentPage = 1;
       displayTable();
     });
+
+    if (rowsPerPageResizeListener) window.removeEventListener('resize', rowsPerPageResizeListener);
+    rowsPerPageResizeListener = () => {
+      if (rowsSel.dataset.userSelected === 'true') return;
+      const nextDefault = window.innerWidth < 768 ? 5 : 50;
+      if (state.recordsPerPage !== nextDefault) {
+        state.recordsPerPage = nextDefault;
+        rowsSel.value = String(nextDefault);
+        state.currentPage = 1;
+        displayTable();
+      }
+    };
+    window.addEventListener('resize', rowsPerPageResizeListener, { passive: true });
   }
 
   if (!columnsModal || !columnsList || !colBtn) return;

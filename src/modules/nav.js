@@ -3,12 +3,20 @@ import { createDepartmentChart } from './charts.js';
 
 export function setupDarkMode() {}
 
+let navTogglePressTimer = null;
+
 export function setupNavToggle() {
   const toggle = document.getElementById('navToggle');
   const nav    = document.getElementById('primaryNav');
   if (!toggle || !nav) return;
 
   toggle.addEventListener('click', () => {
+    toggle.classList.add('is-clicked');
+    clearTimeout(navTogglePressTimer);
+    navTogglePressTimer = window.setTimeout(() => {
+      toggle.classList.remove('is-clicked');
+    }, 150);
+
     const open = nav.classList.toggle('open');
     toggle.classList.toggle('open', open);
     toggle.setAttribute('aria-expanded', open);
