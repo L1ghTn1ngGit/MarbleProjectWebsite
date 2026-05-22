@@ -12,7 +12,9 @@
     <script type="module" src="/src/main.js"></script>
 </head>
 <body>
+    <!-- Navigation -->
     <nav class="main-nav">
+        <!-- WIP notice removed from top navigation to reduce clutter; moved to footer -->
         <div class="nav-container">
             <div class="nav-logo">
                 <img src="/The_Marble_Foundation%20Text.svg" alt="The Marble Foundation" class="pillar-icon">
@@ -26,6 +28,7 @@
                     <a href="#spending" class="nav-link">Spending Analysis</a>
                     <a href="#data-table" class="nav-link">Data</a>
                     <a href="#insights" class="nav-link">Insights</a>
+                    
                 </div>
             </div>
         </div>
@@ -34,6 +37,7 @@
     <!-- Budget Slideshow -->
     <section class="budget-slideshow">
         <div class="slideshow-container">
+            <!-- Slide 1: USA Map -->
             <div class="slide active" data-slide="1">
                 <div class="slide-content">
                     <div class="slide-visual">
@@ -51,6 +55,7 @@
                 </div>
             </div>
 
+            <!-- Slide 2: DOE Share -->
             <div class="slide" data-slide="2">
                 <div class="slide-content">
                     <div class="slide-visual">
@@ -79,6 +84,7 @@
                 </div>
             </div>
 
+            <!-- Slide 3: Per-Student -->
             <div class="slide" data-slide="3">
                 <div class="slide-content">
                     <div class="slide-visual">
@@ -106,14 +112,15 @@
                 </div>
             </div>
 
+            <!-- Slide 4: CTA -->
             <div class="slide" data-slide="4">
                 <div class="slide-content">
                     <div class="slide-visual">
                         <svg class="cta-visual" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="180" y="120" width="440" height="260" rx="18" fill="#f6f2eb" opacity="0.12" stroke="#2b2b2b" stroke-width="3"/>
-                            <path d="M260 200 L400 320 L540 200" fill="none" stroke="#2b2b2b" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-                            <circle cx="400" cy="320" r="12" fill="#f43f5e"></circle>
-                            <text x="400" y="360" text-anchor="middle" font-size="20" font-weight="700" fill="#2b2b2b">Scroll Down</text>
+                                <rect x="180" y="120" width="440" height="260" rx="18" fill="#f6f2eb" opacity="0.12" stroke="#2b2b2b" stroke-width="3"/>
+                                <path d="M260 200 L400 320 L540 200" fill="none" stroke="#2b2b2b" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="400" cy="320" r="12" fill="#f43f5e"></circle>
+                                <text x="400" y="360" text-anchor="middle" font-size="20" font-weight="700" fill="#2b2b2b">Scroll Down</text>
                         </svg>
                     </div>
                     <div class="slide-text">
@@ -125,6 +132,7 @@
                 </div>
             </div>
 
+            <!-- Slide 5: Video -->
             <div class="slide" data-slide="5">
                 <div class="slide-content">
                     <div class="slide-visual video-frame">
@@ -133,8 +141,12 @@
                             Your browser does not support the video tag.
                         </video>
                         <button id="codeNextVideoToggle" class="video-toggle" type="button" aria-label="Play or pause presentation video" data-state="pause">
-                            <span class="icon-play" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><polygon points="6,4 20,12 6,20"/></svg></span>
-                            <span class="icon-pause" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><rect x="7" y="4" width="4" height="16"></rect><rect x="13" y="4" width="4" height="16"></rect></svg></span>
+                            <span class="icon-play" aria-hidden="true">
+                                <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><polygon points="6,4 20,12 6,20"/></svg>
+                            </span>
+                            <span class="icon-pause" aria-hidden="true">
+                                <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><rect x="7" y="4" width="4" height="16"></rect><rect x="13" y="4" width="4" height="16"></rect></svg>
+                            </span>
                         </button>
                     </div>
                     <div class="slide-text">
@@ -146,6 +158,7 @@
                 </div>
             </div>
 
+            <!-- Indicators -->
             <div class="slide-indicators">
                 <button class="indicator active" data-slide="1" aria-label="Slide 1"></button>
                 <button class="indicator" data-slide="2" aria-label="Slide 2"></button>
@@ -153,11 +166,16 @@
                 <button class="indicator" data-slide="4" aria-label="Slide 4"></button>
                 <button class="indicator" data-slide="5" aria-label="Slide 5"></button>
             </div>
-            <button class="slide-nav prev" aria-label="Previous slide"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
-            <button class="slide-nav next" aria-label="Next slide"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+            <button class="slide-nav prev" aria-label="Previous slide">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            </button>
+            <button class="slide-nav next" aria-label="Next slide">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
         </div>
     </section>
 
+    <!-- Hero -->
     <section class="hero">
         <div class="hero-content">
             <h1 class="hero-title fade-in">NYC Education Budget Accountability</h1>
@@ -179,17 +197,23 @@
         </div>
     </section>
 
+    <!-- Main Content -->
     <div class="main-container">
+
+        <!-- Overview -->
         <section id="overview" class="section">
             <div class="section-header">
                 <h2>Spending Overview</h2>
                 <p>Comprehensive analysis of education budget allocations and expenditures</p>
             </div>
-
             <div class="metrics-grid">
                 <div class="metric-card slide-up">
                     <div class="metric-icon">
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="20" x2="18" y2="10"></line>
+                            <line x1="12" y1="20" x2="12" y2="4"></line>
+                            <line x1="6" y1="20" x2="6" y2="14"></line>
+                        </svg>
                     </div>
                     <div class="metric-content">
                         <div class="metric-value" id="totalSpent">Loading...</div>
@@ -198,7 +222,10 @@
                 </div>
                 <div class="metric-card slide-up delay-1">
                     <div class="metric-icon">
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="0"></rect><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path></svg>
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="7" width="20" height="14" rx="0"></rect>
+                            <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path>
+                        </svg>
                     </div>
                     <div class="metric-content">
                         <div class="metric-value" id="totalBudget">$0</div>
@@ -207,7 +234,12 @@
                 </div>
                 <div class="metric-card alert slide-up delay-3">
                     <div class="metric-icon">
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line><circle cx="12" cy="19" r="1.4" fill="currentColor" stroke="currentColor"></circle></svg>
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                            <line x1="12" y1="9" x2="12" y2="13"></line>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            <circle cx="12" cy="19" r="1.4" fill="currentColor" stroke="currentColor"></circle>
+                        </svg>
                     </div>
                     <div class="metric-content">
                         <div class="metric-value" id="overBudget">0</div>
@@ -217,6 +249,7 @@
             </div>
         </section>
 
+        <!-- Spending Chart -->
         <section id="spending" class="section">
             <div class="section-header">
                 <h2>Spending Analysis</h2>
@@ -230,7 +263,6 @@
                     <input type="text" id="searchBox" class="search-input" placeholder="Search departments, programs...">
                 </div>
             </div>
-
             <div class="charts-container">
                 <div class="chart-card large modern-card">
                     <div class="chart-header">
@@ -252,6 +284,7 @@
             </div>
         </section>
 
+        <!-- Worst Offenders -->
         <section id="offenders" class="section">
             <div class="section-header">
                 <h2>Top 5 Worst Offenders</h2>
@@ -264,6 +297,7 @@
             </div>
         </section>
 
+        <!-- Data Table -->
         <section id="data-table" class="section">
             <div class="section-header">
                 <h2>Budget Details</h2>
@@ -299,7 +333,7 @@
                     <p>Choose export options below.</p>
                     <div class="export-options">
                         <label>Format: <select id="exportFormat"><option value="csv">CSV</option><option value="json">JSON</option></select></label>
-                        <label>Delimiter: <select id="exportDelimiter"><option value="," selected>Comma (,)</option><option value=";">Semicolon (;)</option><option value="\t">Tab</option></select></label>
+                        <label>Delimiter: <select id="exportDelimiter"><option value=",">Comma (,)</option><option value=";">Semicolon (;)</option><option value="\t">Tab</option></select></label>
                         <label><input type="checkbox" id="exportHeaders" checked> Include headers</label>
                     </div>
                     <div class="export-columns">
@@ -355,6 +389,7 @@
             </div>
         </section>
 
+        <!-- Insights -->
         <section id="insights" class="section">
             <div class="section-header">
                 <h2>Key Findings</h2>
@@ -366,11 +401,16 @@
         </section>
     </div>
 
+    <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-section">
                 <h4>Marble Foundation</h4>
                 <p>Independent budget analysis and public-interest research</p>
+            </div>
+            <div class="footer-section">
+                <h4>Data Source</h4>
+                <p>NYC Open Data - Department of Education</p>
                 <p class="data-note">43,249 records spanning 2023–2025</p>
             </div>
             <div class="footer-section" id="authors">

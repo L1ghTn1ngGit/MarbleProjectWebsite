@@ -1,4 +1,3 @@
 node_modules/
-.vercel/
-*.pyc
-__pycache__/
+dist/
+.vite/
