@@ -1,44 +1,25 @@
-# The Marble Project - NYC Education Budget Dashboard
+# Marble Project
 
-Interactive, static (no build) dashboard for NYC DOE spending, ready for Vercel or any static host. Data: `nyc-education-data.csv` (43,249 rows, 2023-2025).
+This repository contains the Marble Project front-end site — an interactive visualization and analysis of NYC education budget data.
 
-## Local Preview
+Local development
 
-```bash
-python start_server.py
-# opens http://localhost:8000
-```
-
-## Deploy to Vercel (ready out of the box)
+Install dependencies and run the development server:
 
 ```bash
-npm i -g vercel
-vercel
+npm install
+npm run dev
 ```
-Or connect the repo in the Vercel UI. `vercel.json` is preconfigured for static hosting.
 
-## What to ship
+Build for production:
 
-- `index.html`, `styles.css`, `app.js`
-- `nyc-education-data.csv` (required dataset)
-- `vercel.json` (static config)
-- `start_server.py` (optional local server helper)
-- `archive/` holds raw feeds and older drafts; safe to leave or exclude.
+```bash
+npm run build
+npm run preview
+```
 
-## Features
+Notes
 
-- Top-10 department spending chart (Chart.js)
-- Dark/light mode toggle
-- Filters: year, department, program + search
-- Paginated, sortable data table
-- Worst offenders slider + automated insights
-
-## Troubleshooting
-
-- **Blank data**: ensure you serve via `python start_server.py` (not `file://`).
-- **Port 8000 in use**: stop the other process or change `PORT` in `start_server.py`.
-- **CSV not found**: keep `nyc-education-data.csv` in the project root (same level as `index.html`).
-
-## License / Use
-
-Use freely for transparency and analysis. Verify figures against official NYC sources for decisions.
+- The site is a static front-end application built with Vite.
+- Data file `public/nyc-education-data.csv` is required for local exploration.
+- Deploy to Vercel by connecting the repository and using the default build command `npm run build`.

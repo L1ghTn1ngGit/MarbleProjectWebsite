@@ -3,76 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Marble Project - NYC Education Accountability</title>
-    <link rel="icon" type="image/png" href="marble.png">
+    <title>Marble Foundation - NYC Education Accountability</title>
+    <link rel="icon" type="image/png" href="/marble.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+    <!-- Vite injects CSS from src/style.css via main.js -->
+    <script type="module" src="/src/main.js"></script>
 </head>
 <body>
-    <!-- Navigation -->
     <nav class="main-nav">
-        <!-- Work in Progress Notice -->
-        <div class="wip-notice">
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLScAkdWwb5M4gA_zi_zLQeedDLLt4LwB3On5MxiVHobozIDWSw/viewform" target="_blank" rel="noopener noreferrer" class="wip-link">Site Work in Progress [CLICK HERE, JOIN THE PROJECT]</a>
-        </div>
         <div class="nav-container">
             <div class="nav-logo">
-                <svg width="40" height="40" viewBox="0 0 100 100" class="pillar-icon">
-                    <rect x="10" y="5" width="80" height="8" fill="currentColor"/>
-                    <rect x="20" y="13" width="15" height="70" fill="currentColor"/>
-                    <rect x="42.5" y="13" width="15" height="70" fill="currentColor"/>
-                    <rect x="65" y="13" width="15" height="70" fill="currentColor"/>
-                    <rect x="10" y="87" width="80" height="8" fill="currentColor"/>
-                </svg>
-                <span class="logo-text">THE MARBLE PROJECT</span>
+                <img src="/The_Marble_Foundation%20Text.svg" alt="The Marble Foundation" class="pillar-icon">
             </div>
             <div class="nav-right">
                 <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="primaryNav" aria-label="Toggle navigation">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                    <span></span><span></span><span></span>
                 </button>
                 <div class="nav-links" id="primaryNav">
                     <a href="#overview" class="nav-link active">Overview</a>
                     <a href="#spending" class="nav-link">Spending Analysis</a>
                     <a href="#data-table" class="nav-link">Data</a>
                     <a href="#insights" class="nav-link">Insights</a>
-                    <button id="darkModeToggle" class="night-mode-btn" title="Toggle dark mode">
-                        <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                        </svg>
-                        <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="5"></circle>
-                            <line x1="12" y1="1" x2="12" y2="3"></line>
-                            <line x1="12" y1="21" x2="12" y2="23"></line>
-                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                            <line x1="1" y1="12" x2="3" y2="12"></line>
-                            <line x1="21" y1="12" x2="23" y2="12"></line>
-                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                        </svg>
-                    </button>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Budget Slideshow Section -->
+    <!-- Budget Slideshow -->
     <section class="budget-slideshow">
         <div class="slideshow-container">
-            <!-- Slide 1: USA Map with NYC Budget -->
             <div class="slide active" data-slide="1">
                 <div class="slide-content">
                     <div class="slide-visual">
                         <svg class="usa-map" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Simple USA outline inspired by provided reference -->
                             <path d="M70 280 L110 240 L170 220 L220 210 L270 195 L320 198 L360 210 L410 225 L470 228 L520 220 L560 220 L610 235 L660 260 L700 300 L690 340 L650 360 L600 368 L550 362 L500 356 L455 350 L410 344 L360 350 L305 352 L250 340 L200 320 L150 300 L110 290 Z" fill="#e5e7eb" stroke="#9ca3af" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
-                            <!-- NYC Highlight -->
                             <circle class="nyc-marker pulse" cx="642" cy="242" r="12" fill="#ef4444"/>
                             <text x="662" y="238" font-size="14" font-weight="bold" fill="currentColor">NYC</text>
                         </svg>
@@ -85,25 +51,23 @@
                 </div>
             </div>
 
-            <!-- Slide 2: NYC Zoom with DOE Budget -->
             <div class="slide" data-slide="2">
                 <div class="slide-content">
                     <div class="slide-visual">
                         <svg class="nyc-map" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
                             <g class="boroughs">
-                                <path class="borough staten" d="M210 340 L250 325 L270 330 L265 355 L230 365 Z" />
-                                <path class="borough brooklyn" d="M280 310 L330 300 L360 310 L380 350 L340 365 L290 350 Z" />
-                                <path class="borough queens" d="M360 250 L410 230 L460 240 L500 270 L470 320 L410 315 L380 285 Z" />
-                                <path class="borough manhattan" d="M320 210 L350 190 L370 200 L360 250 L330 260 Z" />
-                                <path class="borough bronx" d="M370 170 L410 150 L450 170 L430 210 L390 210 Z" />
+                                <path class="borough staten" d="M210 340 L250 325 L270 330 L265 355 L230 365 Z"/>
+                                <path class="borough brooklyn" d="M280 310 L330 300 L360 310 L380 350 L340 365 L290 350 Z"/>
+                                <path class="borough queens" d="M360 250 L410 230 L460 240 L500 270 L470 320 L410 315 L380 285 Z"/>
+                                <path class="borough manhattan" d="M320 210 L350 190 L370 200 L360 250 L330 260 Z"/>
+                                <path class="borough bronx" d="M370 170 L410 150 L450 170 L430 210 L390 210 Z"/>
                             </g>
-                            <!-- School Pinpoints across all boroughs -->
-                            <circle class="school-pin" cx="335" cy="245" r="7" />
-                            <circle class="school-pin" cx="365" cy="285" r="7" />
-                            <circle class="school-pin" cx="305" cy="325" r="7" />
-                            <circle class="school-pin" cx="430" cy="260" r="7" />
-                            <circle class="school-pin" cx="455" cy="295" r="7" />
-                            <circle class="school-pin" cx="390" cy="200" r="7" />
+                            <circle class="school-pin" cx="335" cy="245" r="7"/>
+                            <circle class="school-pin" cx="365" cy="285" r="7"/>
+                            <circle class="school-pin" cx="305" cy="325" r="7"/>
+                            <circle class="school-pin" cx="430" cy="260" r="7"/>
+                            <circle class="school-pin" cx="455" cy="295" r="7"/>
+                            <circle class="school-pin" cx="390" cy="200" r="7"/>
                         </svg>
                     </div>
                     <div class="slide-text">
@@ -115,35 +79,17 @@
                 </div>
             </div>
 
-            <!-- Slide 3: Per-Student Spending -->
             <div class="slide" data-slide="3">
                 <div class="slide-content">
                     <div class="slide-visual">
                         <svg class="students-visual" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Student Icons -->
                             <g class="student-group">
-                                <g class="student pos-1">
-                                    <circle cx="0" cy="0" r="25" fill="var(--c)"/>
-                                    <path d="M -15,30 Q 0,35 15,30 L 20,80 L -20,80 Z" fill="var(--c)"/>
-                                </g>
-                                <g class="student pos-2">
-                                    <circle cx="0" cy="0" r="25" fill="var(--c)"/>
-                                    <path d="M -15,30 Q 0,35 15,30 L 20,80 L -20,80 Z" fill="var(--c)"/>
-                                </g>
-                                <g class="student pos-3">
-                                    <circle cx="0" cy="0" r="25" fill="var(--c)"/>
-                                    <path d="M -15,30 Q 0,35 15,30 L 20,80 L -20,80 Z" fill="var(--c)"/>
-                                </g>
-                                <g class="student pos-4">
-                                    <circle cx="0" cy="0" r="25" fill="var(--c)"/>
-                                    <path d="M -15,30 Q 0,35 15,30 L 20,80 L -20,80 Z" fill="var(--c)"/>
-                                </g>
-                                <g class="student pos-5">
-                                    <circle cx="0" cy="0" r="25" fill="var(--c)"/>
-                                    <path d="M -15,30 Q 0,35 15,30 L 20,80 L -20,80 Z" fill="var(--c)"/>
-                                </g>
+                                <g class="student pos-1"><circle cx="0" cy="0" r="25" fill="var(--c)"/><path d="M -15,30 Q 0,35 15,30 L 20,80 L -20,80 Z" fill="var(--c)"/></g>
+                                <g class="student pos-2"><circle cx="0" cy="0" r="25" fill="var(--c)"/><path d="M -15,30 Q 0,35 15,30 L 20,80 L -20,80 Z" fill="var(--c)"/></g>
+                                <g class="student pos-3"><circle cx="0" cy="0" r="25" fill="var(--c)"/><path d="M -15,30 Q 0,35 15,30 L 20,80 L -20,80 Z" fill="var(--c)"/></g>
+                                <g class="student pos-4"><circle cx="0" cy="0" r="25" fill="var(--c)"/><path d="M -15,30 Q 0,35 15,30 L 20,80 L -20,80 Z" fill="var(--c)"/></g>
+                                <g class="student pos-5"><circle cx="0" cy="0" r="25" fill="var(--c)"/><path d="M -15,30 Q 0,35 15,30 L 20,80 L -20,80 Z" fill="var(--c)"/></g>
                             </g>
-                            <!-- Price Tag -->
                             <g class="price-tag" transform="translate(400, 350)">
                                 <path d="M -80,0 L 60,0 L 80,20 L 60,40 L -80,40 Z" fill="#ef4444" stroke="#991b1b" stroke-width="2"/>
                                 <circle cx="-60" cy="20" r="5" fill="#fff"/>
@@ -160,15 +106,14 @@
                 </div>
             </div>
 
-            <!-- Slide 4: CTA -->
             <div class="slide" data-slide="4">
                 <div class="slide-content">
                     <div class="slide-visual">
                         <svg class="cta-visual" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="180" y="120" width="440" height="260" rx="18" fill="#0ea5e9" opacity="0.12" stroke="#0284c7" stroke-width="3" />
-                            <path d="M260 200 L400 320 L540 200" fill="none" stroke="#0284c7" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-                            <circle cx="400" cy="320" r="12" fill="#f43f5e"/>
-                            <text x="400" y="360" text-anchor="middle" font-size="20" font-weight="700" fill="#0284c7">Scroll Down</text>
+                            <rect x="180" y="120" width="440" height="260" rx="18" fill="#f6f2eb" opacity="0.12" stroke="#2b2b2b" stroke-width="3"/>
+                            <path d="M260 200 L400 320 L540 200" fill="none" stroke="#2b2b2b" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="400" cy="320" r="12" fill="#f43f5e"></circle>
+                            <text x="400" y="360" text-anchor="middle" font-size="20" font-weight="700" fill="#2b2b2b">Scroll Down</text>
                         </svg>
                     </div>
                     <div class="slide-text">
@@ -180,65 +125,43 @@
                 </div>
             </div>
 
-            <!-- Slide 5: Conference video -->
             <div class="slide" data-slide="5">
                 <div class="slide-content">
                     <div class="slide-visual video-frame">
                         <video id="codeNextVideo" class="slide-video" autoplay muted loop playsinline preload="metadata">
-                            <source src="2025-12-06 12-18-08_1.mp4" type="video/mp4">
+                            <source src="/2025-12-06 12-18-08_1.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
                         <button id="codeNextVideoToggle" class="video-toggle" type="button" aria-label="Play or pause presentation video" data-state="pause">
-                            <span class="icon-play" aria-hidden="true">
-                                <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                    <polygon points="6,4 20,12 6,20" />
-                                </svg>
-                            </span>
-                            <span class="icon-pause" aria-hidden="true">
-                                <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                    <rect x="7" y="4" width="4" height="16"></rect>
-                                    <rect x="13" y="4" width="4" height="16"></rect>
-                                </svg>
-                            </span>
+                            <span class="icon-play" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><polygon points="6,4 20,12 6,20"/></svg></span>
+                            <span class="icon-pause" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><rect x="7" y="4" width="4" height="16"></rect><rect x="13" y="4" width="4" height="16"></rect></svg></span>
                         </button>
                     </div>
                     <div class="slide-text">
                         <h2 class="slide-title">Presented at Google Code Next</h2>
                         <p class="slide-stat">Transparency to NYC</p>
-                        <p class="slide-description">The Marble Project presentation shown at <span class="google-word"><span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span></span> Code Next. Tap the video to play or pause.</p>
+                        <p class="slide-description">The Marble Project presentation shown at <span class="google-word"><span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span></span> Code Next.</p>
                         <p class="slide-note">Recorded: 2025-12-06</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Slide Indicators -->
             <div class="slide-indicators">
-                <button class="indicator active" data-slide="1" title="Slide 1: NYC budget" aria-label="Slide 1: NYC budget"></button>
-                <button class="indicator" data-slide="2" title="Slide 2: DOE share" aria-label="Slide 2: DOE share"></button>
-                <button class="indicator" data-slide="3" title="Slide 3: Per-student spending" aria-label="Slide 3: Per-student spending"></button>
-                <button class="indicator" data-slide="4" title="Slide 4: Scroll to data" aria-label="Slide 4: Scroll to data"></button>
-                <button class="indicator" data-slide="5" title="Slide 5: Google Code Next video" aria-label="Slide 5: Google Code Next video"></button>
+                <button class="indicator active" data-slide="1" aria-label="Slide 1"></button>
+                <button class="indicator" data-slide="2" aria-label="Slide 2"></button>
+                <button class="indicator" data-slide="3" aria-label="Slide 3"></button>
+                <button class="indicator" data-slide="4" aria-label="Slide 4"></button>
+                <button class="indicator" data-slide="5" aria-label="Slide 5"></button>
             </div>
-
-            <!-- Navigation Arrows -->
-            <button class="slide-nav prev" aria-label="Previous slide">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="15 18 9 12 15 6"></polyline>
-                </svg>
-            </button>
-            <button class="slide-nav next" aria-label="Next slide">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="9 18 15 12 9 6"></polyline>
-                </svg>
-            </button>
+            <button class="slide-nav prev" aria-label="Previous slide"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+            <button class="slide-nav next" aria-label="Next slide"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
         </div>
     </section>
 
-    <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
             <h1 class="hero-title fade-in">NYC Education Budget Accountability</h1>
-            <p class="hero-subtitle fade-in delay-1">Forensic analysis of Department of Education spending across 43,249 budget records from 2023-2025</p>
+            <p class="hero-subtitle fade-in delay-1">Forensic analysis of Department of Education spending across 43,249 budget records from 2023–2025</p>
             <div class="hero-stats fade-in delay-2">
                 <div class="hero-stat">
                     <div class="stat-value" id="heroTotal">$0</div>
@@ -256,23 +179,17 @@
         </div>
     </section>
 
-    <!-- Main Container -->
     <div class="main-container">
-        <!-- Overview Section -->
         <section id="overview" class="section">
             <div class="section-header">
                 <h2>Spending Overview</h2>
                 <p>Comprehensive analysis of education budget allocations and expenditures</p>
             </div>
-            
+
             <div class="metrics-grid">
                 <div class="metric-card slide-up">
                     <div class="metric-icon">
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="18" y1="20" x2="18" y2="10"></line>
-                            <line x1="12" y1="20" x2="12" y2="4"></line>
-                            <line x1="6" y1="20" x2="6" y2="14"></line>
-                        </svg>
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
                     </div>
                     <div class="metric-content">
                         <div class="metric-value" id="totalSpent">Loading...</div>
@@ -281,25 +198,16 @@
                 </div>
                 <div class="metric-card slide-up delay-1">
                     <div class="metric-icon">
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="2" y="7" width="20" height="14" rx="0"></rect>
-                            <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path>
-                        </svg>
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="0"></rect><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path></svg>
                     </div>
                     <div class="metric-content">
                         <div class="metric-value" id="totalBudget">$0</div>
                         <div class="metric-label">Working Budget</div>
-
                     </div>
                 </div>
                 <div class="metric-card alert slide-up delay-3">
                     <div class="metric-icon">
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-                            <line x1="12" y1="9" x2="12" y2="13"></line>
-                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                            <circle cx="12" cy="19" r="1.4" fill="currentColor" stroke="currentColor"></circle>
-                        </svg>
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line><circle cx="12" cy="19" r="1.4" fill="currentColor" stroke="currentColor"></circle></svg>
                     </div>
                     <div class="metric-content">
                         <div class="metric-value" id="overBudget">0</div>
@@ -309,7 +217,6 @@
             </div>
         </section>
 
-        <!-- Visualization Section -->
         <section id="spending" class="section">
             <div class="section-header">
                 <h2>Spending Analysis</h2>
@@ -325,35 +232,38 @@
             </div>
 
             <div class="charts-container">
-                <div class="chart-card large">
+                <div class="chart-card large modern-card">
                     <div class="chart-header">
                         <h3>Spending by Department</h3>
-                        <select id="chartView" class="chart-toggle" title="Toggle chart view">
-                            <option value="bar">Bar Chart</option>
-                            <option value="pie">Pie Chart</option>
-                        </select>
+                        <div class="chart-controls">
+                            <label for="chartView" class="visually-hidden">Chart view</label>
+                            <select id="chartView" class="chart-toggle" title="Toggle chart view">
+                                <option value="bar">Bar Chart</option>
+                                <option value="pie">Pie Chart</option>
+                            </select>
+                        </div>
                     </div>
-                    <canvas id="departmentChart"></canvas>
+                    <div class="chart-body">
+                        <div class="chart-canvas">
+                            <canvas id="departmentChart" aria-label="Spending by Department chart" role="img"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Worst Offenders Section -->
         <section id="offenders" class="section">
             <div class="section-header">
                 <h2>Top 5 Worst Offenders</h2>
                 <p>Programs with the most significant budget overruns</p>
             </div>
             <div class="offenders-slider-container">
-                <div class="offenders-slider" id="offendersSlider">
-                    <!-- Offender cards will be injected here by app.js -->
-                </div>
+                <div class="offenders-slider" id="offendersSlider"></div>
                 <button class="slider-btn prev" id="sliderPrev">‹</button>
                 <button class="slider-btn next" id="sliderNext">›</button>
             </div>
         </section>
 
-        <!-- Data Table Section -->
         <section id="data-table" class="section">
             <div class="section-header">
                 <h2>Budget Details</h2>
@@ -371,15 +281,31 @@
                     <select id="departmentFilter" class="filter-select" title="Filter by department">
                         <option value="all">All Departments</option>
                     </select>
-                    <button class="btn-secondary" id="exportData">Export CSV</button>
+                    <select id="rowsPerPage" class="filter-select" title="Rows per page">
+                        <option value="10">10</option>
+                        <option value="50" selected>50</option>
+                        <option value="100">100</option>
+                        <option value="all">All</option>
+                    </select>
+                    <button class="btn-secondary" id="columnToggle">Columns</button>
+                    <button class="btn-secondary" id="exportData">Export</button>
                 </div>
             </div>
 
             <div id="exportModal" class="export-modal hidden" role="dialog" aria-modal="true" aria-labelledby="exportModalTitle">
                 <div class="export-modal__backdrop"></div>
                 <div class="export-modal__content">
-                    <h3 id="exportModalTitle">Export CSV</h3>
-                    <p>Select which rows to export.</p>
+                    <h3 id="exportModalTitle">Export Data</h3>
+                    <p>Choose export options below.</p>
+                    <div class="export-options">
+                        <label>Format: <select id="exportFormat"><option value="csv">CSV</option><option value="json">JSON</option></select></label>
+                        <label>Delimiter: <select id="exportDelimiter"><option value="," selected>Comma (,)</option><option value=";">Semicolon (;)</option><option value="\t">Tab</option></select></label>
+                        <label><input type="checkbox" id="exportHeaders" checked> Include headers</label>
+                    </div>
+                    <div class="export-columns">
+                        <p>Select columns to include:</p>
+                        <div id="exportColumnsList"></div>
+                    </div>
                     <div class="export-modal__actions">
                         <button class="btn-secondary" id="exportPageBtn">Current page only</button>
                         <button class="btn-secondary" id="exportAllBtn">All filtered rows</button>
@@ -387,21 +313,31 @@
                     </div>
                 </div>
             </div>
-            <div class="table-scroll-top" aria-hidden="true">
-                <div class="table-scroll-spacer"></div>
+
+            <div id="columnsModal" class="export-modal hidden" role="dialog" aria-modal="true" aria-labelledby="columnsModalTitle">
+                <div class="export-modal__backdrop"></div>
+                <div class="export-modal__content">
+                    <h3 id="columnsModalTitle">Show / Hide Columns</h3>
+                    <p>Toggle which columns are visible in the table.</p>
+                    <div id="columnsList"></div>
+                    <div class="export-modal__actions">
+                        <button class="btn-secondary" id="columnsApplyBtn">Apply</button>
+                        <button class="btn-alert" id="columnsCancelBtn">Cancel</button>
+                    </div>
+                </div>
             </div>
 
             <div class="table-container">
                 <table class="data-table">
                     <thead>
                         <tr>
-                            <th data-sort="Year" class="sortable">Year ↕</th>
-                            <th data-sort="Department" class="sortable">Department ↕</th>
-                            <th data-sort="Budget Name" class="sortable">Program ↕</th>
-                            <th data-sort="Modified" class="sortable">Budget ↕</th>
-                            <th data-sort="Cash Expense" class="sortable">Spent ↕</th>
-                            <th data-sort="Difference" class="sortable">Difference ↕</th>
-                            <th data-sort="Status" class="sortable">Status ↕</th>
+                            <th data-sort="Year" class="sortable col-year">Year</th>
+                            <th data-sort="Department" class="sortable">Department</th>
+                            <th data-sort="Budget Name" class="sortable">Program</th>
+                            <th data-sort="Modified" class="sortable col-money">Budget</th>
+                            <th data-sort="Cash Expense" class="sortable col-money">Spent</th>
+                            <th data-sort="Difference" class="sortable col-money">Difference</th>
+                            <th data-sort="Status" class="sortable col-status">Status</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody">
@@ -419,43 +355,34 @@
             </div>
         </section>
 
-        <!-- Insights Section -->
         <section id="insights" class="section">
             <div class="section-header">
                 <h2>Key Findings</h2>
                 <p>Automated analysis of spending patterns and anomalies</p>
             </div>
-
             <div class="insights-grid" id="insightsContainer">
                 <div class="loading-cell">Analyzing data...</div>
             </div>
         </section>
     </div>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-section">
-                <h4>The Marble Project</h4>
-                <p>Making Accountability Real Before it Leaves the Executive</p>
-            </div>
-            <div class="footer-section">
-                <h4>Data Source</h4>
-                <p>NYC Open Data - Department of Education</p>
-                <p class="data-note">43,249 records spanning 2023-2025</p>
+                <h4>Marble Foundation</h4>
+                <p>Independent budget analysis and public-interest research</p>
+                <p class="data-note">43,249 records spanning 2023–2025</p>
             </div>
             <div class="footer-section" id="authors">
                 <h4>About</h4>
-                <p>Independent budget analysis tool</p>
-                <p class="authors">Presented by <strong>Ambrose Sukraj</strong> & <strong>Aftid Rahman</strong></p>
+                <p>Independent budget analysis tool — community-driven research</p>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2025 The Marble Project. Data accuracy subject to NYC reporting standards.</p>
+            <p>&copy; 2026 Marble Foundation. Data accuracy subject to NYC reporting standards.</p>
+            <p class="wip-footer-note">Site work in progress</p>
             <p class="footnote">*Working Budget includes in-year adjustments and transfers</p>
         </div>
     </footer>
-
-    <script src="app.js"></script>
 </body>
 </html>

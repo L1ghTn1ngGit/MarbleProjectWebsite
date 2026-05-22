@@ -1,0 +1,25 @@
+{
+  "hash": "3bab7d6b",
+  "configHash": "a15d3656",
+  "lockfileHash": "1d023e92",
+  "browserHash": "c8426b28",
+  "optimized": {
+    "papaparse": {
+      "src": "../../node_modules/papaparse/papaparse.min.js",
+      "file": "papaparse.js",
+      "fileHash": "b40bde79",
+      "needsInterop": true
+    },
+    "chart.js/auto": {
+      "src": "../../node_modules/chart.js/auto/auto.js",
+      "file": "chart__js_auto.js",
+      "fileHash": "d80037d6",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-JVWSFFO4": {
+      "file": "chunk-JVWSFFO4.js"
+    }
+  }
+}
