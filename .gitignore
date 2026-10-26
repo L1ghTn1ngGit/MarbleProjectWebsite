@@ -1,3 +1,10 @@
 node_modules/
 dist/
 .vite/
+# Local design experiments and agent workspace files
+.claude/
+dev/
+research/
+DISCOVERY.md
+src/present/
+src/modules/mode.js

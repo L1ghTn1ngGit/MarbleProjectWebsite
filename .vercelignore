@@ -1,0 +1,9 @@
+# Exclude development-only files from Vercel uploads
+dev/
+.vscode/
+*.psd
+*.sketch
+*.ai
+.DS_Store
+node_modules/
+README.local.md

@@ -1,417 +1,927 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Marble Foundation - NYC Education Accountability</title>
-    <link rel="icon" type="image/png" href="/marble.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+    <meta
+      name="description"
+      content="Explore NYC Department of Education budget and spending data for fiscal years 2023 to 2025: totals, departments, largest overruns, and a searchable table you can export."
+    />
+    <meta name="theme-color" content="#f6f2eb" />
+    <link rel="icon" type="image/png" href="/marble.png" />
+    <!-- Using local Glacial Indifference font from /fonts/ -->
     <script type="module" src="/src/main.js"></script>
-</head>
-<body>
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main">Skip to main content</a>
     <nav class="main-nav">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <img src="/The_Marble_Foundation%20Text.svg" alt="The Marble Foundation" class="pillar-icon">
-            </div>
-            <div class="nav-right">
-                <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="primaryNav" aria-label="Toggle navigation">
-                    <span></span><span></span><span></span>
-                </button>
-                <div class="nav-links" id="primaryNav">
-                    <a href="#overview" class="nav-link active">Overview</a>
-                    <a href="#spending" class="nav-link">Spending Analysis</a>
-                    <a href="#data-table" class="nav-link">Data</a>
-                    <a href="#insights" class="nav-link">Insights</a>
-                    
-                </div>
-            </div>
+      <div class="nav-container">
+        <a href="#top" class="nav-logo" aria-label="Back to top">
+          <img
+            src="/The_Marble_Foundation%20Text.svg"
+            alt="The Marble Foundation"
+            class="pillar-icon"
+          />
+        </a>
+        <div class="nav-right">
+          <button
+            class="nav-toggle"
+            id="navToggle"
+            aria-expanded="false"
+            aria-controls="primaryNav"
+            aria-label="Toggle navigation"
+          >
+            <span></span><span></span><span></span>
+          </button>
+          <div class="nav-links" id="primaryNav">
+            <a href="#overview" class="nav-link active">Overview</a>
+            <a href="#spending" class="nav-link">Spending Analysis</a>
+            <a href="#offenders" class="nav-link">Overruns</a>
+            <a href="#data-table" class="nav-link">Data</a>
+            <a href="#insights" class="nav-link">Insights</a>
+          </div>
         </div>
+      </div>
     </nav>
 
-    <section class="budget-slideshow">
-        <div class="slideshow-container">
-            <div class="slide active" data-slide="1">
-                <div class="slide-content">
-                    <div class="slide-visual">
-                        <div class="usa-map-frame" aria-label="Map of the United States with New York City highlighted" role="img">
-                            <img class="usa-map" src="/us.svg" alt="Map of the United States" />
-                            <div class="nyc-pin pulse" aria-hidden="true">
-                                <span class="nyc-pin__halo"></span>
-                                <span class="nyc-pin__core"></span>
-                                <span class="nyc-pin__label">NYC</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="slide-text">
-                        <h2 class="slide-title">New York City: The Nation's Largest City Budget</h2>
-                        <p class="slide-stat">$<span class="stat-number">112.4</span> Billion</p>
-                        <p class="slide-description">NYC's annual budget is the largest of any city in the United States</p>
-                    </div>
+    <section class="budget-slideshow" id="top-stage">
+      <div class="slideshow-container">
+        <div class="slide active" data-slide="1">
+          <div class="slide-content">
+            <div class="slide-visual">
+              <div
+                class="usa-map-frame"
+                aria-label="Map of the United States with New York City highlighted"
+                role="img"
+              >
+                <img
+                  class="usa-map"
+                  src="/us.svg"
+                  alt="Map of the United States"
+                />
+                <div class="nyc-pin pulse" aria-hidden="true">
+                  <span class="nyc-pin__halo"></span>
+                  <span class="nyc-pin__core"></span>
+                  <span class="nyc-pin__label">NYC</span>
                 </div>
+              </div>
             </div>
-
-            <div class="slide" data-slide="2">
-                <div class="slide-content">
-                    <div class="slide-visual">
-                        <svg class="nyc-map" viewBox="90 85 430 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="New York City boroughs map">
-                            <g class="boroughs">
-                                <path class="borough staten" d="M122 334 L170 320 L205 330 L198 360 L153 371 L112 355 Z"/>
-                                <path class="borough brooklyn" d="M198 285 L270 274 L329 290 L350 338 L300 362 L219 345 L186 312 Z"/>
-                                <path class="borough queens" d="M280 210 L368 192 L447 206 L506 252 L472 324 L380 320 L334 275 L286 252 Z"/>
-                                <path class="borough manhattan" d="M248 154 L281 146 L298 170 L287 245 L257 254 L236 219 L240 176 Z"/>
-                                <path class="borough bronx" d="M302 106 L357 92 L414 114 L392 166 L333 169 L303 143 Z"/>
-                            </g>
-                            <circle class="school-pin" cx="274" cy="192" r="7"/>
-                            <circle class="school-pin" cx="307" cy="232" r="7"/>
-                            <circle class="school-pin" cx="247" cy="304" r="7"/>
-                            <circle class="school-pin" cx="410" cy="240" r="7"/>
-                            <circle class="school-pin" cx="441" cy="284" r="7"/>
-                            <circle class="school-pin nyc-callout" cx="272" cy="196" r="11"/>
-                            <circle class="school-pin nyc-callout-ring" cx="272" cy="196" r="23"/>
-                            <text class="nyc-map-label" x="296" y="202" font-size="16" font-weight="700" fill="currentColor">NYC</text>
-                            <circle class="school-pin" cx="360" cy="140" r="7"/>
-                        </svg>
-                    </div>
-                    <div class="slide-text">
-                        <h2 class="slide-title">Department of Education's Share</h2>
-                        <p class="slide-stat">$<span class="stat-number">38.3</span> Billion</p>
-                        <p class="slide-description">The DOE receives approximately <strong>1/3</strong> of NYC's entire annual budget</p>
-                        <p class="slide-note">Operating 1,600+ schools across all five boroughs</p>
-                    </div>
-                </div>
+            <div class="slide-text">
+              <h2 class="slide-title">
+                New York City: The Nation's Largest City Budget
+              </h2>
+              <p class="slide-stat">
+                $<span class="stat-number">112.4</span> Billion
+              </p>
+              <p class="slide-description">
+                NYC's annual budget is the largest of any city in the United
+                States
+              </p>
             </div>
-
-            <div class="slide" data-slide="3">
-                <div class="slide-content">
-                    <div class="slide-visual">
-                        <svg class="students-visual" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
-                            <g class="student-group">
-                                <g class="student pos-1"><circle cx="0" cy="0" r="25" fill="var(--c)"/><path d="M -15,30 Q 0,35 15,30 L 20,80 L -20,80 Z" fill="var(--c)"/></g>
-                                <g class="student pos-2"><circle cx="0" cy="0" r="25" fill="var(--c)"/><path d="M -15,30 Q 0,35 15,30 L 20,80 L -20,80 Z" fill="var(--c)"/></g>
-                                <g class="student pos-3"><circle cx="0" cy="0" r="25" fill="var(--c)"/><path d="M -15,30 Q 0,35 15,30 L 20,80 L -20,80 Z" fill="var(--c)"/></g>
-                                <g class="student pos-4"><circle cx="0" cy="0" r="25" fill="var(--c)"/><path d="M -15,30 Q 0,35 15,30 L 20,80 L -20,80 Z" fill="var(--c)"/></g>
-                                <g class="student pos-5"><circle cx="0" cy="0" r="25" fill="var(--c)"/><path d="M -15,30 Q 0,35 15,30 L 20,80 L -20,80 Z" fill="var(--c)"/></g>
-                            </g>
-                            <g class="price-tag" transform="translate(400, 350)">
-                                <path d="M -80,0 L 60,0 L 80,20 L 60,40 L -80,40 Z" fill="#ef4444" stroke="#991b1b" stroke-width="2"/>
-                                <circle cx="-60" cy="20" r="5" fill="#fff"/>
-                                <text x="-40" y="28" font-size="24" font-weight="bold" fill="#fff">$38,000</text>
-                            </g>
-                        </svg>
-                    </div>
-                    <div class="slide-text">
-                        <h2 class="slide-title">Highest Per-Student Spending in America</h2>
-                        <p class="slide-stat">$<span class="stat-number">38,000</span></p>
-                        <p class="slide-description">NYC spends more per student than any other major city in the nation</p>
-                        <p class="slide-note">Serving approximately 1 million students</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="slide" data-slide="4">
-                <div class="slide-content">
-                    <div class="slide-visual">
-                        <svg class="cta-visual" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="180" y="120" width="440" height="260" rx="18" fill="#f6f2eb" opacity="0.12" stroke="#2b2b2b" stroke-width="3"/>
-                                <path d="M260 200 L400 320 L540 200" fill="none" stroke="#2b2b2b" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-                                <circle cx="400" cy="320" r="12" fill="#f43f5e"></circle>
-                                <text x="400" y="360" text-anchor="middle" font-size="20" font-weight="700" fill="#2b2b2b">Scroll Down</text>
-                        </svg>
-                    </div>
-                    <div class="slide-text">
-                        <h2 class="slide-title">Now scroll down</h2>
-                        <p class="slide-stat">Explore the details</p>
-                        <p class="slide-description">See what the DOE has been doing with <strong>your</strong> money over the last three fiscal years.</p>
-                        <p class="slide-note">Dive into the data, trends, and biggest overruns below.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="slide" data-slide="5">
-                <div class="slide-content">
-                    <div class="slide-visual video-frame">
-                        <video id="codeNextVideo" class="slide-video" autoplay muted loop playsinline preload="metadata">
-                            <source src="/2025-12-06 12-18-08_1.mp4" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                        <button id="codeNextVideoToggle" class="video-toggle" type="button" aria-label="Play or pause presentation video" data-state="pause">
-                            <span class="icon-play" aria-hidden="true">
-                                <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><polygon points="6,4 20,12 6,20"/></svg>
-                            </span>
-                            <span class="icon-pause" aria-hidden="true">
-                                <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><rect x="7" y="4" width="4" height="16"></rect><rect x="13" y="4" width="4" height="16"></rect></svg>
-                            </span>
-                        </button>
-                    </div>
-                    <div class="slide-text">
-                        <h2 class="slide-title">Presented at Google Code Next</h2>
-                        <p class="slide-stat">Transparency to NYC</p>
-                        <p class="slide-description">The Marble Project presentation shown at <span class="google-word"><span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span></span> Code Next.</p>
-                        <p class="slide-note">Recorded: 2025-12-06</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="slide-indicators">
-                <button class="indicator active" data-slide="1" aria-label="Slide 1"></button>
-                <button class="indicator" data-slide="2" aria-label="Slide 2"></button>
-                <button class="indicator" data-slide="3" aria-label="Slide 3"></button>
-                <button class="indicator" data-slide="4" aria-label="Slide 4"></button>
-                <button class="indicator" data-slide="5" aria-label="Slide 5"></button>
-            </div>
-            <button class="slide-nav prev" aria-label="Previous slide">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
-            </button>
-            <button class="slide-nav next" aria-label="Next slide">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </button>
+          </div>
         </div>
+
+        <div class="slide" data-slide="2">
+          <div class="slide-content">
+            <div class="slide-visual">
+              <img
+                class="nyc-map"
+                src="/NYC_boroughs_b.svg"
+                alt="New York City boroughs map"
+              />
+            </div>
+            <div class="slide-text">
+              <h2 class="slide-title">Department of Education's Share</h2>
+              <p class="slide-stat">
+                $<span class="stat-number">38.3</span> Billion
+              </p>
+              <p class="slide-description">
+                The DOE receives approximately
+                <strong class="emphasis-soft-gold">1/3</strong> of NYC's entire
+                annual budget
+              </p>
+              <p class="slide-note">
+                Operating 1,600+ schools across all five boroughs
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide" data-slide="3">
+          <div class="slide-content">
+            <div class="slide-visual">
+              <svg
+                class="students-visual"
+                viewBox="0 0 800 500"
+                xmlns="http://www.w3.org/2000/svg"
+                role="img"
+                aria-label="Illustration showing per-student spending"
+              >
+                <defs>
+                  <linearGradient
+                    id="studentSceneBg"
+                    x1="0"
+                    y1="0"
+                    x2="1"
+                    y2="1"
+                  >
+                    <stop offset="0%" stop-color="#fffaf2" />
+                    <stop offset="55%" stop-color="#f4efe7" />
+                    <stop offset="100%" stop-color="#ede6db" />
+                  </linearGradient>
+                  <linearGradient
+                    id="studentAccent"
+                    x1="0"
+                    y1="0"
+                    x2="1"
+                    y2="0"
+                  >
+                    <stop offset="0%" stop-color="#ef4444" />
+                    <stop offset="100%" stop-color="#f97316" />
+                  </linearGradient>
+                  <filter
+                    id="studentShadow"
+                    x="-20%"
+                    y="-20%"
+                    width="140%"
+                    height="140%"
+                  >
+                    <feDropShadow
+                      dx="0"
+                      dy="10"
+                      stdDeviation="12"
+                      flood-color="#7c6f5b"
+                      flood-opacity="0.18"
+                    />
+                  </filter>
+                </defs>
+                <rect
+                  x="62"
+                  y="58"
+                  width="676"
+                  height="364"
+                  rx="34"
+                  fill="url(#studentSceneBg)"
+                  stroke="rgba(17,24,39,0.08)"
+                  stroke-width="2"
+                />
+                <path
+                  d="M 120 304 C 212 255, 306 276, 402 236 S 602 204, 686 155"
+                  fill="none"
+                  stroke="#d6c9b7"
+                  stroke-width="10"
+                  stroke-linecap="round"
+                  opacity="0.55"
+                />
+                <circle cx="126" cy="301" r="11" fill="#c7b299" opacity="0.9" />
+                <circle cx="402" cy="236" r="9" fill="#b9a58c" opacity="0.9" />
+                <circle cx="686" cy="155" r="10" fill="#c2aa90" opacity="0.9" />
+                <g class="student-group">
+                  <g class="student pos-1">
+                    <circle cx="0" cy="0" r="25" fill="var(--c)" />
+                    <path
+                      d="M -15,30 Q 0,35 15,30 L 20,80 L -20,80 Z"
+                      fill="var(--c)"
+                    />
+                  </g>
+                  <g class="student pos-2">
+                    <circle cx="0" cy="0" r="25" fill="var(--c)" />
+                    <path
+                      d="M -15,30 Q 0,35 15,30 L 20,80 L -20,80 Z"
+                      fill="var(--c)"
+                    />
+                  </g>
+                  <g class="student pos-3">
+                    <circle cx="0" cy="0" r="25" fill="var(--c)" />
+                    <path
+                      d="M -15,30 Q 0,35 15,30 L 20,80 L -20,80 Z"
+                      fill="var(--c)"
+                    />
+                  </g>
+                  <g class="student pos-4">
+                    <circle cx="0" cy="0" r="25" fill="var(--c)" />
+                    <path
+                      d="M -15,30 Q 0,35 15,30 L 20,80 L -20,80 Z"
+                      fill="var(--c)"
+                    />
+                  </g>
+                  <g class="student pos-5">
+                    <circle cx="0" cy="0" r="25" fill="var(--c)" />
+                    <path
+                      d="M -15,30 Q 0,35 15,30 L 20,80 L -20,80 Z"
+                      fill="var(--c)"
+                    />
+                  </g>
+                </g>
+                <g class="price-tag" transform="translate(400, 350)">
+                  <rect
+                    x="-92"
+                    y="-22"
+                    width="184"
+                    height="44"
+                    rx="14"
+                    fill="url(#studentAccent)"
+                  />
+                  <circle cx="-60" cy="0" r="4.5" fill="#fff" opacity="0.92" />
+                  <text
+                    x="0"
+                    y="10"
+                    text-anchor="middle"
+                    font-size="26"
+                    font-weight="700"
+                    fill="#fff"
+                    font-family="Glacial Indifference, sans-serif"
+                  >
+                    $38,000
+                  </text>
+                </g>
+              </svg>
+            </div>
+            <div class="slide-text">
+              <h2 class="slide-title">
+                Highest Per-Student Spending in America
+              </h2>
+              <p class="slide-stat">$<span class="stat-number">38,000</span></p>
+              <p class="slide-description">
+                NYC spends more per student than any other major city in the
+                nation
+              </p>
+              <p class="slide-note">Serving approximately 1 million students</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide" data-slide="4">
+          <div class="slide-content">
+            <div class="slide-visual">
+              <a
+                class="scroll-cue scroll-cue--button"
+                href="#overview"
+                aria-label="Scroll down to the overview section"
+              >
+                <span class="scroll-cue__arrow">↓</span>
+                <span class="scroll-cue__label">Scroll down</span>
+              </a>
+            </div>
+            <div class="slide-text">
+              <h2 class="slide-title">Explore the details</h2>
+              <p class="slide-stat">Budget transparency</p>
+              <p class="slide-description">
+                See what the DOE has been doing with
+                <strong class="emphasis-soft-rose">your</strong> money over the
+                last three fiscal years.
+              </p>
+              <p class="slide-note">
+                Dive into the data, trends, and biggest overruns below.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide" data-slide="5">
+          <div class="slide-content slide-content--un">
+            <div class="slide-visual">
+              <div class="un-affiliation-card">
+                <div class="un-affiliation-card__glow" aria-hidden="true"></div>
+                <img
+                  class="un-affiliation-logo"
+                  src="/mgcy-logo_update1.png"
+                  alt="UNMGCY logo"
+                />
+              </div>
+            </div>
+            <div class="slide-text">
+              <div class="un-inline-mark">
+                <img
+                  class="un-inline-mark__emblem"
+                  src="/UN_emblem_blue.svg"
+                  alt="United Nations emblem"
+                />
+                <span class="un-inline-mark__label">United Nations</span>
+              </div>
+              <h2 class="slide-title">Officially affiliated with UNMGCY</h2>
+              <p class="slide-stat">United Nations Youth Partnership</p>
+              <p class="slide-description">
+                The Marble Foundation is now officially affiliated with the
+                <strong class="emphasis-soft-teal"
+                  >United Nations Major Group for Children and Youth</strong
+                >.
+              </p>
+              <p class="slide-note">
+                A bigger platform for youth-led transparency, accountability,
+                and civic action.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide" data-slide="6">
+          <div class="slide-content">
+            <div class="slide-visual video-frame">
+              <video
+                id="codeNextVideo"
+                class="slide-video"
+                muted
+                loop
+                playsinline
+                preload="metadata"
+              >
+                <source src="/2025-12-06 12-18-08_1.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+              <button
+                id="codeNextVideoToggle"
+                class="video-toggle"
+                type="button"
+                aria-label="Play or pause presentation video"
+                data-state="pause"
+              >
+                <span class="icon-play" aria-hidden="true">
+                  <svg
+                    width="26"
+                    height="26"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <polygon points="6,4 20,12 6,20" />
+                  </svg>
+                </span>
+                <span class="icon-pause" aria-hidden="true">
+                  <svg
+                    width="26"
+                    height="26"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <rect x="7" y="4" width="4" height="16"></rect>
+                    <rect x="13" y="4" width="4" height="16"></rect>
+                  </svg>
+                </span>
+              </button>
+            </div>
+            <div class="slide-text">
+              <h2 class="slide-title">Presented at Google Code Next</h2>
+              <p class="slide-stat">Transparency to NYC</p>
+              <p class="slide-description">
+                The
+                <strong class="emphasis-soft-blue">Marble Foundation</strong>
+                presentation shown at
+                <span class="google-word"
+                  ><span>G</span><span>o</span><span>o</span><span>g</span
+                  ><span>l</span><span>e</span></span
+                >
+                Code Next.
+              </p>
+              <p class="slide-note">
+                A short look at our presentation from Google Code Next.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-indicators">
+          <button
+            class="indicator active"
+            data-slide="1"
+            aria-label="Slide 1"
+          ></button>
+          <button
+            class="indicator"
+            data-slide="2"
+            aria-label="Slide 2"
+          ></button>
+          <button
+            class="indicator"
+            data-slide="3"
+            aria-label="Slide 3"
+          ></button>
+          <button
+            class="indicator"
+            data-slide="4"
+            aria-label="Slide 4"
+          ></button>
+          <button
+            class="indicator"
+            data-slide="5"
+            aria-label="Slide 5"
+          ></button>
+          <button
+            class="indicator"
+            data-slide="6"
+            aria-label="Slide 6"
+          ></button>
+          <button
+            class="slide-pause"
+            id="slidePause"
+            type="button"
+            aria-label="Play slideshow"
+            data-state="paused"
+          >
+            <svg
+              class="icon-pause"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <rect x="6" y="4" width="4" height="16"></rect>
+              <rect x="14" y="4" width="4" height="16"></rect>
+            </svg>
+            <svg
+              class="icon-play"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <polygon points="7,4 20,12 7,20"></polygon>
+            </svg>
+          </button>
+        </div>
+        <button class="slide-nav prev" aria-label="Previous slide">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <button class="slide-nav next" aria-label="Next slide">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
     </section>
 
-    <section class="hero">
-        <div class="hero-content">
-            <h1 class="hero-title fade-in">NYC Education Budget Accountability</h1>
-            <p class="hero-subtitle fade-in delay-1">Forensic analysis of Department of Education spending across 43,249 budget records from 2023–2025</p>
-            <div class="hero-stats fade-in delay-2">
-                <div class="hero-stat">
-                    <div class="stat-value" id="heroTotal">$0</div>
-                    <div class="stat-label">Total Spending</div>
-                </div>
-                <div class="hero-stat">
-                    <div class="stat-value" id="heroPrograms">0</div>
-                    <div class="stat-label">Programs Tracked</div>
-                </div>
-                <div class="hero-stat">
-                    <div class="stat-value" id="heroAlerts">0</div>
-                    <div class="stat-label">Budget Alerts</div>
-                </div>
-            </div>
-        </div>
+    <section class="hero" id="hero">
+      <div class="hero-content">
+        <h1 class="hero-title">NYC Education Budget Accountability</h1>
+        <p class="hero-subtitle">
+          An analysis of Department of Education spending across
+          <span id="heroRecordCount">�</span> budget lines,
+          <span id="heroYears">FY2023–FY2025</span>
+        </p>
+      </div>
     </section>
 
-    <div class="main-container">
+    <main class="main-container" id="main">
+      <section id="overview" class="section">
+        <div class="section-header">
+          <h2>Spending Overview</h2>
+          <p>Compare the working budget with recorded spending.</p>
+        </div>
+        <div class="metrics-grid">
+          <div class="metric-card slide-up">
+            <div class="metric-icon">
+              <svg
+                width="48"
+                height="48"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <line x1="18" y1="20" x2="18" y2="10"></line>
+                <line x1="12" y1="20" x2="12" y2="4"></line>
+                <line x1="6" y1="20" x2="6" y2="14"></line>
+              </svg>
+            </div>
+            <div class="metric-content">
+              <div class="metric-value" id="totalSpent">Loading…</div>
+              <div class="metric-label">Total Spent</div>
+              <div class="metric-meter" aria-hidden="true">
+                <span id="spentMeter"></span>
+              </div>
+              <p class="metric-caption" id="spentCaption"></p>
+            </div>
+          </div>
+          <div class="metric-card slide-up delay-1">
+            <div class="metric-icon">
+              <svg
+                width="48"
+                height="48"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <rect x="2" y="7" width="20" height="14" rx="0"></rect>
+                <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path>
+              </svg>
+            </div>
+            <div class="metric-content">
+              <div class="metric-value" id="totalBudget">$0</div>
+              <div class="metric-label">Working Budget</div>
+              <p class="metric-caption">Adopted budget plus in-year changes</p>
+            </div>
+          </div>
+          <div class="metric-card alert slide-up delay-3">
+            <div class="metric-icon">
+              <img
+                src="/over-budget.svg"
+                alt="Over Budget"
+                class="metric-icon-img"
+                width="48"
+                height="48"
+              />
+            </div>
+            <div class="metric-content">
+              <div class="metric-value" id="overBudget">0</div>
+              <div class="metric-label">Lines Over Budget by 10%+</div>
+              <div class="metric-meter metric-meter--alert" aria-hidden="true">
+                <span id="overMeter"></span>
+              </div>
+              <p class="metric-caption" id="overCaption"></p>
+            </div>
+          </div>
+        </div>
+        <details class="method-note" id="methodNote">
+          <summary>How these numbers are calculated</summary>
+          <ul>
+            <li>
+              <strong>Records:</strong> the source data has
+              <span data-method="raw">43,249</span> budget lines, and
+              <span data-method="agency"
+                >only Department of Education lines are included</span
+              >. Of those, <span data-method="analyzed">all</span> are analyzed;
+              <span data-method="excluded"
+                >lines with a negative budget or spending amount</span
+              >
+              are left out.
+            </li>
+            <li>
+              <strong>Budget</strong> is the working budget (the adopted budget
+              plus in-year adjustments and transfers). <strong>Spent</strong> is
+              the cash expense recorded for the same line.
+            </li>
+            <li>
+              <strong>Over budget by 10%+</strong> counts lines where cash spent
+              is more than 110% of the working budget.
+              <span data-method="zero">Lines with a $0 working budget</span> are
+              not counted, because no percentage can be calculated.
+            </li>
+            <li>
+              In the table, <strong>Over Budget</strong> means any amount over,
+              <strong>Overrun</strong> means more than 50% over, and
+              <strong>On Track</strong> means spending equals the budget.
+            </li>
+            <li>
+              Source rows are retained as supplied, including identical rows;
+              the CSV has no unique record ID for safe deduplication. Counts are
+              budget lines, not separate programs or projects. One program can
+              appear on several lines and in several years. Figures are reported
+              amounts and do not by themselves show why spending differed from
+              the budget.
+            </li>
+          </ul>
+        </details>
+      </section>
 
-        <section id="overview" class="section">
-            <div class="section-header">
-                <h2>Spending Overview</h2>
-                <p>Comprehensive analysis of education budget allocations and expenditures</p>
+      <section id="spending" class="section">
+        <div class="section-header">
+          <h2>Spending Analysis</h2>
+          <div class="filter-controls">
+            <select
+              id="yearFilter"
+              class="filter-select"
+              title="Filter by year"
+            >
+              <option value="all">All Years</option>
+              <option value="2023">2023</option>
+              <option value="2024">2024</option>
+              <option value="2025">2025</option>
+            </select>
+            <label for="searchBox" class="visually-hidden"
+              >Search the chart</label
+            >
+            <input
+              type="search"
+              id="searchBox"
+              class="search-input"
+              placeholder="Search departments, programs…"
+              autocomplete="off"
+            />
+          </div>
+        </div>
+        <div class="charts-container">
+          <div class="chart-card large modern-card">
+            <div class="chart-header">
+              <h3>Spending by Department</h3>
+              <div class="chart-controls">
+                <label for="chartView" class="visually-hidden"
+                  >Chart view</label
+                >
+                <select
+                  id="chartView"
+                  class="chart-toggle"
+                  title="Toggle chart view"
+                >
+                  <option value="bar">Bar Chart</option>
+                  <option value="pie">Pie Chart</option>
+                </select>
+              </div>
             </div>
-            <div class="metrics-grid">
-                <div class="metric-card slide-up">
-                    <div class="metric-icon">
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="18" y1="20" x2="18" y2="10"></line>
-                            <line x1="12" y1="20" x2="12" y2="4"></line>
-                            <line x1="6" y1="20" x2="6" y2="14"></line>
-                        </svg>
-                    </div>
-                    <div class="metric-content">
-                        <div class="metric-value" id="totalSpent">Loading...</div>
-                        <div class="metric-label">Total Spent</div>
-                    </div>
-                </div>
-                <div class="metric-card slide-up delay-1">
-                    <div class="metric-icon">
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="2" y="7" width="20" height="14" rx="0"></rect>
-                            <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path>
-                        </svg>
-                    </div>
-                    <div class="metric-content">
-                        <div class="metric-value" id="totalBudget">$0</div>
-                        <div class="metric-label">Working Budget</div>
-                    </div>
-                </div>
-                <div class="metric-card alert slide-up delay-3">
-                    <div class="metric-icon">
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-                            <line x1="12" y1="9" x2="12" y2="13"></line>
-                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                            <circle cx="12" cy="19" r="1.4" fill="currentColor" stroke="currentColor"></circle>
-                        </svg>
-                    </div>
-                    <div class="metric-content">
-                        <div class="metric-value" id="overBudget">0</div>
-                        <div class="metric-label">Over Budget</div>
-                    </div>
-                </div>
+            <div class="chart-body">
+              <div class="chart-canvas">
+                <canvas
+                  id="departmentChart"
+                  aria-label="Spending by Department chart"
+                  role="img"
+                ></canvas>
+              </div>
             </div>
-        </section>
+          </div>
+        </div>
+      </section>
 
-        <section id="spending" class="section">
-            <div class="section-header">
-                <h2>Spending Analysis</h2>
-                <div class="filter-controls">
-                    <select id="yearFilter" class="filter-select" title="Filter by year">
-                        <option value="all">All Years</option>
-                        <option value="2023">2023</option>
-                        <option value="2024">2024</option>
-                        <option value="2025">2025</option>
-                    </select>
-                    <input type="text" id="searchBox" class="search-input" placeholder="Search departments, programs...">
-                </div>
-            </div>
-            <div class="charts-container">
-                <div class="chart-card large modern-card">
-                    <div class="chart-header">
-                        <h3>Spending by Department</h3>
-                        <div class="chart-controls">
-                            <label for="chartView" class="visually-hidden">Chart view</label>
-                            <select id="chartView" class="chart-toggle" title="Toggle chart view">
-                                <option value="bar">Bar Chart</option>
-                                <option value="pie">Pie Chart</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="chart-body">
-                        <div class="chart-canvas">
-                            <canvas id="departmentChart" aria-label="Spending by Department chart" role="img"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+      <section id="offenders" class="section">
+        <div class="section-header">
+          <h2>Largest Overruns</h2>
+          <p>
+            The five budget lines that went furthest over their working budget,
+            in dollars
+          </p>
+        </div>
+        <ol class="overrun-list" id="offendersList">
+          <li class="loading-cell">Loading…</li>
+        </ol>
+      </section>
 
-        <section id="offenders" class="section">
-            <div class="section-header">
-                <h2>Top 5 Worst Offenders</h2>
-                <p>Programs with the most significant budget overruns</p>
+      <section id="data-table" class="section">
+        <div class="section-header">
+          <h2>Budget Details</h2>
+          <div class="table-controls">
+            <label for="tableSearch" class="visually-hidden"
+              >Search the table</label
+            >
+            <input
+              type="search"
+              id="tableSearch"
+              class="search-input table-search"
+              placeholder="Search programs, departments…"
+              autocomplete="off"
+            />
+            <button
+              type="button"
+              class="btn-secondary filters-toggle"
+              id="filtersToggle"
+              aria-expanded="false"
+              aria-controls="tableFilters"
+            >
+              Filters <span class="filters-count" id="filtersCount"></span>
+            </button>
+            <div class="table-filters" id="tableFilters">
+              <select
+                id="programFilter"
+                class="filter-select"
+                title="Filter by program"
+              >
+                <option value="all">All Programs</option>
+              </select>
+              <select
+                id="tableYearFilter"
+                class="filter-select"
+                title="Filter by year"
+              >
+                <option value="all">All Years</option>
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
+                <option value="2025">2025</option>
+              </select>
+              <select
+                id="departmentFilter"
+                class="filter-select"
+                title="Filter by department"
+              >
+                <option value="all">All Departments</option>
+              </select>
+              <select
+                id="statusFilter"
+                class="filter-select"
+                title="Filter by status"
+              >
+                <option value="all">All Statuses</option>
+                <option value="critical">Critical Overrun</option>
+                <option value="over">Over Budget</option>
+                <option value="normal">On Budget</option>
+                <option value="under">Under Budget</option>
+              </select>
+              <select
+                id="differenceFilter"
+                class="filter-select"
+                title="Filter by difference"
+              >
+                <option value="all">All Differences</option>
+                <option value="positive">Positive Difference</option>
+                <option value="negative">Negative Difference</option>
+                <option value="zero">No Difference</option>
+              </select>
+              <select
+                id="rowsPerPage"
+                class="filter-select"
+                title="Rows per page"
+              >
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="50" selected>50</option>
+                <option value="100">100</option>
+                <option value="all">All</option>
+              </select>
+              <a href="#" class="table-filter-link" id="clearTableFilters"
+                >Clear filters</a
+              >
             </div>
-            <div class="offenders-slider-container">
-                <div class="offenders-slider" id="offendersSlider"></div>
-                <button class="slider-btn prev" id="sliderPrev">‹</button>
-                <button class="slider-btn next" id="sliderNext">›</button>
-            </div>
-        </section>
+            <button class="btn-secondary" id="columnToggle">Columns</button>
+            <button class="btn-secondary" id="exportData">Export</button>
+          </div>
+          <p class="table-filter-note">
+            Search and filters apply to the totals, chart, table, and export.
+            Overruns and insights summarize the full dataset.
+          </p>
+        </div>
 
-        <section id="data-table" class="section">
-            <div class="section-header">
-                <h2>Budget Details</h2>
-                <div class="table-controls">
-                    <input type="text" id="tableSearch" class="search-input table-search" placeholder="Search in table...">
-                    <select id="programFilter" class="filter-select" title="Filter by program">
-                        <option value="all">All Programs</option>
-                    </select>
-                    <select id="tableYearFilter" class="filter-select" title="Filter by year">
-                        <option value="all">All Years</option>
-                        <option value="2023">2023</option>
-                        <option value="2024">2024</option>
-                        <option value="2025">2025</option>
-                    </select>
-                    <select id="departmentFilter" class="filter-select" title="Filter by department">
-                        <option value="all">All Departments</option>
-                    </select>
-                    <select id="rowsPerPage" class="filter-select" title="Rows per page">
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="50" selected>50</option>
-                        <option value="100">100</option>
-                        <option value="all">All</option>
-                    </select>
-                    <button class="btn-secondary" id="columnToggle">Columns</button>
-                    <button class="btn-secondary" id="exportData">Export</button>
-                </div>
+        <div
+          id="exportModal"
+          class="export-modal hidden"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="exportModalTitle"
+        >
+          <div class="export-modal__backdrop"></div>
+          <div class="export-modal__content">
+            <h3 id="exportModalTitle">Export Data</h3>
+            <p>Choose export options below.</p>
+            <div class="export-options">
+              <label
+                >Format:
+                <select id="exportFormat">
+                  <option value="csv">CSV</option>
+                  <option value="json">JSON</option>
+                </select></label
+              >
+              <label
+                >Delimiter:
+                <select id="exportDelimiter">
+                  <option value=",">Comma (,)</option>
+                  <option value=";">Semicolon (;)</option>
+                  <option value="\t">Tab</option>
+                </select></label
+              >
+              <label
+                ><input type="checkbox" id="exportHeaders" checked /> Include
+                headers</label
+              >
             </div>
+            <div class="export-columns">
+              <p>Select columns to include:</p>
+              <div id="exportColumnsList"></div>
+            </div>
+            <div class="export-modal__actions">
+              <button class="btn-secondary" id="exportPageBtn">
+                Current page only
+              </button>
+              <button class="btn-secondary" id="exportAllBtn">
+                All filtered rows
+              </button>
+              <button class="btn-alert" id="exportCancelBtn">Cancel</button>
+            </div>
+          </div>
+        </div>
 
-            <div id="exportModal" class="export-modal hidden" role="dialog" aria-modal="true" aria-labelledby="exportModalTitle">
-                <div class="export-modal__backdrop"></div>
-                <div class="export-modal__content">
-                    <h3 id="exportModalTitle">Export Data</h3>
-                    <p>Choose export options below.</p>
-                    <div class="export-options">
-                        <label>Format: <select id="exportFormat"><option value="csv">CSV</option><option value="json">JSON</option></select></label>
-                        <label>Delimiter: <select id="exportDelimiter"><option value=",">Comma (,)</option><option value=";">Semicolon (;)</option><option value="\t">Tab</option></select></label>
-                        <label><input type="checkbox" id="exportHeaders" checked> Include headers</label>
-                    </div>
-                    <div class="export-columns">
-                        <p>Select columns to include:</p>
-                        <div id="exportColumnsList"></div>
-                    </div>
-                    <div class="export-modal__actions">
-                        <button class="btn-secondary" id="exportPageBtn">Current page only</button>
-                        <button class="btn-secondary" id="exportAllBtn">All filtered rows</button>
-                        <button class="btn-alert" id="exportCancelBtn">Cancel</button>
-                    </div>
-                </div>
+        <div
+          id="columnsModal"
+          class="export-modal hidden"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="columnsModalTitle"
+        >
+          <div class="export-modal__backdrop"></div>
+          <div class="export-modal__content">
+            <h3 id="columnsModalTitle">Show / Hide Columns</h3>
+            <p>Toggle which columns are visible in the table.</p>
+            <div id="columnsList"></div>
+            <div class="export-modal__actions">
+              <button class="btn-secondary" id="columnsApplyBtn">Apply</button>
+              <button class="btn-alert" id="columnsCancelBtn">Cancel</button>
             </div>
+          </div>
+        </div>
 
-            <div id="columnsModal" class="export-modal hidden" role="dialog" aria-modal="true" aria-labelledby="columnsModalTitle">
-                <div class="export-modal__backdrop"></div>
-                <div class="export-modal__content">
-                    <h3 id="columnsModalTitle">Show / Hide Columns</h3>
-                    <p>Toggle which columns are visible in the table.</p>
-                    <div id="columnsList"></div>
-                    <div class="export-modal__actions">
-                        <button class="btn-secondary" id="columnsApplyBtn">Apply</button>
-                        <button class="btn-alert" id="columnsCancelBtn">Cancel</button>
-                    </div>
-                </div>
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th data-sort="Year" class="sortable col-year">Year</th>
+                <th
+                  data-sort="Department"
+                  class="sortable"
+                  title="The DOE department or office responsible for this line item"
+                >
+                  Department / Office
+                </th>
+                <th data-sort="Budget Name" class="sortable">Program</th>
+                <th data-sort="Modified" class="sortable col-money">Budget</th>
+                <th data-sort="Cash Expense" class="sortable col-money">
+                  Spent
+                </th>
+                <th data-sort="Difference" class="sortable col-money">
+                  Difference
+                </th>
+                <th
+                  data-sort="Status"
+                  class="sortable col-status status-sort-header"
+                >
+                  <span class="status-sort-label">Status</span>
+                  <button
+                    type="button"
+                    id="statusSortLock"
+                    class="status-sort-lock"
+                    aria-pressed="false"
+                    aria-label="Lock status sorting"
+                    title="Lock status sorting"
+                  ></button>
+                  <span class="status-sort-arrow" aria-hidden="true">↓</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <tr>
+                <td colspan="7" class="loading-cell">Loading data…</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="table-footer">
+            <span id="recordCount">Showing 0 records</span>
+            <div class="pagination">
+              <button id="prevPage" class="page-btn">Previous</button>
+              <span id="pageInfo">Page 1</span>
+              <button id="nextPage" class="page-btn">Next</button>
             </div>
+          </div>
+        </div>
+      </section>
 
-            <div class="table-container">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th data-sort="Year" class="sortable col-year">Year</th>
-                            <th data-sort="Department" class="sortable">Department</th>
-                            <th data-sort="Budget Name" class="sortable">Program</th>
-                            <th data-sort="Modified" class="sortable col-money">Budget</th>
-                            <th data-sort="Cash Expense" class="sortable col-money">Spent</th>
-                            <th data-sort="Difference" class="sortable col-money">Difference</th>
-                            <th data-sort="Status" class="sortable col-status">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody">
-                        <tr><td colspan="7" class="loading-cell">Loading data...</td></tr>
-                    </tbody>
-                </table>
-                <div class="table-footer">
-                    <span id="recordCount">Showing 0 records</span>
-                    <div class="pagination">
-                        <button id="prevPage" class="page-btn">Previous</button>
-                        <span id="pageInfo">Page 1</span>
-                        <button id="nextPage" class="page-btn">Next</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="insights" class="section">
-            <div class="section-header">
-                <h2>Key Findings</h2>
-                <p>Automated analysis of spending patterns and anomalies</p>
-            </div>
-            <div class="insights-grid" id="insightsContainer">
-                <div class="loading-cell">Analyzing data...</div>
-            </div>
-        </section>
-    </div>
+      <section id="insights" class="section">
+        <div class="section-header">
+          <h2>Key Findings</h2>
+          <p>Automated analysis of spending patterns and anomalies</p>
+        </div>
+        <div class="insights-grid" id="insightsContainer">
+          <div class="loading-cell">Analyzing data…</div>
+        </div>
+      </section>
+    </main>
 
     <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>Marble Foundation</h4>
-                <p>Independent budget analysis and public-interest research</p>
-            </div>
-            <div class="footer-section">
-                <h4>Data Source</h4>
-                <p>NYC Open Data - Department of Education</p>
-                <p class="data-note">43,249 records spanning 2023–2025</p>
-            </div>
-            <div class="footer-section" id="authors">
-                <h4>About</h4>
-                <p>Independent budget analysis tool — community-driven research</p>
-            </div>
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>Marble Foundation</h4>
+          <p>Independent budget analysis and public-interest research</p>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2026 Marble Foundation. Data accuracy subject to NYC reporting standards.</p>
-            <p class="wip-footer-note">Site work in progress</p>
-            <p class="footnote">*Working Budget includes in-year adjustments and transfers</p>
+        <div class="footer-section">
+          <h4>Data Source</h4>
+          <p>
+            <a href="https://www.checkbooknyc.com/" rel="noopener"
+              >Checkbook NYC</a
+            >
+            (NYC Comptroller), Budget data
+          </p>
+          <p class="data-note" id="sourceNote">
+            Department of Education budget lines
+          </p>
         </div>
+        <div class="footer-section" id="authors">
+          <h4>About</h4>
+          <p>Independent budget analysis tool — community-driven research</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>
+          &copy; 2026 Marble Foundation. Data accuracy subject to NYC reporting
+          standards.
+        </p>
+        <p class="wip-footer-note">Site work in progress</p>
+        <p class="footnote">
+          *Working Budget includes in-year adjustments and transfers
+        </p>
+      </div>
     </footer>
-</body>
+  </body>
 </html>
