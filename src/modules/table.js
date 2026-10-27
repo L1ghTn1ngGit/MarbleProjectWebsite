@@ -501,7 +501,8 @@ export function setupExportModal() {
     const content =
       format === "json"
         ? JSON.stringify(rows, null, 2)
-        : Papa.unparse(rows, {
+        : // named fields keep the header row even when the filter matches nothing
+          Papa.unparse({ fields: columns, data: rows.map((row) => columns.map((column) => row[column])) }, {
             delimiter: delim === "\\t" ? "\t" : delim,
             header: includeHeaders,
             escapeFormulae: true,
