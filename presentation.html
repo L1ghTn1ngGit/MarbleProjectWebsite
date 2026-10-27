@@ -35,18 +35,7 @@
       html.is-loading{overflow:hidden;scrollbar-width:none}
       html.is-loading::-webkit-scrollbar{display:none}
     </style>
-    <script>
-      if ("scrollRestoration" in history) history.scrollRestoration = "manual";
-      var still = matchMedia("(prefers-reduced-motion: reduce)").matches;
-      try {
-        localStorage.setItem("marble-visited", "1");
-        if (localStorage.getItem("marble-motion") === "on") still = false;
-        if (!sessionStorage.getItem("marble-switch") && !still)
-          document.documentElement.classList.add("is-loading");
-        sessionStorage.removeItem("marble-switch");
-      } catch {}
-      if (still) document.documentElement.classList.add("motion-off");
-    </script>
+    <script src="/boot-presentation.js"></script>
     <script type="module" src="/src/present/present.js"></script>
   </head>
   <body>
@@ -173,7 +162,7 @@
               aria-roledescription="slide"
               aria-label="1 of 6"
             >
-              <div class="slide__visual slide__visual--map">
+              <div class="slide__visual slide__visual--map slide__visual--us">
                 <img
                   src="/present/us-nyc.svg"
                   alt="Map of the United States with New York City marked"

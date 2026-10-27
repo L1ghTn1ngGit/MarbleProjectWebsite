@@ -39,7 +39,7 @@ export function setupRecords(rows, { meta, excluded }) {
         (!query || row.__search.includes(query)),
     );
     const pages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
-    page = Math.min(page, pages - 1);
+    page = Math.max(0, Math.min(page, pages - 1));
     const fragment = document.createDocumentFragment();
     for (const row of filtered.slice(page * PER_PAGE, (page + 1) * PER_PAGE)) {
       const tr = document.createElement("tr");

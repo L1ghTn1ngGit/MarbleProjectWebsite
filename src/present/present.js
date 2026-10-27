@@ -138,8 +138,10 @@ function measure() {
   const on = unrolling();
   root.classList.toggle("stage-on", on);
 
-  const frameW = frameEl.clientWidth || innerWidth;
-  const distance = on ? Math.max(0, overTrack.scrollWidth - frameW) : 0;
+  // the cards slide into the pillar until the last one sits where the intro started
+  const first = overTrack.firstElementChild;
+  const last = overTrack.lastElementChild;
+  const distance = on && first && last ? Math.max(0, last.offsetLeft - first.offsetLeft) : 0;
   overScene.dataset.distance = String(distance);
   if (!on) {
     stageEl.style.height = "";
@@ -214,7 +216,9 @@ function choreograph(progress, on) {
   rolls.forEach(({ scene, t, x: sceneX }, i) => {
     const next = rolls[i + 1];
 
-    const keyboardFocus = scene.pin.contains(document.activeElement) && document.activeElement.matches(":focus-visible");
+    // keyboard focus keeps a section drawn only while it is the one on screen; otherwise a
+    // focused search box would paint the table over every section the reader scrolls to
+    const keyboardFocus = scene.pin.contains(document.activeElement) && document.activeElement.matches(":focus-visible") && t > 0 && !(next && next.t >= 1);
 
     let mode = "all";
     let px = 0;
@@ -224,19 +228,21 @@ function choreograph(progress, on) {
 
         mode = next.scene.el.dataset.dir === "ltr" ? "show-right" : "show-left";
         px = next.x;
-      } else if (t < 1) {
+      } else if (t < 1 || scene.el === overScene) {
+        // overruns stay cut at the pillar while parked so the cards slide into it
         mode = scene.el.dataset.dir === "ltr" ? "show-left" : "show-right";
         px = sceneX;
       }
     }
+    scene.el.classList.toggle("is-live", !on || keyboardFocus || (t >= 1 && !(next?.t > 0)));
 
-    let opacity = 1;
-    if (on) {
-      const leaving = next && next.t > 0 ? 1 - next.t : 1;
-      const arriving = i === 0 ? firstArrival() : Math.min(1, 0.2 + t * 0.8);
-      opacity = arriving * leaving;
-    }
+    // sections stay solid and are only ever cut at the pillar, so they leave into it
+    // instead of thinning out first; the first one still fades in on arrival
+    const opacity = on && i === 0 ? firstArrival() : 1;
 
+    // cut at the pillar's surface, not its centre line, so nothing shows across it
+    const half = pillars?.halfWidth?.() || 0;
+    const edge = mode === "show-left" ? px - half : px + half;
     for (const part of wipeParts(scene)) {
       let clip = "";
       if (mode === "none") clip = "inset(0 100% 0 0)";
@@ -244,7 +250,7 @@ function choreograph(progress, on) {
         const box = part.getBoundingClientRect();
         // only the moving edge is cut; the other sides leave room for the shadow
         const pad = -80;
-        clip = mode === "show-left" ? `inset(${pad}px ${clamp(box.right - px, pad, box.width).toFixed(1)}px ${pad}px ${pad}px)` : `inset(${pad}px ${pad}px ${pad}px ${clamp(px - box.left, pad, box.width).toFixed(1)}px)`;
+        clip = mode === "show-left" ? `inset(${pad}px ${clamp(box.right - edge, pad, box.width).toFixed(1)}px ${pad}px ${pad}px)` : `inset(${pad}px ${pad}px ${pad}px ${clamp(edge - box.left, pad, box.width).toFixed(1)}px)`;
       }
       part.style.clipPath = clip;
       part.style.opacity = on && opacity < 1 ? opacity.toFixed(3) : "";
@@ -335,8 +341,11 @@ document.addEventListener(
     const scene = target && story.find((item) => item.el.contains(target) || target.contains(item.el));
     if (!scene) return;
     event.preventDefault();
+    if (root.classList.contains("table-open")) setTableOpen(false);
     const top = stageTarget(scene);
-    if (lenis) lenis.scrollTo(top, { duration: 1.4 });
+    // lenis's own anchor handling ignores preventDefault and runs after this, scrolling to
+    // the section element's raw spot near the stage start; go after it so this target wins
+    if (lenis) setTimeout(() => lenis?.scrollTo(top, { duration: 1.4 }), 0);
     else window.scrollTo({ top });
   },
   true,
@@ -396,6 +405,9 @@ function setTableOpen(open) {
   root.classList.toggle("table-open", open);
   expandButton?.setAttribute("aria-pressed", String(open));
   if (expandButton) expandButton.textContent = t(open ? "Close table" : "Expand table");
+  // an open table holds the page still, so the wheel only moves the rows
+  if (open) lenis?.stop();
+  else lenis?.start();
   requestUpdate();
 }
 expandButton?.addEventListener("click", () => setTableOpen(!root.classList.contains("table-open")));

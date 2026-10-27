@@ -25,6 +25,12 @@ document.documentElement.lang = meta.html || meta.code;
 
 const norm = (text) => text.replace(/\s+/g, " ").trim();
 
+// lets the page remember where the reader was before a language reload
+let beforeSwitch = () => {};
+export function onLanguageSwitch(fn) {
+  beforeSwitch = fn;
+}
+
 export function t(english, vars = {}) {
   const entry = STRINGS[english];
   const text = (lang !== "en" && entry?.[lang]) || english;
@@ -55,14 +61,19 @@ const TEMPLATES = Object.keys(STRINGS)
     return { key, names, regex: new RegExp(`^${pattern}$`) };
   });
 
-function lookup(text) {
+const escapeHtml = (value) =>
+  String(value).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+
+// values pulled out of the page text can be budget names from the data, so they
+// are escaped whenever the result is going to be written as html
+function lookup(text, html = false) {
   const entry = STRINGS[text];
   if (entry?.[lang]) return entry[lang];
   for (const template of TEMPLATES) {
     const match = text.match(template.regex);
     if (!match || !STRINGS[template.key][lang]) continue;
     const vars = Object.fromEntries(
-      template.names.map((name, index) => [name, match[index + 1]]),
+      template.names.map((name, index) => [name, html ? escapeHtml(match[index + 1]) : match[index + 1]]),
     );
     return t(template.key, vars);
   }
@@ -86,7 +97,7 @@ export function translateDom(root = document.body) {
       continue;
     const current = norm(el.textContent);
     if (current && current === el.dataset.i18nOut) continue;
-    const translated = lookup(current);
+    const translated = lookup(current, true);
     if (!translated) continue;
     if (/[<&]/.test(translated)) el.innerHTML = translated;
     else el.textContent = translated;
@@ -123,6 +134,7 @@ export function setupLangMenu() {
         try {
           localStorage.setItem(STORAGE_KEY, item.code);
         } catch {}
+        beforeSwitch();
         const url = new URL(location.href);
         url.searchParams.delete("lang");
         location.assign(url);

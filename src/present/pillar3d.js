@@ -95,6 +95,33 @@ export async function mountPillars({ isStill, lowDetail = false, pixelBudget = 4
   const pillar = new THREE.Mesh(geometry, material);
   scene.add(pillar);
 
+  // the shaft is long faces with vertices only at its ends, so it can be stretched
+  // to fill a tall, narrow stage without touching the base or the capital
+  const positions = geometry.attributes.position;
+  const baseY = Float32Array.from({ length: positions.count }, (_, i) => positions.getY(i));
+  let widest = 0;
+  const radius = (i) => Math.hypot(positions.getX(i), positions.getZ(i));
+  for (let i = 0; i < positions.count; i++) widest = Math.max(widest, radius(i));
+  let shaftLo = 0, shaftHi = 1;
+  for (let i = 0; i < positions.count; i++) {
+    if (radius(i) < widest * 0.6) continue;
+    if (baseY[i] < 0.5) shaftLo = Math.max(shaftLo, baseY[i]);
+    else shaftHi = Math.min(shaftHi, baseY[i]);
+  }
+  let stretched = 1;
+  function stretch(k) {
+    if (Math.abs(k - stretched) < 0.002) return;
+    stretched = k;
+    const grow = k - 1;
+    for (let i = 0; i < positions.count; i++) {
+      const y = baseY[i];
+      positions.setY(i, y <= shaftLo ? y : y >= shaftHi ? y + grow : shaftLo + ((y - shaftLo) * (shaftHi - shaftLo + grow)) / (shaftHi - shaftLo));
+    }
+    positions.needsUpdate = true;
+    geometry.computeBoundingSphere();
+  }
+  let half = 0;
+
   let width = 0, height = 0, frame = 0, last = 0, idle = 0, disposed = false;
 
 
@@ -122,6 +149,7 @@ export async function mountPillars({ isStill, lowDetail = false, pixelBudget = 4
 
   let drawn = 0;
   let lastKey = "";
+  let wasVisible = true;
   function render(time) {
     frame = 0;
     if (disposed || document.hidden) return;
@@ -133,13 +161,16 @@ export async function mountPillars({ isStill, lowDetail = false, pixelBudget = 4
     const style = getComputedStyle(stage);
     const opacity = parseFloat(style.opacity);
 
-    canvas.style.opacity = String(opacity * 0.93);
+    canvas.style.opacity = String(opacity);
     pillar.visible = rect.width > 0 && opacity > 0.01;
     if (pillar.visible) {
       fit(rect);
       canvas.style.transform = `translate3d(${rect.left.toFixed(1)}px, ${rect.top.toFixed(1)}px, 0)`;
 
+      // as wide as the stage allows, with the shaft lengthened to reach the full height
       const scale = Math.min(rect.height, rect.width / modelWidth);
+      stretch(Math.min(1.8, rect.height / scale));
+      half = (scale * modelWidth) / 2;
       pillar.scale.setScalar(scale);
       pillar.position.set(rect.width / 2, -rect.height, 0);
 
@@ -148,7 +179,11 @@ export async function mountPillars({ isStill, lowDetail = false, pixelBudget = 4
     }
     // when only the slow idle spin changes, 30fps is plenty
     const key = `${rect.left}|${rect.top}|${rect.width}|${rect.height}|${opacity}`;
-    if (key !== lastKey || time - drawn > 31 || still) {
+    // once a hidden pillar has been cleared there is nothing to redraw
+    if (!pillar.visible && !wasVisible) {
+      lastKey = key;
+    } else if (key !== lastKey || time - drawn > 31 || still) {
+      wasVisible = pillar.visible;
       renderer.render(scene, camera);
       drawn = time;
       lastKey = key;
@@ -172,6 +207,8 @@ export async function mountPillars({ isStill, lowDetail = false, pixelBudget = 4
 
   return {
     refresh: request,
+    // half the pillar's drawn width, so content can be cut at its surface
+    halfWidth: () => half,
 
     renderNow() {
       cancelAnimationFrame(frame);

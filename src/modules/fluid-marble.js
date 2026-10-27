@@ -14,7 +14,7 @@ float v=abs(sin(river*2.7));float vein=1.-smoothstep(.015,.11,v);float halo=1.-s
 float fine=1.-smoothstep(.007,.025,abs(sin(river*8.1+fbm(w*5.)*.45)));
 vec3 ivory=vec3(.972,.944,.902);vec3 color=mix(ivory,vec3(.66,.59,.50),vein*.36+halo*.12);color=mix(color,vec3(.69,.60,.44),fine*.09);
 float e=.008;float h=surface(p);vec2 slope=vec2(surface(p+vec2(e,0.))-h,surface(p+vec2(0.,e))-h)/e;
-vec3 normal=normalize(vec3(-slope*.7,1.));vec3 light=normalize(vec3(-.4,.6,1.));float diffuse=max(0.,dot(normal,light));float spec=pow(max(0.,dot(reflect(-light,normal),vec3(0.,0.,1.))),26.);
+vec3 normal=normalize(vec3(-slope*.45,1.));vec3 light=normalize(vec3(-.4,.6,1.));float diffuse=max(0.,dot(normal,light));float spec=pow(max(0.,dot(reflect(-light,normal),vec3(0.,0.,1.))),26.);
 color*=.83+diffuse*.19;color+=spec*.12;color+=fbm(w*.6)*.025;gl_FragColor=vec4(color,1.);
 }`;
 
@@ -82,10 +82,14 @@ export function mountFluidMarble(host, { reducedMotion = false, maxRatio = 1.25 
       current += (target - current) * Math.min(1, dt * 6);
     }
     last = t;
+    draw();
+    if (animate()) frame = requestAnimationFrame(render);
+  }
+  function draw() {
+    if (gl.isContextLost()) return;
     gl.uniform1f(uTime, clock);
     gl.uniform1f(uProgress, reducedMotion ? 0 : current);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-    if (animate()) frame = requestAnimationFrame(render);
   }
   const request = () => {
     if (!frame && !disposed && !document.hidden)
@@ -94,12 +98,23 @@ export function mountFluidMarble(host, { reducedMotion = false, maxRatio = 1.25 
   const resize = () => {
     const rect = host.getBoundingClientRect();
     const ratio = Math.min(devicePixelRatio || 1, maxRatio);
-    canvas.width = Math.max(1, Math.round(rect.width * ratio));
-    canvas.height = Math.max(1, Math.round(rect.height * ratio));
-    gl.viewport(0, 0, canvas.width, canvas.height);
+    const w = Math.max(1, Math.round(rect.width * ratio));
+    const h = Math.max(1, Math.round(rect.height * ratio));
+    // setting the size wipes the canvas, so skip no-op resizes and repaint straight away
+    if (w === canvas.width && h === canvas.height) return;
+    canvas.width = w;
+    canvas.height = h;
+    gl.viewport(0, 0, w, h);
     gl.uniform1f(uAspect, rect.width / Math.max(1, rect.height));
+    draw();
     request();
   };
+  // phones drop webgl under memory pressure; let the still marble behind it show instead of a blank
+  canvas.addEventListener("webglcontextlost", () => {
+    disposed = true;
+    cancelAnimationFrame(frame);
+    canvas.style.visibility = "hidden";
+  });
   const observer = new ResizeObserver(resize);
   observer.observe(host);
   const visibility = () => {

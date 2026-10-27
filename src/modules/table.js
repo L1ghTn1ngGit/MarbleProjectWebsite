@@ -68,9 +68,9 @@ function buildRow(row, index = 0) {
     row.__programDescription || getProgramDescription(row["Budget Name"]);
 
   tr.innerHTML = `
-    <td class="col-year" data-label="Year" title="Fiscal year of the record">${row.Year}</td>
-    <td class="col-dept" data-label="Department / Office" title="${escapeAttr(departmentNote)}">${departmentName || "—"}</td>
-    <td class="col-prog" data-label="Program / Line Item" title="${escapeAttr(programNote)}">${programName || "—"}</td>
+    <td class="col-year" data-label="Year" title="Fiscal year of the record">${escapeAttr(row.Year)}</td>
+    <td class="col-dept" data-label="Department / Office" title="${escapeAttr(departmentNote)}">${escapeAttr(departmentName) || "—"}</td>
+    <td class="col-prog" data-label="Program / Line Item" title="${escapeAttr(programNote)}">${escapeAttr(programName) || "—"}</td>
     <td class="col-money" data-label="Budgeted Amount" title="Budgeted amount before spending">${formatCurrency(modified)}</td>
     <td class="col-money col-spent" data-label="Cash Expense" title="${ratio === null ? "No working budget for this line" : `Spent ${(ratio * 100).toFixed(1)}% of the working budget`}">${formatCurrency(cash)}<span class="ratio-bar${ratio !== null && ratio > 1 ? " is-over" : ""}" style="--r:${ratioPct.toFixed(1)}%" aria-hidden="true"></span></td>
     <td class="col-money col-diff ${diff > 0 ? "diff-over" : diff < 0 ? "diff-under" : ""}" data-label="Difference" data-filter-diff="${diff > 0 ? "positive" : diff < 0 ? "negative" : "zero"}" title="${diff > 0 ? "Click to filter positive differences" : diff < 0 ? "Click to filter negative differences" : "No difference recorded"}">${formatCurrency(diff)}${diffPct ? `<small class="diff-pct">${diffPct}</small>` : ""}</td>
@@ -501,7 +501,8 @@ export function setupExportModal() {
     const content =
       format === "json"
         ? JSON.stringify(rows, null, 2)
-        : Papa.unparse(rows, {
+        : // named fields keep the header row even when the filter matches nothing
+          Papa.unparse({ fields: columns, data: rows.map((row) => columns.map((column) => row[column])) }, {
             delimiter: delim === "\\t" ? "\t" : delim,
             header: includeHeaders,
             escapeFormulae: true,

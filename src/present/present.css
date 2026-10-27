@@ -132,7 +132,12 @@ button {
 
 #marble-bg {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  /* the large viewport, so the address bar sliding on phones doesn't resize the canvas */
+  height: 100vh;
+  height: 100lvh;
   z-index: -1;
   pointer-events: none;
   background: #f3ebdf url("/marble-veins.svg") center / cover;
@@ -3171,25 +3176,29 @@ tbody tr:nth-child(even) {
 .slide__visual--video video {
   object-fit: contain;
 }
+/* stacked layout: size from the column width so the frame stays 16:9; full height
+   with a capped width squashed it and letterboxed the video in dark bars */
 @media (max-width: 900px) {
   .slide__visual--video {
-    width: auto;
-    max-width: 100%;
-    height: 100%;
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    align-self: center;
   }
 }
 
 
+/* on phones only the us map closes in on nyc, the borough map stays whole */
 @media (max-width: 760px) {
-  .slide__visual--map {
+  .slide__visual--us {
     overflow: hidden;
     border-radius: var(--r-md);
   }
-  .slide__visual--map img {
+  .slide__visual--us img {
     transform-origin: var(--nyc-x, 91%) var(--nyc-y, 31%);
     transform: scale(3.2);
   }
-  .slide__visual--map::after {
+  .slide__visual--us::after {
     content: "";
     position: absolute;
     inset: 0;
@@ -3365,6 +3374,10 @@ html::-webkit-scrollbar {
   color: #fffaf3;
   text-shadow: 0 1px 2px rgb(0 0 0 / 0.25);
 }
+/* the glass text multiply blend swallows light text on the dark segments */
+.glass .seg__share {
+  mix-blend-mode: normal;
+}
 .seg--other .seg__share,
 .seg--5 .seg__share {
   color: var(--ink);
@@ -3484,12 +3497,19 @@ html::-webkit-scrollbar {
 .stage-on .stage .scene .pin {
   pointer-events: none;
 }
-.stage-on .stage .scene .pin > *,
-.stage-on .stage .scene .pin .glass {
+/* only the settled scene takes clicks and wheels, the stacked ones stay out of the way */
+.stage-on .stage .scene.is-live .pin > *,
+.stage-on .stage .scene.is-live .pin .glass {
   pointer-events: auto;
 }
 .table-open .records__head p {
   display: none;
+}
+/* lenis marks data-lenis-prevent as overscroll: contain; with the table collapsed a
+   wheel or swipe that reaches the end of the rows has to carry on to the page (on
+   phones the table is page-tall and never scrolls itself) */
+:root:not(.table-open) .records .table-wrap {
+  overscroll-behavior: auto;
 }
 
 /* edges blend a hair into the marble: a soft half pixel halo around each pane */
