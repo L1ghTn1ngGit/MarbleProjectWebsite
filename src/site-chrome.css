@@ -249,6 +249,31 @@
   color: var(--muted, #6b6258);
   text-align: center;
 }
+.loader__slow {
+  margin-top: 18px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid rgb(48 44 39 / 0.16);
+  background: rgb(255 255 255 / 0.5);
+  color: var(--ink, #302c27);
+  font-size: 14px;
+  text-decoration: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px);
+  transition: opacity 600ms ease, transform 600ms var(--ease-out, ease), visibility 0s linear 600ms;
+}
+.loader.is-slow .loader__slow {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition: opacity 600ms ease, transform 600ms var(--ease-out, ease), visibility 0s;
+}
+.loader__slow:hover,
+.loader__slow:focus-visible {
+  background: rgb(255 255 255 / 0.85);
+  border-color: rgb(48 44 39 / 0.32);
+}
 .loader__log li {
   opacity: 0.45;
   transition: opacity 300ms ease, color 300ms ease;

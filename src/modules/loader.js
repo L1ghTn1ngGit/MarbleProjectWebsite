@@ -15,7 +15,7 @@ export function createLoader() {
   let active = root.classList.contains("is-loading") && !!loader;
   if (!active) {
     loader?.remove();
-    return { progress() {}, stage() {}, step() {}, done() {}, fail() {} };
+    return { progress() {}, stage() {}, step() {}, assets() {}, done() {}, fail() {} };
   }
 
 
@@ -29,9 +29,11 @@ export function createLoader() {
   function tick() {
     timer = 0;
     const clock = Math.min(1, (performance.now() - start) / (duration - 300));
-    const goal = clock;
+    // the counter never runs ahead of what has actually loaded
+    const goal = Math.min(clock, target);
     const gap = goal - shown;
-    if (gap > 0) shown = Math.min(goal, shown + Math.min(gap, 0.05 + Math.random() * 0.14));
+    // big jumps in real progress are closed quickly, so a fast load is not held back
+    if (gap > 0) shown = Math.min(goal, shown + Math.max(gap * 0.6, Math.min(gap, 0.05 + Math.random() * 0.14)));
     count.textContent = String(Math.round(shown * 100));
     loader.style.setProperty("--load", shown.toFixed(3));
     for (const [at, name] of [[0.4, "fetch"], [0.72, "parse"], [0.96, "build"]])
@@ -62,12 +64,20 @@ export function createLoader() {
     document.dispatchEvent(new CustomEvent("marble:loader-hidden", { detail: { logo, from: logo?.getBoundingClientRect() } }));
   }
   timer = setTimeout(tick, 60);
+  // a slow load gets a way out to the lighter journalist page
+  const slow = loader.querySelector(".loader__slow");
+  // counted from when the page started loading, not from when this script arrived
+  if (slow) setTimeout(() => {
+    if (!active || closing) return;
+    loader.classList.add("is-slow");
+    slow.removeAttribute("tabindex");
+  }, Math.max(0, 5000 - performance.now()));
   const item = (name) => loader.querySelector(`[data-step="${name}"]`);
 
   return {
     
     progress(value) {
-      set(value * 0.85);
+      set(value * 0.6);
     },
     
     stage(source, previous) {
@@ -77,8 +87,12 @@ export function createLoader() {
     },
     step(name) {
       item(name)?.classList.add("is-done");
-      if (name === "fetch") set(0.85);
-      if (name === "parse") set(0.93);
+      if (name === "fetch") set(0.6);
+      if (name === "parse") set(0.72);
+    },
+    // marble, pillar, fonts and opening images, as a share of the rest
+    assets(share) {
+      set(0.72 + Math.min(1, share) * 0.26);
     },
     done() {
       item("build")?.classList.add("is-done");

@@ -48,16 +48,23 @@ let marble = null;
 let pillars = null;
 
 
+const nextFrame = () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
 const lite = new URLSearchParams(location.search).has("lite") || tier === "low";
-(lite ? Promise.reject(new Error("lite mode")) : import("../modules/fluid-marble.js"))
+// resolves once the marble has painted (or has given up), so the loader can wait for it
+const marbleReady = (lite ? Promise.reject(new Error("lite mode")) : import("../modules/fluid-marble.js"))
   .then(({ mountFluidMarble }) => {
     marble = mountFluidMarble(document.getElementById("marble-bg"), { reducedMotion: isStill(), maxRatio: tier === "mid" ? 1 : 1.25 });
     marble.setPaused(isStill());
     requestUpdate();
+    return nextFrame();
   })
   .catch((error) => {
     if (!lite) console.warn("Marble background unavailable", error);
   });
+// the pillar downloads alongside the budget data instead of after it
+let markDataReady;
+const dataReady = new Promise((resolve) => (markDataReady = resolve));
+const pillarsReady = mountPillarLayer();
 
 
 function startLenis() {
@@ -240,9 +247,8 @@ function choreograph(progress, on) {
     // instead of thinning out first; the first one still fades in on arrival
     const opacity = on && i === 0 ? firstArrival() : 1;
 
-    // cut at the pillar's surface, not its centre line, so nothing shows across it
-    const half = pillars?.halfWidth?.() || 0;
-    const edge = mode === "show-left" ? px - half : px + half;
+    // cut at the pillar's centre line; the solid pillar is drawn above the content, so the
+    // section passes underneath it, following its outline (wider capital and base)
     for (const part of wipeParts(scene)) {
       let clip = "";
       if (mode === "none") clip = "inset(0 100% 0 0)";
@@ -250,7 +256,7 @@ function choreograph(progress, on) {
         const box = part.getBoundingClientRect();
         // only the moving edge is cut; the other sides leave room for the shadow
         const pad = -80;
-        clip = mode === "show-left" ? `inset(${pad}px ${clamp(box.right - edge, pad, box.width).toFixed(1)}px ${pad}px ${pad}px)` : `inset(${pad}px ${pad}px ${pad}px ${clamp(edge - box.left, pad, box.width).toFixed(1)}px)`;
+        clip = mode === "show-left" ? `inset(${pad}px ${clamp(box.right - px, pad, box.width).toFixed(1)}px ${pad}px ${pad}px)` : `inset(${pad}px ${pad}px ${pad}px ${clamp(px - box.left, pad, box.width).toFixed(1)}px)`;
       }
       part.style.clipPath = clip;
       part.style.opacity = on && opacity < 1 ? opacity.toFixed(3) : "";
@@ -830,14 +836,21 @@ async function load() {
     setupRecords(rows, { meta, excluded: source.length - rows.length });
     for (const card of $$(".metric, .ocard, .insight")) card.dataset.tilt = "";
     for (const node of $$(".insight, .records, .about, .insights__head")) revealer.observe(node);
-    mountPillarLayer();
     setupHeadingFill();
     showSourceNote(meta);
-    loader.done();
     root.classList.add("is-ready");
     measure();
     update();
     resumePlace();
+    markDataReady();
+    // the loader stays up until what the opening screen shows has really arrived:
+    // marble, pillar, fonts and the first images, never longer than 12s
+    const openingImages = $$("#highlights img, [data-scene='roll'] img").map((img) => img.decode().catch(() => {}));
+    const parts = [marbleReady, pillarsReady, document.fonts?.ready, ...openingImages];
+    let settled = 0;
+    const track = (promise) => Promise.resolve(promise).finally(() => loader.assets(++settled / parts.length));
+    await Promise.race([Promise.all(parts.map(track)), new Promise((resolve) => setTimeout(resolve, 12000))]);
+    loader.done();
   } catch (error) {
     console.error(error);
     const alert = $("#load-error");
@@ -901,11 +914,12 @@ function mountPillarLayer() {
   const lowEnd = tier === "low";
   if (lowEnd) {
     root.classList.add("no-pillars");
-    return;
+    return Promise.resolve();
   }
-  import("./pillar3d.js")
+  return import("./pillar3d.js")
     .then(({ mountPillars }) => mountPillars({ isStill, lowDetail: compact.matches || tier === "mid", pixelBudget: tier === "mid" ? 2.4e6 : 4.2e6 }))
-    .then((layer) => {
+    .then(async (layer) => {
+      await dataReady;
       pillars = layer;
       root.classList.add("pillars-ready");
       measure();
@@ -913,6 +927,7 @@ function mountPillarLayer() {
       resumePlace();
       pendingResume = null;
       layer.refresh();
+      return nextFrame();
     })
     .catch((error) => {
       pendingResume = null;
