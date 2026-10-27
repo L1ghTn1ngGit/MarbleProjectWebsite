@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200" fill="none">
+<defs><filter id="stone" x="-20%" y="-20%" width="140%" height="140%"><feTurbulence type="fractalNoise" baseFrequency=".006 .012" numOctaves="3" seed="18" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="95" xChannelSelector="R" yChannelSelector="G"/></filter><linearGradient id="vein"><stop stop-color="#a8aaa5" stop-opacity=".05"/><stop offset=".5" stop-color="#8e9691" stop-opacity=".36"/><stop offset="1" stop-color="#afa28c" stop-opacity=".12"/></linearGradient></defs>
+<g filter="url(#stone)" stroke="url(#vein)">
+<path d="M-200 200C200 80 280 510 680 480S1050 850 1800 700" stroke-width="18" opacity=".25"/>
+<path d="M-200 200C200 80 280 510 680 480S1050 850 1800 700" stroke-width="1.8"/>
+<path d="M-200 220C200 100 280 530 680 500S1050 870 1800 720" stroke-width=".8"/>
+<path d="M-100-100C400 90 500 90 790 220S1100 350 1700 260" stroke-width="12" opacity=".24"/>
+<path d="M-100-100C400 90 500 90 790 220S1100 350 1700 260" stroke-width="1.5"/>
+<path d="M-300 600C200 400 180 800 650 830S1100 1150 1700 1000" stroke-width="20" opacity=".25"/>
+<path d="M-300 600C200 400 180 800 650 830S1100 1150 1700 1000" stroke-width="1.8"/>
+<path d="M300 1200Q420 900 650 830M670 480Q800 340 790 220M1100 850Q1300 680 1450 610" stroke-width="1"/>
+</g></svg>

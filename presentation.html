@@ -1,0 +1,891 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>NYC Education Budget Accountability · The Marble Foundation</title>
+    <meta
+      name="description"
+      content="An interactive analysis of New York City Department of Education spending: working budgets against recorded cash spending, FY2023 to FY2025, from public Checkbook NYC records."
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:title"
+      content="NYC Education Budget Accountability · The Marble Foundation"
+    />
+    <meta
+      property="og:description"
+      content="Figure out where your money goes. Follow NYC Department of Education spending year by year and line by line."
+    />
+    <meta name="theme-color" content="#f8f1e7" />
+    <link rel="icon" href="/marble.png" />
+    <link rel="preload" href="/fonts/instrument-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <style>
+      @font-face{font-family:"Instrument Serif";font-style:normal;font-weight:400;font-display:block;src:url(/fonts/instrument-serif-latin-400-normal.woff2) format("woff2")}
+      .loader{display:none}
+      .is-loading .loader{position:fixed;inset:0;z-index:90;display:grid;place-content:center;justify-items:center;gap:14px;background:#f8f1e7;font-family:"Glacial Indifference","Avenir Next","Segoe UI",sans-serif;color:#62594e}
+      .is-loading .loader img{width:min(360px,64vw);height:auto;margin-bottom:10px}
+      .is-loading .loader__count{margin:0;font:400 clamp(64px,12vw,128px)/1 "Instrument Serif",Georgia,serif;color:#263e48}
+      .is-loading .loader__bar{display:block;width:min(320px,70vw);height:4px;background:rgb(48 44 39/.1);overflow:hidden}
+      .is-loading .loader__log{list-style:none;margin:6px 0 0;padding:0;font-size:14px;text-align:center}
+      .is-loading body{overflow:hidden}
+      html.is-loading{overflow:hidden;scrollbar-width:none}
+      html.is-loading::-webkit-scrollbar{display:none}
+    </style>
+    <script>
+      if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+      try {
+        localStorage.setItem("marble-visited", "1");
+        if (
+          !sessionStorage.getItem("marble-switch") &&
+          !matchMedia("(prefers-reduced-motion: reduce)").matches
+        )
+          document.documentElement.classList.add("is-loading");
+        sessionStorage.removeItem("marble-switch");
+      } catch {}
+      if (matchMedia("(prefers-reduced-motion: reduce)").matches)
+        document.documentElement.classList.add("motion-off");
+    </script>
+    <script type="module" src="/src/present/present.js"></script>
+  </head>
+  <body>
+    <a class="skip" href="#overview">Skip to the spending overview</a>
+    <div class="loader" aria-hidden="true">
+      <img src="/brand/marble-foundation.svg" alt="" width="132" height="52" />
+      <p class="loader__count"><span data-loader-count>0</span>%</p>
+      <span class="loader__bar"><i></i></span>
+      <ol class="loader__log">
+        <li data-step="fetch">Contacting Checkbook NYC</li>
+        <li data-step="parse">Reading budget lines</li>
+        <li data-step="build">Building the analysis</li>
+      </ol>
+    </div>
+    <div id="marble-bg" aria-hidden="true"></div>
+    <div class="pillar-stage" aria-hidden="true"></div>
+    <div class="progress" aria-hidden="true"><i></i></div>
+
+    <header class="nav">
+      <div class="nav__inner">
+        <a
+          class="nav__brand"
+          href="#top"
+          aria-label="The Marble Foundation, back to top"
+        >
+          <img
+            src="/brand/marble-foundation.svg"
+            alt="The Marble Foundation"
+            width="148"
+            height="58"
+          />
+        </a>
+        <div class="nav__right">
+          <div
+            class="mode-switch"
+            role="group"
+            aria-label="Reading mode"
+            data-current="presentation"
+          >
+            <span class="mode-switch__pill" aria-hidden="true"></span>
+            <button type="button" data-mode="journalist" aria-pressed="false">
+              <svg class="mode-switch__icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.5C10.2 5 7.6 4.5 4 4.8v13c3.6-.3 6.2.2 8 1.7 1.8-1.5 4.4-2 8-1.7v-13c-3.6-.3-6.2.2-8 1.7z"/><path d="M12 6.5v13"/></svg><span class="mode-switch__label">Journalist</span>
+            </button>
+            <button type="button" data-mode="presentation" aria-pressed="true">
+              <svg class="mode-switch__icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="15" height="11" rx="1.5"/><path d="M8 20h5M10.5 16v4"/><path d="M19.5 2.5l.6 1.6 1.6.6-1.6.6-.6 1.6-.6-1.6-1.6-.6 1.6-.6z" fill="currentColor" stroke="none"/><path d="M8 13l2.5-3 2 2 2-3" /></svg><span class="mode-switch__label">Presentation</span>
+            </button>
+          </div>
+          <div class="lang">
+            <button
+              class="lang__button"
+              type="button"
+              aria-expanded="false"
+              aria-label="Language: English"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                aria-hidden="true"
+              >
+                <circle cx="12" cy="12" r="9" />
+                <path
+                  d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"
+                /></svg
+              ><span class="lang__code">EN</span>
+            </button>
+            <ul class="lang__menu"></ul>
+          </div>
+          <nav class="nav__links" aria-label="Sections">
+            <a href="#overview">Overview</a>
+            <a href="#story">Spending Analysis</a>
+            <a href="#overruns">Overruns</a>
+            <a href="#records">Data</a>
+            <a href="#insights">Insights</a>
+          </nav>
+          <button
+            class="nav__menu"
+            type="button"
+            aria-expanded="false"
+            aria-controls="sections-menu"
+            aria-label="Sections menu"
+          >
+            <span aria-hidden="true"></span>
+          </button>
+          <div class="nav__actions">
+            <button
+              class="chip"
+              id="tour"
+              type="button"
+              aria-pressed="false"
+              title="Glide through every section"
+            >
+              <span class="chip__icon" aria-hidden="true">▶</span
+              ><span class="chip__label">Tour</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+    <nav class="subnav" id="sections-menu" aria-label="Sections">
+      <a href="#overview">Overview</a>
+      <a href="#story">Spending Analysis</a>
+      <a href="#overruns">Overruns</a>
+      <a href="#records">Data</a>
+      <a href="#insights">Insights</a>
+    </nav>
+
+    <main id="top">
+      
+      <section class="highlights" id="highlights" aria-label="Highlights">
+        <div
+          class="deck"
+          role="region"
+          aria-roledescription="carousel"
+          aria-label="Highlight slides"
+        >
+          <div class="deck__track">
+            <article
+              class="slide is-active"
+              aria-roledescription="slide"
+              aria-label="1 of 6"
+            >
+              <div class="slide__visual slide__visual--map">
+                <img
+                  src="/present/us-nyc.svg"
+                  alt="Map of the United States with New York City marked"
+                />
+              </div>
+              <div class="slide__text">
+                <h2>New York City: The Nation's Largest City Budget</h2>
+                <p class="slide__stat">$112.4 <span>Billion</span></p>
+                <p>
+                  NYC's annual budget is the largest of any city in the United
+                  States
+                </p>
+              </div>
+            </article>
+
+            <article
+              class="slide"
+              aria-roledescription="slide"
+              aria-label="2 of 6"
+            >
+              <div class="slide__visual slide__visual--map">
+                <img
+                  src="/present/nyc-boroughs.svg"
+                  alt="Map of New York City's five boroughs"
+                />
+              </div>
+              <div class="slide__text">
+                <h2>Department of Education's Share</h2>
+                <p class="slide__stat">$38.3 <span>Billion</span></p>
+                <p>
+                  The DOE receives approximately <strong>1/3</strong> of NYC's
+                  entire annual budget
+                </p>
+                <p class="slide__note">
+                  Operating 1,600+ schools across all five boroughs
+                </p>
+              </div>
+            </article>
+
+            <article
+              class="slide"
+              aria-roledescription="slide"
+              aria-label="3 of 6"
+            >
+              <figure class="slide__visual slide__visual--students">
+                <img
+                  src="/present/students.svg"
+                  alt="100 student figures, each standing for 10,000 students: about 1 million in all"
+                />
+                <figcaption>Each figure = 10,000 students</figcaption>
+              </figure>
+              <div class="slide__text">
+                <h2>Highest Per-Student Spending in America</h2>
+                <p class="slide__stat">$38,000</p>
+                <p>
+                  NYC spends more per student than any other major city in the
+                  nation
+                </p>
+                <p class="slide__note">
+                  Serving approximately 1 million students
+                </p>
+              </div>
+            </article>
+
+            <article
+              class="slide"
+              aria-roledescription="slide"
+              aria-label="4 of 6"
+            >
+              <div class="slide__visual slide__visual--brand">
+                <img
+                  src="/brand/marble-foundation.svg"
+                  alt="The Marble Foundation"
+                  loading="lazy"
+                />
+              </div>
+              <div class="slide__text">
+                <h2>Explore the details</h2>
+                <p class="slide__stat slide__stat--word">Budget transparency</p>
+                <p>
+                  See what the DOE has been doing with
+                  <strong>your</strong> money over the last three fiscal years.
+                </p>
+                <p class="slide__note">
+                  Dive into the data, trends, and biggest overruns below.
+                </p>
+                <a class="btn btn--light" href="#overview"
+                  >Start exploring <span aria-hidden="true">↓</span></a
+                >
+              </div>
+            </article>
+
+            <article
+              class="slide"
+              aria-roledescription="slide"
+              aria-label="5 of 6"
+            >
+              <div class="slide__visual slide__visual--logos">
+                <img
+                  class="logo-un"
+                  src="/UN_emblem_blue.svg"
+                  alt="United Nations emblem"
+                />
+                <img
+                  class="logo-mgcy"
+                  src="/mgcy-logo_update1.png"
+                  alt="UN Major Group for Children and Youth (UNMGCY) logo"
+                />
+              </div>
+              <div class="slide__text">
+                <h2>Officially affiliated with UNMGCY</h2>
+                <p class="slide__stat slide__stat--word">
+                  United Nations Youth Partnership
+                </p>
+                <p>
+                  The Marble Foundation is now officially affiliated with the
+                  <strong
+                    >United Nations Major Group for Children and Youth</strong
+                  >.
+                </p>
+                <p class="slide__note">
+                  A bigger platform for youth-led transparency, accountability,
+                  and civic action.
+                </p>
+              </div>
+            </article>
+
+            <article
+              class="slide"
+              aria-roledescription="slide"
+              aria-label="6 of 6"
+            >
+              <div class="slide__visual slide__visual--video">
+                <video id="codenext" muted loop playsinline preload="metadata">
+                  <source src="/2025-12-06%2012-18-08_1.mp4" type="video/mp4" />
+                </video>
+                <button
+                  class="video-toggle"
+                  type="button"
+                  aria-label="Play video"
+                  data-state="paused"
+                >
+                  <svg
+                    class="i-play"
+                    viewBox="0 0 24 24"
+                    width="18"
+                    height="18"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M8 5.6v12.8a1 1 0 0 0 1.5.86l10.2-6.4a1 1 0 0 0 0-1.72L9.5 4.74A1 1 0 0 0 8 5.6z"
+                    /></svg
+                  ><svg
+                    class="i-pause"
+                    viewBox="0 0 24 24"
+                    width="18"
+                    height="18"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <rect x="6.5" y="5" width="3.6" height="14" rx="1" />
+                    <rect x="13.9" y="5" width="3.6" height="14" rx="1" />
+                  </svg>
+                </button>
+              </div>
+              <div class="slide__text">
+                <h2>Presented at Google Code Next</h2>
+                <p class="slide__stat slide__stat--word">Transparency to NYC</p>
+                <p>
+                  The <strong>Marble Foundation</strong> presentation shown at
+                  Google Code Next.
+                </p>
+                <p class="slide__note">
+                  A short look at our presentation from Google Code Next.
+                </p>
+              </div>
+            </article>
+          </div>
+          <div class="deck__bar">
+            <div
+              class="deck__dots"
+              role="group"
+              aria-label="Choose a slide"
+            ></div>
+            <div class="deck-controls">
+              <button
+                class="round"
+                type="button"
+                data-deck="prev"
+                aria-label="Previous slide"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  width="18"
+                  height="18"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.9"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M15 18l-6-6 6-6" />
+                </svg>
+              </button>
+              <button
+                class="round"
+                type="button"
+                data-deck="play"
+                aria-label="Pause slideshow"
+                aria-pressed="true"
+                data-state="playing"
+              >
+                <svg
+                  class="i-pause"
+                  viewBox="0 0 24 24"
+                  width="18"
+                  height="18"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <rect x="6.5" y="5" width="3.6" height="14" rx="1" />
+                  <rect x="13.9" y="5" width="3.6" height="14" rx="1" /></svg
+                ><svg
+                  class="i-play"
+                  viewBox="0 0 24 24"
+                  width="18"
+                  height="18"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M8 5.6v12.8a1 1 0 0 0 1.5.86l10.2-6.4a1 1 0 0 0 0-1.72L9.5 4.74A1 1 0 0 0 8 5.6z"
+                  />
+                </svg>
+              </button>
+              <button
+                class="round"
+                type="button"
+                data-deck="next"
+                aria-label="Next slide"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  width="18"
+                  height="18"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.9"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M9 18l6-6-6-6" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      
+      <div class="stage" id="stage">
+        <div class="stage__frame">
+          
+          <section
+            class="scene scene--roll"
+            data-scene="roll"
+            data-dir="ltr"
+            id="overview"
+            aria-labelledby="hero-title"
+          >
+            <div class="pin pin--roll">
+              <div class="roll__content">
+                <div class="roll__intro glass">
+                  <h1 id="hero-title" class="hero__title">
+                    NYC Education Budget Accountability
+                  </h1>
+                  <p class="hero__lede" data-fill="lede">
+                    An analysis of Department of Education spending from public
+                    Checkbook NYC records.
+                  </p>
+                  <p class="hero__hook">Figure out where your money goes.</p>
+                  <div class="hero__cta">
+                    <a class="btn btn--light" href="#story"
+                      >See the analysis <span aria-hidden="true">↓</span></a
+                    >
+                    <a class="btn btn--ghost" href="#records"
+                      >Search the data</a
+                    >
+                  </div>
+                </div>
+                <div class="roll__metrics">
+                  <div class="metrics__head">
+                    <h2>Spending Overview</h2>
+                    <p>Compare the working budget with recorded spending.</p>
+                  </div>
+                  <div class="metrics">
+                    <article class="metric glass" style="--n: 0">
+                      <p class="metric__label">Total Spent</p>
+                      <p class="metric__value" data-fill="totalShort">…</p>
+                      <p class="metric__caption" data-fill="spentCaption">
+                        Recorded cash spending
+                      </p>
+                      <span class="metric__meter"
+                        ><i data-meter="spent"></i
+                      ></span>
+                    </article>
+                    <article class="metric glass" style="--n: 1">
+                      <p class="metric__label">Working Budget</p>
+                      <p class="metric__value" data-fill="budget">…</p>
+                      <p class="metric__caption">
+                        Adopted budget plus in-year changes
+                      </p>
+                      <span class="metric__meter"
+                        ><i style="width: 100%"></i
+                      ></span>
+                    </article>
+                    <article class="metric metric--alert glass" style="--n: 2">
+                      <p class="metric__label">Lines Over Budget by 10%+</p>
+                      <p class="metric__value" data-fill="over10">…</p>
+                      <p class="metric__caption" data-fill="over10Caption">
+                        Cash spent above 110% of budget
+                      </p>
+                      <span class="metric__meter"
+                        ><i data-meter="over10"></i
+                      ></span>
+                    </article>
+                  </div>
+                </div>
+              </div>
+              <aside
+                class="roll__aside glass"
+                aria-label="Recorded spending by fiscal year"
+              >
+                <ul class="hero__years" id="hero-years"></ul>
+                <p class="hero__number" data-fill="totalShort">…</p>
+                <p class="hero__note">
+                  recorded DOE spending,
+                  <span data-fill="yearRange">FY2023 to FY2025</span>
+                </p>
+              </aside>
+            </div>
+          </section>
+
+          
+          <div id="story">
+            <section
+              class="scene scene--years"
+              data-scene="years"
+              data-dir="rtl"
+              aria-labelledby="years-title"
+            >
+              <div class="pin pin--split">
+                <div class="scene__copy glass">
+                  <h2 id="years-title">Spending by Year</h2>
+                  <p>
+                    The light column is each year's working budget; the dark
+                    one is what was actually spent. Zoom in to see the gap.
+                  </p>
+                  <p class="scene__stat">
+                    <strong data-fill="growth">…</strong>
+                    <span data-fill="growthLabel">change in cash spending</span>
+                  </p>
+                </div>
+                <figure
+                  class="years glass"
+                  aria-label="Cash spent and working budget by fiscal year"
+                >
+                  <div class="years__chart" id="years-chart"></div>
+                  <figcaption class="legend">
+                    <span><i class="sw sw--spent"></i>Cash spent</span>
+                    <span><i class="sw sw--budget"></i>Working budget</span>
+                  </figcaption>
+                </figure>
+              </div>
+            </section>
+
+            <section
+              class="scene scene--depts"
+              data-scene="depts"
+              data-dir="ltr"
+              aria-labelledby="depts-title"
+            >
+              <div class="pin">
+                <div class="depts glass">
+                  <div class="scene__copy scene__copy--wide">
+                    <h2 id="depts-title">Spending by Department</h2>
+                    <p id="depts-lede">
+                      Five departments account for most of recorded spending.
+                    </p>
+                  </div>
+                  <figure
+                    class="split"
+                    aria-label="Share of recorded spending by department"
+                  >
+                    <div class="split__bar" id="split-bar"></div>
+                    <ol class="split__list" id="split-list"></ol>
+                  </figure>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <section
+            class="scene scene--over"
+            data-scene="over"
+            data-dir="rtl"
+            id="overruns"
+            aria-labelledby="over-title"
+          >
+            <div class="pin pin--track">
+              <div class="track" id="over-track">
+                <div class="track__intro glass">
+                  <h2 id="over-title">Largest Overruns</h2>
+                  <p>
+                    The five budget lines that spent the most above their
+                    working budget, in dollars.
+                  </p>
+                  <p class="note">
+                    An overrun alone does not establish waste or wrongdoing.
+                    Budgets are modified during the year; these are places worth
+                    a question.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          
+          <section
+            class="scene scene--records"
+            data-scene="records"
+            data-dir="ltr"
+            id="records"
+            aria-labelledby="records-title"
+          >
+            <div class="pin">
+              <div class="records glass">
+                <div class="records__head">
+                  <h2 id="records-title">Budget Details</h2>
+                  <p>
+                    Search the same records behind the story. Compare working
+                    budgets with cash spending and take the data with you.
+                  </p>
+                  <button class="chip records__expand" type="button" aria-pressed="false">
+                    Expand table
+                  </button>
+                </div>
+                <div class="controls">
+                  <label class="field field--grow">
+                    <span>Search</span>
+                    <input
+                      id="record-search"
+                      type="search"
+                      placeholder="Search programs, departments"
+                      autocomplete="off"
+                    />
+                  </label>
+                  <label class="field">
+                    <span>Fiscal year</span>
+                    <select id="record-year">
+                      <option value="all">All years</option>
+                    </select>
+                  </label>
+                  <label class="field">
+                    <span>Status</span>
+                    <select id="record-status">
+                      <option value="all">All records</option>
+                      <option value="over">Above working budget</option>
+                      <option value="under">Within working budget</option>
+                    </select>
+                  </label>
+                  <button
+                    class="btn btn--light"
+                    id="export-records"
+                    type="button"
+                  >
+                    Export CSV
+                  </button>
+                </div>
+                <div
+                  class="table-wrap"
+                  role="region"
+                  aria-label="Budget records"
+                  tabindex="0"
+                  data-lenis-prevent
+                >
+                  <table>
+                    <thead>
+                      <tr>
+                        <th scope="col">Year</th>
+                        <th scope="col">Department and budget line</th>
+                        <th scope="col" class="num">Working budget</th>
+                        <th scope="col" class="num">Cash spent</th>
+                        <th scope="col" class="num">Difference</th>
+                      </tr>
+                    </thead>
+                    <tbody id="records-body">
+                      <tr>
+                        <td colspan="5" class="empty">Loading records…</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="pager">
+                  <p id="record-count" role="status"></p>
+                  <div>
+                    <button
+                      class="round"
+                      id="previous-page"
+                      type="button"
+                      aria-label="Previous page"
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        width="18"
+                        height="18"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.9"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                      >
+                        <path d="M15 18l-6-6 6-6" />
+                      </svg>
+                    </button>
+                    <button
+                      class="round"
+                      id="next-page"
+                      type="button"
+                      aria-label="Next page"
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        width="18"
+                        height="18"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.9"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                      >
+                        <path d="M9 18l6-6-6-6" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                <details class="method">
+                  <summary>How to read these numbers</summary>
+                  <p>
+                    <strong>Working budget</strong> is the adopted budget plus
+                    in-year adjustments and transfers. <strong>Spent</strong> is
+                    the cash expense recorded for the same line. Only Department
+                    of Education lines are analyzed, and lines with negative
+                    working budgets or cash spending are excluded. A difference
+                    is cash spent minus working budget; it is not evidence of
+                    misconduct. Dollars are nominal.
+                  </p>
+                  <p id="method-count"></p>
+                </details>
+              </div>
+            </div>
+          </section>
+
+          
+          <section
+            class="scene scene--insights"
+            data-scene="insights"
+            data-dir="rtl"
+            id="insights"
+            aria-labelledby="insights-title"
+          >
+            <div class="pin">
+              <div class="insights">
+                <div class="insights__head">
+                  <h2 id="insights-title">Key Findings</h2>
+                  <p>Automated analysis of spending patterns and anomalies</p>
+                </div>
+                <div class="insights__grid" id="insights-grid">
+                  <p class="glass insight insight--loading">Analyzing data…</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          
+          <section
+            class="scene scene--about"
+            data-scene="about"
+            data-dir="ltr"
+            id="about"
+            aria-labelledby="about-title"
+          >
+            <div class="pin">
+              <div class="about glass">
+                <div class="about__copy">
+                  <h2 id="about-title">A clearer view of public money.</h2>
+                  <p>
+                    The Marble Foundation examines New York City education
+                    budget data for journalists and the public. It is officially
+                    affiliated with the United Nations Major Group for Children
+                    and Youth, and its work was presented at Google Code Next.
+                  </p>
+                  <p>
+                    The analysis figures, from the Spending Overview onward, are
+                    calculated in your browser from the same public Checkbook
+                    NYC records you can search above. The opening highlights are
+                    the context figures used across the Marble Foundation's
+                    presentations.
+                  </p>
+                  <div class="about__cta">
+                    <a class="btn btn--light journalist-link" href="/?view=journalist"
+                      >Open Journalist view</a
+                    >
+                    <a
+                      class="btn btn--ghost"
+                      href="https://www.checkbooknyc.com/"
+                      target="_blank"
+                      rel="noreferrer"
+                      >Checkbook NYC <span aria-hidden="true">↗</span></a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          
+          <section
+            class="scene scene--end"
+            data-scene="end"
+            data-dir="rtl"
+            id="end"
+            aria-labelledby="end-title"
+          >
+            <div class="pin">
+              <div class="end glass">
+                <h2 id="end-title">That's the whole story.</h2>
+                <p>
+                  Keep digging line by line in Journalist view, or rewind and
+                  watch it unroll again.
+                </p>
+                <div class="end__choices">
+                  <a class="btn btn--light journalist-link" href="/?view=journalist"
+                    >Open Journalist view</a
+                  >
+                  <button class="btn btn--ghost" type="button" data-rewind>
+                    <svg
+                      viewBox="0 0 24 24"
+                      width="18"
+                      height="18"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M11 6.5v11a.8.8 0 0 1-1.3.6L3.4 12.6a.8.8 0 0 1 0-1.2l6.3-5.5A.8.8 0 0 1 11 6.5zm9.5 0v11a.8.8 0 0 1-1.3.6l-6.3-5.5a.8.8 0 0 1 0-1.2l6.3-5.5a.8.8 0 0 1 1.3.6z"
+                      />
+                    </svg>
+                    Back to the top
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+    <div class="rewind-warp" aria-hidden="true"></div>
+    <div class="rewind" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+        <path
+          d="M11 6.5v11a.8.8 0 0 1-1.3.6L3.4 12.6a.8.8 0 0 1 0-1.2l6.3-5.5A.8.8 0 0 1 11 6.5zm9.5 0v11a.8.8 0 0 1-1.3.6l-6.3-5.5a.8.8 0 0 1 0-1.2l6.3-5.5a.8.8 0 0 1 1.3.6z"
+        />
+      </svg>
+      <span>Rewinding</span>
+    </div>
+
+    <footer class="footer">
+      <div class="footer__grid">
+        <section class="footer__col" aria-labelledby="footer-about">
+          <h2 id="footer-about">The Marble Foundation</h2>
+          <p>Independent budget analysis and public-interest research.</p>
+        </section>
+        <section class="footer__col" aria-labelledby="footer-source">
+          <h2 id="footer-source">Data source</h2>
+          <p>
+            <a href="https://www.checkbooknyc.com/" rel="noopener" target="_blank"
+              >Checkbook NYC<span class="sr-only"> (opens in a new tab)</span></a
+            >, NYC Comptroller. Department of Education budget lines only.
+          </p>
+          <p class="footer__source" data-source-note></p>
+        </section>
+        <section class="footer__col" aria-labelledby="footer-more">
+          <h2 id="footer-more">Keep reading</h2>
+          <p><a href="/?view=journalist">Journalist view</a></p>
+          <p><a href="#top" data-rewind>Back to top <span aria-hidden="true">↑</span></a></p>
+        </section>
+      </div>
+      <div class="footer__base">
+        <p>&copy; 2026 Marble Foundation. Data accuracy subject to NYC reporting standards.</p>
+        <p>*Working budget includes in-year adjustments and transfers.</p>
+      </div>
+    </footer>
+    <div id="load-error" role="alert" hidden>
+      <p></p>
+      <button class="btn btn--ghost" type="button" data-retry>Retry</button>
+    </div>
+  </body>
+</html>

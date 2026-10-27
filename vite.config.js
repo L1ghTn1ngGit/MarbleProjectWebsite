@@ -1,10 +1,4 @@
 import { defineConfig } from 'vite';
+import { resolve } from 'node:path';
+export default defineConfig({build:{outDir:'dist',rollupOptions:{input:{journalist:resolve(process.cwd(),'index.html'),presentation:resolve(process.cwd(),'presentation.html'),intro:resolve(process.cwd(),'intro.html')}}},publicDir:'public'});
 
-export default defineConfig({
-  // put your built files in "dist/"
-  build: {
-    outDir: 'dist',
-  },
-  // public/ folder is served as-is (CSV, images, video)
-  publicDir: 'public',
-});

@@ -1,0 +1,5 @@
+import {chromium} from 'file:///C:/Users/Aftid Rahman/AppData/Local/npm-cache/_npx/31e32ef8478fbf80/node_modules/playwright-core/index.mjs';
+const browser=await chromium.launch({executablePath:'C:/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe',headless:true});const page=await browser.newPage({viewport:{width:1280,height:800}});await page.goto('http://127.0.0.1:5175/presentation.html');await page.locator('video').evaluate(v=>{v.preload='auto';v.load();});await page.waitForFunction(()=>document.querySelector('video').readyState>=2);const duration=await page.locator('video').evaluate(v=>v.duration);console.log('duration',duration);
+await page.locator('video').evaluate(v=>{v.style.cssText='position:fixed;inset:0;width:100vw;height:100vh;max-height:none;object-fit:contain;background:#111;z-index:9999';});
+for(let time=0;time<duration;time+=Math.max(3,Math.floor(duration/12))){await page.locator('video').evaluate((v,t)=>new Promise(resolve=>{v.addEventListener('seeked',resolve,{once:true});v.currentTime=t+.05;}),time);await page.screenshot({path:`video-frame-${Math.floor(time)}.png`});console.log('frame',time);}
+await browser.close();

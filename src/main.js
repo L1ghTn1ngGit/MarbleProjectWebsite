@@ -1,16 +1,41 @@
-import './style.css';
 
-import { loadData } from './modules/data.js';
-import { setupNavToggle, setupNavLinks, updateActiveNav } from './modules/nav.js';
-import { setupBudgetSlideshow, setupVideoControls } from './modules/slideshow.js';
+import "./style.css";
+import "./refinement.css";
+import "./reading-mode.css";
+import "./site-chrome.css";
 
-document.addEventListener('DOMContentLoaded', () => {
+
+
+import { setupReadingMode } from "./modules/reading-mode.js";
+
+import { setupTableControls, setupSorting } from "./modules/table.js";
+import { loadData } from "./modules/data.js";
+import {
+  setupNavToggle,
+  setupNavLinks,
+  updateActiveNav,
+} from "./modules/nav.js";
+import {
+  setupBudgetSlideshow,
+  setupVideoControls,
+} from "./modules/slideshow.js";
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  setupReadingMode();
   setupNavToggle();
   setupNavLinks();
-  import('./modules/table.js').then(m => { m.setupTableControls(); m.setupExportModal(); m.setupSorting(); });
+  setupTableControls();
+  setupSorting();
   setupBudgetSlideshow();
   setupVideoControls();
-  window.addEventListener('scroll', updateActiveNav);
+  window.addEventListener("scroll", updateActiveNav);
   updateActiveNav();
   loadData();
 });
+
+
+
+
+
+
