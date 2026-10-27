@@ -3610,3 +3610,12 @@ html:not(.motion-off) .motion-choice {
   min-height: 36px;
   font-size: 12px;
 }
+
+/* the sticky header sits over rows scrolling underneath it, so it needs a solid
+   background and must not blend (the glass text rule multiplies it into the rows) */
+.records thead th {
+  z-index: 1;
+  background: rgb(250 245 237);
+  mix-blend-mode: normal;
+  box-shadow: inset 0 -1px 0 rgb(48 44 39 / 0.08);
+}
