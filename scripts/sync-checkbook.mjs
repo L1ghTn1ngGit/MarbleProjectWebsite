@@ -15,6 +15,7 @@ import { join } from 'node:path';
 import { CHECKBOOK_API_URL as API_URL, PAGE_SIZE, currentFiscalYear, parseResponse, requestXml } from '../src/data/checkbook.js';
 
 const PAUSE_MS = 1500;     // be polite between requests
+const TIMEOUT_MS = 60000;  // a stuck request fails instead of hanging the sync
 
 const args = parseArgs(process.argv.slice(2));
 const outDir = args.out || 'public/data';
@@ -63,7 +64,15 @@ async function post(body, attempt = 1) {
     method: 'POST',
     headers: { 'Content-Type': 'application/xml', 'User-Agent': 'MarbleFoundation-budget-sync/1.0' },
     body,
+    signal: AbortSignal.timeout(TIMEOUT_MS),
+  }).catch((error) => {
+    if (attempt < 3) return null;
+    throw error;
   });
+  if (!res) {
+    await sleep(PAUSE_MS * attempt * 2);
+    return post(body, attempt + 1);
+  }
   const text = await res.text();
   if (res.ok && text.startsWith('<?xml')) return text;
   if (attempt < 3) {
@@ -74,9 +83,12 @@ async function post(body, attempt = 1) {
 }
 
 function parseYears(spec) {
-  const [a, b] = String(spec).split('-').map(Number);
+  const [a, b = a] = String(spec).split('-').map(Number);
+  if (!Number.isInteger(a) || !Number.isInteger(b) || a < 2010 || b > currentFiscalYear() + 1 || a > b) {
+    throw new Error(`--years must look like 2023 or 2023-2025, between 2010 and ${currentFiscalYear() + 1}`);
+  }
   const out = [];
-  for (let y = a; y <= (b || a); y++) out.push(y);
+  for (let y = a; y <= b; y++) out.push(y);
   return out;
 }
 

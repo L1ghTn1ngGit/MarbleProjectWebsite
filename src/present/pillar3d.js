@@ -122,6 +122,7 @@ export async function mountPillars({ isStill, lowDetail = false, pixelBudget = 4
 
   let drawn = 0;
   let lastKey = "";
+  let wasVisible = true;
   function render(time) {
     frame = 0;
     if (disposed || document.hidden) return;
@@ -148,7 +149,11 @@ export async function mountPillars({ isStill, lowDetail = false, pixelBudget = 4
     }
     // when only the slow idle spin changes, 30fps is plenty
     const key = `${rect.left}|${rect.top}|${rect.width}|${rect.height}|${opacity}`;
-    if (key !== lastKey || time - drawn > 31 || still) {
+    // once a hidden pillar has been cleared there is nothing to redraw
+    if (!pillar.visible && !wasVisible) {
+      lastKey = key;
+    } else if (key !== lastKey || time - drawn > 31 || still) {
+      wasVisible = pillar.visible;
       renderer.render(scene, camera);
       drawn = time;
       lastKey = key;

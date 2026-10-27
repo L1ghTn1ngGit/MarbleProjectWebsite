@@ -132,7 +132,12 @@ button {
 
 #marble-bg {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  /* the large viewport, so the address bar sliding on phones doesn't resize the canvas */
+  height: 100vh;
+  height: 100lvh;
   z-index: -1;
   pointer-events: none;
   background: #f3ebdf url("/marble-veins.svg") center / cover;
@@ -3496,6 +3501,11 @@ html::-webkit-scrollbar {
 }
 .table-open .records__head p {
   display: none;
+}
+/* lenis marks data-lenis-prevent as overscroll: contain; off the stage the table is
+   page-tall and never scrolls itself, so swipes on it have to reach the page */
+:root:not(.stage-on) .records .table-wrap {
+  overscroll-behavior: auto;
 }
 
 /* edges blend a hair into the marble: a soft half pixel halo around each pane */

@@ -35,18 +35,7 @@
       html.is-loading{overflow:hidden;scrollbar-width:none}
       html.is-loading::-webkit-scrollbar{display:none}
     </style>
-    <script>
-      if ("scrollRestoration" in history) history.scrollRestoration = "manual";
-      var still = matchMedia("(prefers-reduced-motion: reduce)").matches;
-      try {
-        localStorage.setItem("marble-visited", "1");
-        if (localStorage.getItem("marble-motion") === "on") still = false;
-        if (!sessionStorage.getItem("marble-switch") && !still)
-          document.documentElement.classList.add("is-loading");
-        sessionStorage.removeItem("marble-switch");
-      } catch {}
-      if (still) document.documentElement.classList.add("motion-off");
-    </script>
+    <script src="/boot-presentation.js"></script>
     <script type="module" src="/src/present/present.js"></script>
   </head>
   <body>

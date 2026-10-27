@@ -28,10 +28,10 @@ export function generateInsights() {
         "alert",
         `
       <h3>${getIcon("alert")} Largest Overrun</h3>
-      <p><strong>${maxRow.__departmentDisplay || toDisplayName(maxRow.Department)}</strong></p>
-      <p title="${escapeHtml(maxRow.__departmentDescription || getDepartmentDescription(maxRow.Department))}">${maxRow.__programDisplay || toDisplayName(maxRow["Budget Name"])}</p>
+      <p><strong>${escapeHtml(maxRow.__departmentDisplay || toDisplayName(maxRow.Department))}</strong></p>
+      <p title="${escapeHtml(maxRow.__departmentDescription || getDepartmentDescription(maxRow.Department))}">${escapeHtml(maxRow.__programDisplay || toDisplayName(maxRow["Budget Name"]))}</p>
       <div class="amount">${formatCurrency(maxAmount)}</div>
-      <p class="muted-note">over working budget in ${maxRow.Year}</p>
+      <p class="muted-note">over working budget in ${escapeHtml(maxRow.Year)}</p>
     `,
       ),
     );
@@ -132,7 +132,7 @@ export function generateWorstOffenders() {
       </div>
       <div class="overrun-figures">
         <span class="overrun-amount">${formatCurrency(o.overrun)} over</span>
-        <span class="overrun-detail">${o.overrunPct.toFixed(1)}% above a ${formatCurrency(o.__modified ?? (parseFloat(o["Modified"]) || 0))} budget · FY${o.Year}</span>
+        <span class="overrun-detail">${o.overrunPct.toFixed(1)}% above a ${formatCurrency(o.__modified ?? (parseFloat(o["Modified"]) || 0))} budget · FY${escapeHtml(o.Year)}</span>
       </div>
       <div class="overrun-bar" style="--b:${(100 / (1 + o.overrunPct / 100)).toFixed(2)}%" aria-hidden="true"><span class="overrun-bar__budget"></span><span class="overrun-bar__over"></span></div>`;
     list.appendChild(li);

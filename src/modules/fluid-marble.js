@@ -82,10 +82,14 @@ export function mountFluidMarble(host, { reducedMotion = false, maxRatio = 1.25 
       current += (target - current) * Math.min(1, dt * 6);
     }
     last = t;
+    draw();
+    if (animate()) frame = requestAnimationFrame(render);
+  }
+  function draw() {
+    if (gl.isContextLost()) return;
     gl.uniform1f(uTime, clock);
     gl.uniform1f(uProgress, reducedMotion ? 0 : current);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-    if (animate()) frame = requestAnimationFrame(render);
   }
   const request = () => {
     if (!frame && !disposed && !document.hidden)
@@ -94,12 +98,23 @@ export function mountFluidMarble(host, { reducedMotion = false, maxRatio = 1.25 
   const resize = () => {
     const rect = host.getBoundingClientRect();
     const ratio = Math.min(devicePixelRatio || 1, maxRatio);
-    canvas.width = Math.max(1, Math.round(rect.width * ratio));
-    canvas.height = Math.max(1, Math.round(rect.height * ratio));
-    gl.viewport(0, 0, canvas.width, canvas.height);
+    const w = Math.max(1, Math.round(rect.width * ratio));
+    const h = Math.max(1, Math.round(rect.height * ratio));
+    // setting the size wipes the canvas, so skip no-op resizes and repaint straight away
+    if (w === canvas.width && h === canvas.height) return;
+    canvas.width = w;
+    canvas.height = h;
+    gl.viewport(0, 0, w, h);
     gl.uniform1f(uAspect, rect.width / Math.max(1, rect.height));
+    draw();
     request();
   };
+  // phones drop webgl under memory pressure; let the still marble behind it show instead of a blank
+  canvas.addEventListener("webglcontextlost", () => {
+    disposed = true;
+    cancelAnimationFrame(frame);
+    canvas.style.visibility = "hidden";
+  });
   const observer = new ResizeObserver(resize);
   observer.observe(host);
   const visibility = () => {

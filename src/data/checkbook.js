@@ -54,6 +54,10 @@ function decode(s) {
     .replace(/&gt;/g, ">")
     .replace(/&quot;/g, '"')
     .replace(/&apos;/g, "'")
+    .replace(/&#(x[0-9a-f]+|\d+);/gi, (entity, code) => {
+      const point = code[0].toLowerCase() === "x" ? parseInt(code.slice(1), 16) : Number(code);
+      return point > 0 && point <= 0x10ffff ? String.fromCodePoint(point) : entity;
+    })
     .replace(/&amp;/g, "&");
 }
 
