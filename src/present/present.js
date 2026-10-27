@@ -251,16 +251,22 @@ function choreograph(progress, on) {
     // section passes underneath it, following its outline (wider capital and base)
     for (const part of wipeParts(scene)) {
       let clip = "";
-      if (mode === "none") clip = "inset(0 100% 0 0)";
+      let gone = mode === "none";
+      if (gone) clip = "inset(0 100% 0 0)";
       else if (mode !== "all") {
         const box = part.getBoundingClientRect();
-        // only the moving edge is cut; the other sides leave room for the shadow
+        // the moving edge is cut exactly at the pillar; the other sides leave room for the
+        // shadow. the cut may run past the box by the same margin, so a card that is fully
+        // on the hidden side loses its shadow and glass edge too instead of leaving an outline
         const pad = -80;
-        clip = mode === "show-left" ? `inset(${pad}px ${clamp(box.right - px, pad, box.width).toFixed(1)}px ${pad}px ${pad}px)` : `inset(${pad}px ${pad}px ${pad}px ${clamp(px - box.left, pad, box.width).toFixed(1)}px)`;
+        const cut = mode === "show-left" ? box.right - px : px - box.left;
+        if (cut >= box.width - pad) gone = true;
+        const inset = clamp(cut, pad, box.width - pad).toFixed(1);
+        clip = gone ? "inset(0 100% 0 0)" : mode === "show-left" ? `inset(${pad}px ${inset}px ${pad}px ${pad}px)` : `inset(${pad}px ${pad}px ${pad}px ${inset}px)`;
       }
       part.style.clipPath = clip;
       part.style.opacity = on && opacity < 1 ? opacity.toFixed(3) : "";
-      part.style.visibility = on && (mode === "none" || opacity <= 0.001) ? "hidden" : "";
+      part.style.visibility = on && (gone || opacity <= 0.001) ? "hidden" : "";
     }
   });
 
