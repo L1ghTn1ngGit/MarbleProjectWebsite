@@ -40,15 +40,16 @@
   </head>
   <body>
     <a class="skip" href="#overview">Skip to the spending overview</a>
-    <div class="loader" aria-hidden="true">
-      <img src="/brand/marble-foundation.svg" alt="" width="132" height="52" />
-      <p class="loader__count"><span data-loader-count>0</span>%</p>
-      <span class="loader__bar"><i></i></span>
-      <ol class="loader__log">
+    <div class="loader">
+      <img src="/brand/marble-foundation.svg" alt="" width="132" height="52" aria-hidden="true" />
+      <p class="loader__count" aria-hidden="true"><span data-loader-count>0</span>%</p>
+      <span class="loader__bar" aria-hidden="true"><i></i></span>
+      <ol class="loader__log" aria-hidden="true">
         <li data-step="fetch">Contacting Checkbook NYC</li>
         <li data-step="parse">Reading budget lines</li>
         <li data-step="build">Building the analysis</li>
       </ol>
+      <a class="loader__slow" href="/?view=journalist" tabindex="-1">Taking too long to load? Use Journalist mode instead</a>
     </div>
     <div id="marble-bg" aria-hidden="true"></div>
     <div class="pillar-stage" aria-hidden="true"></div>

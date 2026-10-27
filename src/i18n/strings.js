@@ -1082,6 +1082,13 @@ export const STRINGS = {
     ht: "Ap prepare analiz la",
     bn: "বিশ্লেষণ তৈরি হচ্ছে",
   },
+  "Taking too long to load? Use Journalist mode instead": {
+    es: "¿Tarda demasiado en cargar? Usa el modo Periodista",
+    zh: "加载太慢？改用记者模式",
+    ru: "Загрузка затянулась? Откройте режим журналиста",
+    ht: "Li pran twòp tan pou chaje? Sèvi ak mòd Jounalis la",
+    bn: "লোড হতে বেশি সময় লাগছে? সাংবাদিক মোড ব্যবহার করুন",
+  },
   "The budget data could not load. Check your connection, then retry.": {
     es: "No se pudieron cargar los datos. Revisa tu conexión e inténtalo de nuevo.",
     zh: "无法加载预算数据。请检查网络连接后重试。",

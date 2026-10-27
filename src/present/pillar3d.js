@@ -120,7 +120,6 @@ export async function mountPillars({ isStill, lowDetail = false, pixelBudget = 4
     positions.needsUpdate = true;
     geometry.computeBoundingSphere();
   }
-  let half = 0;
 
   let width = 0, height = 0, frame = 0, last = 0, idle = 0, disposed = false;
 
@@ -169,8 +168,7 @@ export async function mountPillars({ isStill, lowDetail = false, pixelBudget = 4
 
       // as wide as the stage allows, with the shaft lengthened to reach the full height
       const scale = Math.min(rect.height, rect.width / modelWidth);
-      stretch(Math.min(1.8, rect.height / scale));
-      half = (scale * modelWidth) / 2;
+      stretch(Math.min(5, rect.height / scale));
       pillar.scale.setScalar(scale);
       pillar.position.set(rect.width / 2, -rect.height, 0);
 
@@ -207,8 +205,6 @@ export async function mountPillars({ isStill, lowDetail = false, pixelBudget = 4
 
   return {
     refresh: request,
-    // half the pillar's drawn width, so content can be cut at its surface
-    halfWidth: () => half,
 
     renderNow() {
       cancelAnimationFrame(frame);
