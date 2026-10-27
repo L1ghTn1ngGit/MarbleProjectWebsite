@@ -216,7 +216,9 @@ function choreograph(progress, on) {
   rolls.forEach(({ scene, t, x: sceneX }, i) => {
     const next = rolls[i + 1];
 
-    const keyboardFocus = scene.pin.contains(document.activeElement) && document.activeElement.matches(":focus-visible");
+    // keyboard focus keeps a section drawn only while it is the one on screen; otherwise a
+    // focused search box would paint the table over every section the reader scrolls to
+    const keyboardFocus = scene.pin.contains(document.activeElement) && document.activeElement.matches(":focus-visible") && t > 0 && !(next && next.t >= 1);
 
     let mode = "all";
     let px = 0;
@@ -341,7 +343,9 @@ document.addEventListener(
     event.preventDefault();
     if (root.classList.contains("table-open")) setTableOpen(false);
     const top = stageTarget(scene);
-    if (lenis) lenis.scrollTo(top, { duration: 1.4 });
+    // lenis's own anchor handling ignores preventDefault and runs after this, scrolling to
+    // the section element's raw spot near the stage start; go after it so this target wins
+    if (lenis) setTimeout(() => lenis?.scrollTo(top, { duration: 1.4 }), 0);
     else window.scrollTo({ top });
   },
   true,

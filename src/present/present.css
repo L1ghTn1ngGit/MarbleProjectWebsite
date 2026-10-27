@@ -3505,9 +3505,10 @@ html::-webkit-scrollbar {
 .table-open .records__head p {
   display: none;
 }
-/* lenis marks data-lenis-prevent as overscroll: contain; off the stage the table is
-   page-tall and never scrolls itself, so swipes on it have to reach the page */
-:root:not(.stage-on) .records .table-wrap {
+/* lenis marks data-lenis-prevent as overscroll: contain; with the table collapsed a
+   wheel or swipe that reaches the end of the rows has to carry on to the page (on
+   phones the table is page-tall and never scrolls itself) */
+:root:not(.table-open) .records .table-wrap {
   overscroll-behavior: auto;
 }
 
