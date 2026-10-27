@@ -59,7 +59,38 @@ function startLenis() {
     cancelAnimationFrame(frame);
     update();
     pillars?.renderNow();
+    scheduleSettle();
   });
+}
+
+// stop scrolling halfway through a roll and it eases on to the closest
+// finished section, forward or back
+let settleTimer = 0;
+let userInputAt = 0;
+let settling = false;
+for (const type of ["wheel", "touchmove", "keydown"]) addEventListener(type, () => (userInputAt = performance.now()), { passive: true });
+function scheduleSettle() {
+  if (settling) return;
+  clearTimeout(settleTimer);
+  settleTimer = setTimeout(settle, 220);
+}
+function settle() {
+  if (!lenis || !root.classList.contains("stage-on") || root.classList.contains("is-rewinding") || root.classList.contains("table-open")) return;
+  if (document.getElementById("tour")?.getAttribute("aria-pressed") === "true") return;
+  if (performance.now() - userInputAt > 1500) return;
+  const y = scrollY;
+  const local = y - stageTop;
+  const index = story.findIndex((scene) => local >= scene.start && local < scene.start + scene.length);
+  if (index < 1) return;
+  const scene = story[index];
+  const p = (local - scene.start) / scene.length;
+  if (p <= 0.01 || p >= rollShare(scene)) return;
+  const back = scene.top - 2;
+  const ahead = stageTarget(scene);
+  const to = Math.abs(y - back) < Math.abs(ahead - y) ? back : ahead;
+  settling = true;
+  lenis.scrollTo(to, { duration: 0.9, easing: easeInOut, onComplete: () => (settling = false) });
+  setTimeout(() => (settling = false), 1200);
 }
 function stopLenis() {
   lenis?.destroy();
