@@ -1564,4 +1564,7 @@ export const STRINGS = {
   },
   "Expand table": { es: "Ampliar tabla", zh: "展开表格", ru: "Развернуть таблицу", ht: "Agrandi tablo a", bn: "সারণি বড় করুন" },
   "Close table": { es: "Cerrar tabla", zh: "收起表格", ru: "Свернуть таблицу", ht: "Fèmen tablo a", bn: "সারণি বন্ধ করুন" },
+  "Turn animations on": { es: "Activar animaciones", zh: "开启动画", ru: "Включить анимацию", ht: "Limen animasyon yo", bn: "অ্যানিমেশন চালু করুন" },
+  "Reduce motion": { es: "Reducir movimiento", zh: "减少动画", ru: "Меньше анимации", ht: "Redui mouvman", bn: "গতি কমান" },
+  "Your device is set to reduce motion": { es: "Su dispositivo está configurado para reducir el movimiento", zh: "您的设备已设置为减少动态效果", ru: "На устройстве включено уменьшение движения", ht: "Aparèy ou a regle pou redui mouvman", bn: "আপনার ডিভাইসে গতি কমানো চালু আছে" },
 };

@@ -32,7 +32,15 @@ const percent = (value, digits = 0) => (Number.isFinite(value) ? `${(value * 100
 const ratio = (a, b, max = Infinity) => (b > 0 ? Math.min(max, a / b) : 0);
 
 
-export const isStill = () => systemReduced.matches;
+// os "reduce motion" is respected, but people can opt back in from the page
+const motionOptIn = (() => {
+  try {
+    return localStorage.getItem("marble-motion") === "on";
+  } catch {
+    return false;
+  }
+})();
+export const isStill = () => systemReduced.matches && !motionOptIn;
 
 let lenis = null;
 let frame = 0;
@@ -43,7 +51,7 @@ let pillars = null;
 const lite = new URLSearchParams(location.search).has("lite") || tier === "low";
 (lite ? Promise.reject(new Error("lite mode")) : import("../modules/fluid-marble.js"))
   .then(({ mountFluidMarble }) => {
-    marble = mountFluidMarble(document.getElementById("marble-bg"), { reducedMotion: systemReduced.matches, maxRatio: tier === "mid" ? 1 : 1.25 });
+    marble = mountFluidMarble(document.getElementById("marble-bg"), { reducedMotion: isStill(), maxRatio: tier === "mid" ? 1 : 1.25 });
     marble.setPaused(isStill());
     requestUpdate();
   })
@@ -939,7 +947,25 @@ document.addEventListener(
   true,
 );
 
+// little switch for people whose system asks for less motion
+function setupMotionChoice() {
+  if (!systemReduced.matches) return;
+  const button = el("button", "motion-choice chip");
+  button.type = "button";
+  button.textContent = motionOptIn ? t("Reduce motion") : t("Turn animations on");
+  button.title = t("Your device is set to reduce motion");
+  button.addEventListener("click", () => {
+    try {
+      if (motionOptIn) localStorage.removeItem("marble-motion");
+      else localStorage.setItem("marble-motion", "on");
+    } catch {}
+    location.reload();
+  });
+  document.body.append(button);
+}
+
 setupTilt();
+setupMotionChoice();
 requestAnimationFrame(() => root.classList.add("is-loaded"));
 applyStill();
 load();

@@ -1698,14 +1698,12 @@ td.empty {
   opacity: 1;
   translate: none;
 }
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 1ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 1ms !important;
-  }
+.motion-off *,
+.motion-off *::before,
+.motion-off *::after {
+  animation-duration: 1ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 1ms !important;
 }
 @media (prefers-reduced-transparency: reduce) {
   .glass,
@@ -3577,4 +3575,22 @@ html::-webkit-scrollbar {
 html:not(.stage-on) #tour,
 html:not(.stage-on) .nav__actions {
   display: none;
+}
+
+.motion-choice {
+  position: fixed;
+  right: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  z-index: 60;
+  min-height: 44px;
+  padding: 0 16px;
+  background: rgb(248 241 231 / 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: inset 1px 1px 0 rgb(255 255 255 / 0.7), 0 10px 24px -10px rgb(74 52 30 / 0.35);
+}
+html:not(.motion-off) .motion-choice {
+  opacity: 0.7;
+  min-height: 36px;
+  font-size: 12px;
 }
