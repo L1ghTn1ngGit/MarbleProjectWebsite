@@ -14,6 +14,7 @@ import { t } from "../i18n/index.js";
 import { setResumeKey, setupSiteChrome, takeResume } from "../modules/site-chrome.js";
 import { createLoader } from "../modules/loader.js";
 import { tier } from "../modules/device.js";
+document.documentElement.classList.add(`tier-${tier}`);
 
 
 setupSiteChrome("presentation");
@@ -202,7 +203,9 @@ function choreograph(progress, on) {
       if (mode === "none") clip = "inset(0 100% 0 0)";
       else if (mode !== "all") {
         const box = part.getBoundingClientRect();
-        clip = mode === "show-left" ? `inset(0 ${clamp(box.right - px, 0, box.width).toFixed(1)}px 0 0)` : `inset(0 0 0 ${clamp(px - box.left, 0, box.width).toFixed(1)}px)`;
+        // only the moving edge is cut; the other sides leave room for the shadow
+        const pad = -80;
+        clip = mode === "show-left" ? `inset(${pad}px ${clamp(box.right - px, pad, box.width).toFixed(1)}px ${pad}px ${pad}px)` : `inset(${pad}px ${pad}px ${pad}px ${clamp(px - box.left, pad, box.width).toFixed(1)}px)`;
       }
       part.style.clipPath = clip;
       part.style.opacity = on && opacity < 1 ? opacity.toFixed(3) : "";
