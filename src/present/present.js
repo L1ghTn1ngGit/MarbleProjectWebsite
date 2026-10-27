@@ -234,13 +234,13 @@ function choreograph(progress, on) {
     }
     scene.el.classList.toggle("is-live", !on || keyboardFocus || (t >= 1 && !(next?.t > 0)));
 
-    let opacity = 1;
-    if (on) {
-      const leaving = next && next.t > 0 ? 1 - next.t : 1;
-      const arriving = i === 0 ? firstArrival() : Math.min(1, 0.2 + t * 0.8);
-      opacity = arriving * leaving;
-    }
+    // sections stay solid and are only ever cut at the pillar, so they leave into it
+    // instead of thinning out first; the first one still fades in on arrival
+    const opacity = on && i === 0 ? firstArrival() : 1;
 
+    // cut at the pillar's surface, not its centre line, so nothing shows across it
+    const half = pillars?.halfWidth?.() || 0;
+    const edge = mode === "show-left" ? px - half : px + half;
     for (const part of wipeParts(scene)) {
       let clip = "";
       if (mode === "none") clip = "inset(0 100% 0 0)";
@@ -248,7 +248,7 @@ function choreograph(progress, on) {
         const box = part.getBoundingClientRect();
         // only the moving edge is cut; the other sides leave room for the shadow
         const pad = -80;
-        clip = mode === "show-left" ? `inset(${pad}px ${clamp(box.right - px, pad, box.width).toFixed(1)}px ${pad}px ${pad}px)` : `inset(${pad}px ${pad}px ${pad}px ${clamp(px - box.left, pad, box.width).toFixed(1)}px)`;
+        clip = mode === "show-left" ? `inset(${pad}px ${clamp(box.right - edge, pad, box.width).toFixed(1)}px ${pad}px ${pad}px)` : `inset(${pad}px ${pad}px ${pad}px ${clamp(edge - box.left, pad, box.width).toFixed(1)}px)`;
       }
       part.style.clipPath = clip;
       part.style.opacity = on && opacity < 1 ? opacity.toFixed(3) : "";

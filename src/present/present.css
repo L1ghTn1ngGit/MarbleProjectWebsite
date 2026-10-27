@@ -3176,11 +3176,14 @@ tbody tr:nth-child(even) {
 .slide__visual--video video {
   object-fit: contain;
 }
+/* stacked layout: size from the column width so the frame stays 16:9; full height
+   with a capped width squashed it and letterboxed the video in dark bars */
 @media (max-width: 900px) {
   .slide__visual--video {
-    width: auto;
-    max-width: 100%;
-    height: 100%;
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    align-self: center;
   }
 }
 
