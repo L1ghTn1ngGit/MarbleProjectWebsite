@@ -25,6 +25,12 @@ document.documentElement.lang = meta.html || meta.code;
 
 const norm = (text) => text.replace(/\s+/g, " ").trim();
 
+// lets the page remember where the reader was before a language reload
+let beforeSwitch = () => {};
+export function onLanguageSwitch(fn) {
+  beforeSwitch = fn;
+}
+
 export function t(english, vars = {}) {
   const entry = STRINGS[english];
   const text = (lang !== "en" && entry?.[lang]) || english;
@@ -128,6 +134,7 @@ export function setupLangMenu() {
         try {
           localStorage.setItem(STORAGE_KEY, item.code);
         } catch {}
+        beforeSwitch();
         const url = new URL(location.href);
         url.searchParams.delete("lang");
         location.assign(url);

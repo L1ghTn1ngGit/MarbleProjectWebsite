@@ -1,4 +1,4 @@
-import { setupLangMenu, translateDom } from "../i18n/index.js";
+import { onLanguageSwitch, setupLangMenu, translateDom } from "../i18n/index.js";
 
 
 const RESUME_KEY = "marble-resume";
@@ -51,6 +51,7 @@ export function setupModeSwitch(current) {
 }
 
 export function setupSiteChrome(current) {
+  onLanguageSwitch(markSwitch);
   translateDom();
   setupModeSwitch(current);
   setupLangMenu();

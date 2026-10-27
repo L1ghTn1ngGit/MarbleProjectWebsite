@@ -9,3 +9,14 @@ try {
   sessionStorage.removeItem("marble-switch");
 } catch {}
 if (still) document.documentElement.classList.add("motion-off");
+// cross-page view transitions: when the browser skips one, its promises reject with
+// nobody listening and land in the console as uncaught errors
+for (const type of ["pageswap", "pagereveal"]) {
+  addEventListener(type, function (event) {
+    var transition = event.viewTransition;
+    if (!transition) return;
+    transition.ready.catch(function () {});
+    transition.finished.catch(function () {});
+    transition.updateCallbackDone.catch(function () {});
+  });
+}
