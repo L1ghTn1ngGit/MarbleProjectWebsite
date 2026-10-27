@@ -3180,16 +3180,17 @@ tbody tr:nth-child(even) {
 }
 
 
+/* on phones only the us map closes in on nyc, the borough map stays whole */
 @media (max-width: 760px) {
-  .slide__visual--map {
+  .slide__visual--us {
     overflow: hidden;
     border-radius: var(--r-md);
   }
-  .slide__visual--map img {
+  .slide__visual--us img {
     transform-origin: var(--nyc-x, 91%) var(--nyc-y, 31%);
     transform: scale(3.2);
   }
-  .slide__visual--map::after {
+  .slide__visual--us::after {
     content: "";
     position: absolute;
     inset: 0;
