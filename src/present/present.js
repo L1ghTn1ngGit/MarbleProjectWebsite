@@ -138,8 +138,10 @@ function measure() {
   const on = unrolling();
   root.classList.toggle("stage-on", on);
 
-  const frameW = frameEl.clientWidth || innerWidth;
-  const distance = on ? Math.max(0, overTrack.scrollWidth - frameW) : 0;
+  // the cards slide into the pillar until the last one sits where the intro started
+  const first = overTrack.firstElementChild;
+  const last = overTrack.lastElementChild;
+  const distance = on && first && last ? Math.max(0, last.offsetLeft - first.offsetLeft) : 0;
   overScene.dataset.distance = String(distance);
   if (!on) {
     stageEl.style.height = "";
@@ -224,11 +226,13 @@ function choreograph(progress, on) {
 
         mode = next.scene.el.dataset.dir === "ltr" ? "show-right" : "show-left";
         px = next.x;
-      } else if (t < 1) {
+      } else if (t < 1 || scene.el === overScene) {
+        // overruns stay cut at the pillar while parked so the cards slide into it
         mode = scene.el.dataset.dir === "ltr" ? "show-left" : "show-right";
         px = sceneX;
       }
     }
+    scene.el.classList.toggle("is-live", !on || keyboardFocus || (t >= 1 && !(next?.t > 0)));
 
     let opacity = 1;
     if (on) {
@@ -335,6 +339,7 @@ document.addEventListener(
     const scene = target && story.find((item) => item.el.contains(target) || target.contains(item.el));
     if (!scene) return;
     event.preventDefault();
+    if (root.classList.contains("table-open")) setTableOpen(false);
     const top = stageTarget(scene);
     if (lenis) lenis.scrollTo(top, { duration: 1.4 });
     else window.scrollTo({ top });
@@ -396,6 +401,9 @@ function setTableOpen(open) {
   root.classList.toggle("table-open", open);
   expandButton?.setAttribute("aria-pressed", String(open));
   if (expandButton) expandButton.textContent = t(open ? "Close table" : "Expand table");
+  // an open table holds the page still, so the wheel only moves the rows
+  if (open) lenis?.stop();
+  else lenis?.start();
   requestUpdate();
 }
 expandButton?.addEventListener("click", () => setTableOpen(!root.classList.contains("table-open")));
