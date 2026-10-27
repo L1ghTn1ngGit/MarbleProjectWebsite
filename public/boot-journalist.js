@@ -29,3 +29,9 @@ for (const type of ["pageswap", "pagereveal"]) {
     transition.updateCallbackDone.catch(function () {});
   });
 }
+// a language switch reloads the same url; chrome tends to abort that transition
+// with an error nothing can catch, so skip it up front
+addEventListener("pageswap", function (event) {
+  var entry = event.activation && event.activation.entry;
+  if (event.viewTransition && entry && entry.url === location.href) event.viewTransition.skipTransition();
+});

@@ -14,7 +14,7 @@ float v=abs(sin(river*2.7));float vein=1.-smoothstep(.015,.11,v);float halo=1.-s
 float fine=1.-smoothstep(.007,.025,abs(sin(river*8.1+fbm(w*5.)*.45)));
 vec3 ivory=vec3(.972,.944,.902);vec3 color=mix(ivory,vec3(.66,.59,.50),vein*.36+halo*.12);color=mix(color,vec3(.69,.60,.44),fine*.09);
 float e=.008;float h=surface(p);vec2 slope=vec2(surface(p+vec2(e,0.))-h,surface(p+vec2(0.,e))-h)/e;
-vec3 normal=normalize(vec3(-slope*.7,1.));vec3 light=normalize(vec3(-.4,.6,1.));float diffuse=max(0.,dot(normal,light));float spec=pow(max(0.,dot(reflect(-light,normal),vec3(0.,0.,1.))),26.);
+vec3 normal=normalize(vec3(-slope*.45,1.));vec3 light=normalize(vec3(-.4,.6,1.));float diffuse=max(0.,dot(normal,light));float spec=pow(max(0.,dot(reflect(-light,normal),vec3(0.,0.,1.))),26.);
 color*=.83+diffuse*.19;color+=spec*.12;color+=fbm(w*.6)*.025;gl_FragColor=vec4(color,1.);
 }`;
 

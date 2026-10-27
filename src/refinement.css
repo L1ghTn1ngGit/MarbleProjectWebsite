@@ -483,3 +483,18 @@ body {
     max-width: 100%;
   }
 }
+
+/* long translated chart titles and options (ru, es) were widening the grid track past the screen */
+.charts-container > * {
+  min-width: 0;
+}
+@media (max-width: 760px) {
+  .chart-header {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .chart-controls,
+  .chart-toggle {
+    max-width: 100%;
+  }
+}
