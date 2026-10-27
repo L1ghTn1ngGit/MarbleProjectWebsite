@@ -23,7 +23,7 @@ const root = document.documentElement;
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 const systemReduced = matchMedia("(prefers-reduced-motion: reduce)");
-const compact = matchMedia("(max-width: 760px), (max-height: 500px), (pointer: coarse) and (max-width: 1100px)");
+const compact = matchMedia("(max-width: 760px), (max-height: 400px), (pointer: coarse) and (max-width: 1100px)");
 const clamp = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
 const ease = (t) => 1 - Math.pow(1 - t, 3);
 const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
@@ -110,7 +110,7 @@ const navEl = $(".nav");
 const subnavEl = $(".subnav");
 
 const stage = $(".pillar-stage");
-const unrollQuery = matchMedia("(min-width: 761px) and (min-height: 501px) and ((pointer: fine) or (min-width: 1101px))");
+const unrollQuery = matchMedia("(min-width: 761px) and (min-height: 401px) and ((pointer: fine) or (min-width: 1101px))");
 const unrolling = () => unrollQuery.matches && !isStill() && root.classList.contains("pillars-ready");
 const ROLL = { over: 0.28 };
 const rollShare = (scene) => ROLL[scene.name] ?? 0.5;
@@ -878,7 +878,7 @@ new ResizeObserver(() => {
 
 
 function mountPillarLayer() {
-  const lowEnd = tier === "low" || (navigator.hardwareConcurrency || 8) < 4 || (navigator.deviceMemory || 8) < 4;
+  const lowEnd = tier === "low";
   if (lowEnd) {
     root.classList.add("no-pillars");
     return;
