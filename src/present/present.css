@@ -3572,3 +3572,9 @@ html::-webkit-scrollbar {
     min-height: 48px;
   }
 }
+
+/* the tour only makes sense with the pillar stage running */
+html:not(.stage-on) #tour,
+html:not(.stage-on) .nav__actions {
+  display: none;
+}
