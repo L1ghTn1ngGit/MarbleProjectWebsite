@@ -243,9 +243,17 @@ function choreograph(progress, on) {
     }
     scene.el.classList.toggle("is-live", !on || keyboardFocus || (t >= 1 && !(next?.t > 0)));
 
-    // sections stay solid and are only ever cut at the pillar, so they leave into it
-    // instead of thinning out first; the first one still fades in on arrival
-    const opacity = on && i === 0 ? firstArrival() : 1;
+    // sections stay solid and are cut at the pillar for almost the whole roll. only the
+    // ends are eased: the strip of a card already past the pillar's starting point fades
+    // in over the first 12% instead of popping, and the old section fades out over the
+    // last 12%, when almost all of it is already behind the pillar
+    const EDGE = 0.12;
+    let opacity = 1;
+    if (on) {
+      const arriving = i === 0 ? firstArrival() : clamp(t / EDGE);
+      const leaving = next && next.t > 0 ? clamp((1 - next.t) / EDGE) : 1;
+      opacity = ease(arriving) * ease(leaving);
+    }
 
     // cut at the pillar's centre line; the solid pillar is drawn above the content, so the
     // section passes underneath it, following its outline (wider capital and base)
