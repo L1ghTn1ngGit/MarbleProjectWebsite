@@ -1941,9 +1941,10 @@ td.empty {
   animation-duration: 450ms;
   animation-timing-function: var(--ease-in-out);
 }
+/* the old page stays opaque underneath while the new one fades in on top; fading both
+   at once let the white page base show through mid-switch */
 @keyframes vt-out {
   to {
-    opacity: 0;
     transform: scale(0.985);
     filter: blur(4px);
   }
