@@ -20,7 +20,9 @@ export function createLoader() {
 
 
   const start = performance.now();
-  const duration = 1000 + Math.random() * 500;
+  // a mode switch only needs a brief veil; a first visit gets the full count-up
+  const switching = root.classList.contains("is-switching");
+  const duration = switching ? 450 : 1000 + Math.random() * 500;
   let target = 0;
   let shown = 0;
   let timer = 0;
@@ -58,7 +60,7 @@ export function createLoader() {
       sessionStorage.setItem("marble-loaded", "1");
     } catch {}
     root.classList.add("is-loaded-in");
-    root.classList.remove("is-loading");
+    root.classList.remove("is-loading", "is-switching");
     setTimeout(() => loader.remove(), 600);
     const logo = loader.querySelector("img");
     document.dispatchEvent(new CustomEvent("marble:loader-hidden", { detail: { logo, from: logo?.getBoundingClientRect() } }));

@@ -868,8 +868,11 @@ async function load() {
     markDataReady();
     // the loader stays up until what the opening screen shows has really arrived:
     // marble, pillar, fonts and the first images, never longer than 12s
-    const openingImages = $$("#highlights img, [data-scene='roll'] img").map((img) => img.decode().catch(() => {}));
-    const parts = [marbleReady, pillarsReady, document.fonts?.ready, ...openingImages];
+    // lazy images (later slides) only load near the screen, so waiting on them would just run
+    // out the clock; each part also gets its own 4s limit so one slow item cannot hold the rest
+    const openingImages = $$("#highlights img, [data-scene='roll'] img").filter((img) => img.loading !== "lazy").map((img) => img.decode().catch(() => {}));
+    const capped = (promise) => Promise.race([promise, new Promise((resolve) => setTimeout(resolve, 4000))]);
+    const parts = [marbleReady, pillarsReady, document.fonts?.ready, ...openingImages].map(capped);
     let settled = 0;
     const track = (promise) => Promise.resolve(promise).finally(() => loader.assets(++settled / parts.length));
     await Promise.race([Promise.all(parts.map(track)), new Promise((resolve) => setTimeout(resolve, 12000))]);

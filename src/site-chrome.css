@@ -423,3 +423,21 @@ body::after {
     display: none;
   }
 }
+
+
+/* switching modes: a quiet veil (logo and a thin bar) instead of the full count-up,
+   held until the next page really has what it needs */
+html {
+  background-color: var(--paper, #f8f1e7);
+}
+.is-switching .loader {
+  gap: 18px;
+}
+.is-switching .loader__count,
+.is-switching .loader__log {
+  display: none;
+}
+.is-switching .loader__bar {
+  width: min(160px, 50vw);
+  height: 2px;
+}

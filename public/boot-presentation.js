@@ -4,8 +4,10 @@ var still = matchMedia("(prefers-reduced-motion: reduce)").matches;
 try {
   localStorage.setItem("marble-visited", "1");
   if (localStorage.getItem("marble-motion") === "on") still = false;
-  if (!sessionStorage.getItem("marble-switch") && !still)
-    document.documentElement.classList.add("is-loading");
+  // a first visit gets the full loader; arriving from the other mode gets a light veil
+  // that holds only until the marble and pillar are ready
+  if (!still) document.documentElement.classList.add("is-loading");
+  if (!still && sessionStorage.getItem("marble-switch")) document.documentElement.classList.add("is-switching");
   sessionStorage.removeItem("marble-switch");
 } catch {}
 if (still) document.documentElement.classList.add("motion-off");

@@ -11,11 +11,12 @@ try {
     localStorage.setItem("marble-visited", "1");
     location.replace("/presentation.html" + location.search + location.hash);
   } else localStorage.setItem("marble-visited", "1");
-  if (
-    !sessionStorage.getItem("marble-switch") &&
-    !matchMedia("(prefers-reduced-motion: reduce)").matches
-  )
+  // a first visit gets the full loader; arriving from the other mode gets a light veil
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
     document.documentElement.classList.add("is-loading");
+    if (sessionStorage.getItem("marble-switch"))
+      document.documentElement.classList.add("is-switching");
+  }
   sessionStorage.removeItem("marble-switch");
 } catch (e) {}
 // cross-page view transitions: when the browser skips one, its promises reject with
