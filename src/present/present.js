@@ -899,7 +899,7 @@ function showSourceNote(meta) {
 
 
 const deck = setupDeck({ isStill });
-const tour = setupTour({ isStill, getLenis, getScene, measure, deck });
+const tour = setupTour({ isStill, getLenis, getScene, measure, deck, rewindMotion });
 
 function applyStill() {
   const still = isStill();
@@ -961,28 +961,34 @@ function mountPillarLayer() {
 
 
 const REWIND = '[data-rewind], a[href="#top"]';
+// the 2s glide back to the top, shared by the logo/rewind links and the tour
+function rewindMotion() {
+  return new Promise((resolve) => {
+    const lenisNow = getLenis();
+    if (!lenisNow || isStill()) {
+      window.scrollTo({ top: 0, behavior: "auto" });
+      resolve();
+      return;
+    }
+    let finished = false;
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      root.classList.remove("is-rewinding");
+      resolve();
+    };
+    root.classList.add("is-rewinding");
+    lenisNow.scrollTo(0, { duration: 2, easing: easeInOut, lock: true, force: true, onComplete: finish });
+    // if something cuts the glide short (the tour being stopped), never leave the class behind
+    setTimeout(finish, 2600);
+  });
+}
 function rewind() {
   tour.stop();
   document.activeElement?.blur?.();
-  const done = () => {
-    root.classList.remove("is-rewinding");
-
+  rewindMotion().then(() => {
     $("#top")?.setAttribute("tabindex", "-1");
     $("#top")?.focus({ preventScroll: true });
-  };
-  const lenisNow = getLenis();
-  if (!lenisNow || isStill()) {
-    window.scrollTo({ top: 0, behavior: "auto" });
-    done();
-    return;
-  }
-  root.classList.add("is-rewinding");
-  lenisNow.scrollTo(0, {
-    duration: 2,
-    easing: easeInOut,
-    lock: true,
-    force: true,
-    onComplete: done,
   });
 }
 document.addEventListener(
