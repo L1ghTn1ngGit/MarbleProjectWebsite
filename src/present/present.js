@@ -600,8 +600,17 @@ function renderYears(data) {
   fill("growth", `${change >= 0 ? "+" : ""}${(change * 100).toFixed(1)}%`);
   fill("growthLabel", t("change in cash spending, FY{first} to FY{last}", { first: first.label, last: last.label }));
   renderers.years = (p) => {
+    // on the stage each bar rises as its column slides out from behind the pillar, so the
+    // card never shows up hollow; elsewhere the latest year grows first, early in the scroll
+    const stageBox = root.classList.contains("stage-on") && stage ? stage.getBoundingClientRect() : null;
+    const pillarX = stageBox && stageBox.width ? stageBox.left + stageBox.width / 2 : null;
     columns.forEach(({ group, value, year }, index) => {
-      const local = ease(span(p, index * 0.15, 0.45 + index * 0.15));
+      const order = columns.length - 1 - index;
+      let local = ease(span(p, order * 0.07, 0.18 + order * 0.07));
+      if (pillarX !== null) {
+        const box = group.getBoundingClientRect();
+        local = p >= 1 ? 1 : ease(clamp((box.right - pillarX) / Math.max(1, box.width)));
+      }
       group.style.setProperty("--grow", local.toFixed(4));
       value.textContent = formatCurrency(year.spent * local);
     });
